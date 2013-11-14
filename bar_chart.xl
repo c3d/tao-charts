@@ -1,0 +1,355 @@
+// ****************************************************************************
+//  barchart.xl                                                     Tao project
+// ****************************************************************************
+//
+//   File Description:
+//
+//     Define defaut bar chart styles.
+//
+//
+//
+//
+//
+//
+//
+//
+// ****************************************************************************
+// Copyright Taodyne SAS, 2012
+// Contributors:
+//   Baptiste Soulisse <baptiste.soulisse@taodyne.com>
+//   Christophe de Dinechin <christophe@taodyne.com>
+//   Jérôme Forissier <jerome@taodyne.com>
+//   Catherine Burvelle <cathy@taodyne.com>
+//
+// <contact@taodyne.com>
+//
+// This software is a computer program whose purpose is to serve as a
+// document template for the Tao Presentations application.
+//
+// This software is governed by the CeCILL license under French law and
+// abiding by the rules of distribution of free software.  You can  use,
+// modify and/ or redistribute the software under the terms of the CeCILL
+// license as circulated by CEA, CNRS and INRIA at the following URL
+// "http://www.cecill.info".
+//
+// As a counterpart to the access to the source code and  rights to copy,
+// modify and redistribute granted by the license, users are provided only
+// with a limited warranty  and the software's author,  the holder of the
+// economic rights,  and the successive licensors  have only  limited
+// liability.
+//
+// In this respect, the user's attention is drawn to the risks associated
+// with loading,  using,  modifying and/or developing or reproducing the
+// software by the user in light of its specific status of free software,
+// that may mean  that it is complicated to manipulate,  and  that  also
+// therefore means  that it is reserved for developers  and  experienced
+// professionals having in-depth computer knowledge. Users are therefore
+// encouraged to load and test the software's suitability as regards their
+// requirements in conditions enabling the security of their systems and/or
+// data to be ensured and,  more generally, to use and operate it in the
+// same conditions as regards security.
+//
+// The fact that you are presently reading this means that you have had
+// knowledge of the CeCILL license and that you accept its terms.
+// ****************************************************************************
+
+// This file is designed to be overriden by themes, etc.
+override_priority -1
+
+// Set bar colors
+theme_color Theme:text, "bar", "chart_legend", N -> color "black"
+theme_color Theme:text, "bar", Style:text, N -> color_hsv N * 40, 1.0, 1.0
+
+
+// ============================================================================
+//
+//    Default bar style
+//
+// ============================================================================
+
+
+theme_bar Theme:text, Format:text, X:real, Y:real, W:real, H:real, N:integer ->
+// ----------------------------------------------------------------------------
+//    Default bar style of bar chart
+// ----------------------------------------------------------------------------
+    theme_format Theme, "bar", "bar", Format
+    theme_color Theme, "bar", "bar", N
+    rectangle X, Y, W, H
+
+
+// ============================================================================
+//
+//    Vertical stacked bar chart
+//
+// ============================================================================
+
+data bar_chart_offset
+
+chart_get_bar_offset V:real -> V
+chart_get_bar_offset Other -> 0
+
+theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default stacked vertical bar chart
+// ----------------------------------------------------------------------------
+    I := Index // XL bug
+
+    // Translate vertically data at the same index (not for first dataset)
+    offset -> 0.0
+    if(chart_datasets_count > 1) then
+        if(N <> 1) then
+            offset := (chart_get_bar_offset(bar_chart_offset[I]))
+        else
+            offset := 0.0
+
+    // Get size of interval
+    L := W / chart_max_count
+
+    // Get size a single bar
+    S := L / 1.3
+
+    locally
+        translatey offset
+
+        // Translate data for the same dataset
+        translatex L * I
+
+        // Add a translation to start intervals at X=0
+        // (Avoid to display first bar at X=0)
+        translatex (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
+
+        theme_bar Theme, Format, 0, Ratio * (H / 2), S, Ratio * H, N
+
+    // Update offset
+    bar_chart_offset[I] := Ratio * H + offset
+
+
+theme_chart_xaxis Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//    Default x-axis for stacked vertical bar chart
+// ----------------------------------------------------------------------------
+    theme_chart_xaxis Theme, "bar", "vertical", Format, W, H
+
+
+// ============================================================================
+//
+//    Horizontal stacked bar chart
+//
+// ============================================================================
+
+theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default stacked vertical bar chart
+// ----------------------------------------------------------------------------
+    I := Index // XL bug
+
+    // Translate vertically data at the same index (not for first dataset)
+    offset -> 0.0
+    if(chart_datasets_count > 1) then
+        if(N <> 1) then
+            offset := (chart_get_bar_offset(bar_chart_offset[I]))
+        else
+            offset := 0.0
+
+    // Get size of interval
+    L := H / chart_max_count
+
+    // Get size a single bar
+    S := L / 1.3
+
+    locally
+        translatex offset
+
+        // Translate data for the same dataset
+        translatey L * I
+
+        // Add a translation to start intervals at X=0
+        // (Avoid to display first bar at X=0)
+        translatey (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
+
+        theme_bar Theme, Format, Ratio * (W / 2), 0, Ratio * W, S, N
+
+    // Update offset
+    bar_chart_offset[I] := Ratio * W + offset
+
+
+theme_chart_layout Theme:text, "bar", "horizontal_stacked", Format:text ->
+// ----------------------------------------------------------------------------
+//    Layout for horizontal stacked bar chart
+// ----------------------------------------------------------------------------
+    box "horizontal_stacked", 0, 0, chart_width, chart_height
+
+    // Show horizontal axis
+    chart_xaxis -750, -275, 1200, 500, "horizontal", Format
+    chart_yaxis -750, -275, 1200, 500, "horizontal", Format
+
+    // Invert X and Y labels
+    flow 500, -275, 80, 50, "chart_ylabel"
+    flow -750, 250, 80, 50, "chart_xlabel"
+
+    flow 0, 300, 900, 50, "chart_title"
+    flow 700, -25, 300, 500, "chart_legend"
+
+    chart -750, -275, 1200, 500, "horizontal_stacked", Format
+
+
+// ============================================================================
+//
+//    Horizontal bar chart
+//
+// ============================================================================
+
+theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default horizontal bar chart
+// ----------------------------------------------------------------------------
+    // Get size of interval
+    L := H / chart_max_count
+
+    // Get size a single bar
+    S := L / (1.3 * chart_datasets_count)
+
+    locally
+        // Translate data for the same dataset
+        translatey L * Index
+
+        // Translate data at the same index for different datasets
+        if(chart_datasets_count > 1) then
+            translatey S * (N - 1)
+
+        // Add a translation to start intervals at X=0
+        // (Avoid to display first bar at X=0)
+        translatey (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
+
+        theme_bar Theme, Format, Ratio * (W / 2), 0, Ratio * W, S, N
+
+
+theme_chart_xaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//    Default x-axis for horizontal bar chart
+// ----------------------------------------------------------------------------
+    locally
+        translate X, Y, 0.0
+
+        // Draw horizontal line
+        color "black"
+        rectangle W/2.0, 0, W, 0.5
+
+        if(chart_yticks > 0) then
+            // Compute y-interval length
+            L := W / chart_yticks
+
+            // Show y-label
+            for I in 0..chart_yticks loop
+                locally
+                    translatex L * I
+
+                    // Show vertical line
+                    rectangle 0, H/2, 0.5, H
+
+                    // Show y-label
+                    theme_text Theme, "bar", "chart_tick", 0, -50, L, H,
+                        text (chart_yticks_label I)
+
+
+theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//    Default y-axis for vertical bar chart
+// ----------------------------------------------------------------------------
+    locally
+        translate X, Y, 0.0
+
+        // Draw horizontal line
+        color "black"
+        rectangle 0.0, H/2.0, 0.5, H
+
+        if(chart_xticks > 0) then
+
+            // Compute x-interval length
+            L := H / (chart_xticks + 1)
+
+            // Show x-label below chart
+            for I in 0..chart_xticks loop
+                locally
+                    translatey L * I
+
+                    // Show x label
+                    theme_text Theme, "bar", "chart_tick", -50, (L/2.0), W, L,
+                        text (chart_xticks_label I)
+
+
+theme_chart_layout Theme:text, "bar", "horizontal", Format:text ->
+// ----------------------------------------------------------------------------
+//    Layout for horizontal bar chart
+// ----------------------------------------------------------------------------
+    box "horizontal", 0, 0, chart_width, chart_height
+
+    chart_xaxis -750, -275, 1200, 500, "horizontal", Format
+    chart_yaxis -750, -275, 1200, 500, "horizontal", Format
+
+    // Invert X and Y labels
+    flow 500, -275, 80, 50, "chart_ylabel"
+    flow -750, 250, 80, 50, "chart_xlabel"
+
+    flow 0, 300, 900, 50, "chart_title"
+    flow 700, -25, 300, 500, "chart_legend"
+
+    chart -750, -275, 1200, 500, "horizontal", Format
+
+
+// ============================================================================
+//
+//    Vertical bar chart
+//
+// ============================================================================
+
+theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default vertical bar chart
+// ----------------------------------------------------------------------------
+    // Get size of interval
+    L := W / chart_max_count
+
+    // Get size a single bar
+    S := L / (1.3 * chart_datasets_count)
+
+    locally
+        // Translate data for the same dataset
+        translatex L * Index
+
+        // Translate data at the same index for different datasets
+        if(chart_datasets_count > 1) then
+            translatex S * (N - 1)
+
+        // Add a translation to start intervals at X=0
+        // (Avoid to display first bar at X=0)
+        translatex (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
+
+        theme_bar Theme, Format, 0, Ratio * (H / 2), S, Ratio * H, N
+
+
+theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//    Default x-axis for vertical bar chart
+// ----------------------------------------------------------------------------
+    locally
+        translate X, Y, 0.0
+
+        // Draw horizontal line
+        color "black"
+        rectangle W/2.0, 0.0, W, 0.5
+
+        if(chart_xticks > 0) then
+
+            // Compute x-interval length
+            L := W / (chart_xticks + 1)
+
+            // Show x-label below chart
+            for I in 0..chart_xticks loop
+                locally
+                    translatex L * I
+
+                    // Show x label
+                    theme_text Theme, "bar", "chart_tick", (L/2.0), -50, L, H,
+                        text (chart_xticks_label I)
+

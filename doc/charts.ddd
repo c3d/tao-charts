@@ -1,0 +1,224 @@
+
+import Charts
+
+
+chart_reset
+
+// Add data to first dataset
+chart_push_data 1, 200
+chart_push_data 1, 250
+chart_push_data 1, 300
+
+// Add data to second dataset
+chart_push_data 2, 150
+chart_push_data 2, 150
+chart_push_data 2, 110
+
+// Add data to third dataset
+chart_push_data 3, 165
+chart_push_data 3, 85
+chart_push_data 3, 188
+
+chart_xticks_labels {"First", "Second", "Third"}
+
+chart_title "Sample chart"
+
+chart_legend
+    chart_entry "First set"
+    chart_entry "Second set"
+    chart_entry "Third set"
+
+
+// ============================================================================
+//
+//                              2D Chart
+//
+// ============================================================================
+picture_slide "2D pie chart",
+// ----------------------------------------------------------------------------
+//   Display a classic 2D pie chart
+// ----------------------------------------------------------------------------
+    chart 1, "pie", 0, 0, 1, 1
+
+
+picture_slide "2D exploded pie chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D exploded pie chart
+// ----------------------------------------------------------------------------
+    chart_style "exploded"
+    chart 1, "pie", 0, 0, 1, 1
+
+
+picture_slide "2D vertical bar chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D vertical bar chart
+// ----------------------------------------------------------------------------
+    chart "bar", 0, 0, 1, 1
+
+
+picture_slide "2D vertical stacked bar chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D vertical-stacked bar chart
+// ----------------------------------------------------------------------------
+    chart_style "vertical_stacked"
+    chart "bar", 0, 0, 1, 1
+
+
+picture_slide "2D horizontal bar chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D horizontal-stacked bar chart
+// ----------------------------------------------------------------------------
+    chart_style "horizontal"
+    chart "bar", 0, 0, 1, 1
+
+
+picture_slide "2D horizontal stacked bar chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D horizontal-stacked bar chart
+// ----------------------------------------------------------------------------
+    chart_style "horizontal_stacked"
+    chart "bar", 0, 0, 1, 1
+
+
+picture_slide "2D point chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D point chart
+// ----------------------------------------------------------------------------
+    chart_style "point"
+    chart "line", 0, 0, 1, 1
+
+
+picture_slide "2D line chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D line chart
+// ----------------------------------------------------------------------------
+    chart_style "line"
+    chart "line", 0, 0, 1, 1
+
+
+picture_slide "2D line&point chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D line & point chart
+// ----------------------------------------------------------------------------
+    chart "line", 0, 0, 1, 1
+
+
+picture_slide "2D area chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D area chart
+// ----------------------------------------------------------------------------
+    chart "area", 0, 0, 1, 1
+
+
+picture_slide "2D stacked area chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D area stacked bar chart
+// ----------------------------------------------------------------------------
+    chart_style "stacked"
+    chart "area", 0, 0, 1, 1
+
+
+
+// ============================================================================
+//
+//                              3D Chart
+//
+// ============================================================================
+light 0
+material_ambient 1.0, 1.0, 1.0, 1.0
+material_diffuse 1.0, 1.0, 1.0, 1.0
+rotatey 30
+
+picture_slide "3D pie chart",
+// ----------------------------------------------------------------------------
+//   Display a classic 3D pie chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart 1, "pie", 0, 0, 1, 1
+
+
+picture_slide "3D exploded pie chart",
+// ----------------------------------------------------------------------------
+//   Display a 3D exploded pie chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart_style "exploded"
+    chart 1, "pie", 0, 0, 1, 1
+
+
+picture_slide "3D vertical bar chart",
+// ----------------------------------------------------------------------------
+//   Display a 3D vertical bar chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart "bar", 0, 0, 1, 1
+
+
+picture_slide "3D vertical stacked bar chart",
+// ----------------------------------------------------------------------------
+//   Display a 3D vertical-stacked bar chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart_style "vertical_stacked"
+    chart "bar", 0, 0, 1, 1
+
+
+picture_slide "3D horizontal bar chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D horizontal-stacked bar chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart_style "horizontal"
+    chart "bar", 0, 0, 1, 1
+
+
+picture_slide "3D horizontal stacked bar chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D horizontal-stacked bar chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart_style "horizontal_stacked"
+    chart "bar", 0, 0, 1, 1
+
+
+picture_slide "3D point chart",
+// ----------------------------------------------------------------------------
+//   Display a 3D point chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart_style "point"
+    chart "line", 0, 0, 1, 1
+
+
+picture_slide "3D line chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D line chart
+// ----------------------------------------------------------------------------
+    chart_style "line"
+    chart "line", 0, 0, 1, 1
+
+
+picture_slide "3D line&point chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D line & point chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart_format "3D"
+    chart "line", 0, 0, 1, 1
+
+
+picture_slide "3D area chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D area chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart "area", 0, 0, 1, 1
+
+
+picture_slide "3D stacked area chart",
+// ----------------------------------------------------------------------------
+//   Display a 2D area stacked bar chart
+// ----------------------------------------------------------------------------
+    chart_format "3D"
+    chart_style "stacked"
+    chart "area", 0, 0, 1, 1

@@ -1,0 +1,158 @@
+// ****************************************************************************
+//  piechart.xl                                                     Tao project
+// ****************************************************************************
+//
+//   File Description:
+//
+//     Define defaut piechart styles.
+//
+//
+//
+//
+//
+//
+//
+//
+// ****************************************************************************
+// Copyright Taodyne SAS, 2012
+// Contributors:
+//   Baptiste Soulisse <baptiste.soulisse@taodyne.com>
+//   Christophe de Dinechin <christophe@taodyne.com>
+//   Jérôme Forissier <jerome@taodyne.com>
+//   Catherine Burvelle <cathy@taodyne.com>
+//
+// <contact@taodyne.com>
+//
+// This software is a computer program whose purpose is to serve as a
+// document template for the Tao Presentations application.
+//
+// This software is governed by the CeCILL license under French law and
+// abiding by the rules of distribution of free software.  You can  use,
+// modify and/ or redistribute the software under the terms of the CeCILL
+// license as circulated by CEA, CNRS and INRIA at the following URL
+// "http://www.cecill.info".
+//
+// As a counterpart to the access to the source code and  rights to copy,
+// modify and redistribute granted by the license, users are provided only
+// with a limited warranty  and the software's author,  the holder of the
+// economic rights,  and the successive licensors  have only  limited
+// liability.
+//
+// In this respect, the user's attention is drawn to the risks associated
+// with loading,  using,  modifying and/or developing or reproducing the
+// software by the user in light of its specific status of free software,
+// that may mean  that it is complicated to manipulate,  and  that  also
+// therefore means  that it is reserved for developers  and  experienced
+// professionals having in-depth computer knowledge. Users are therefore
+// encouraged to load and test the software's suitability as regards their
+// requirements in conditions enabling the security of their systems and/or
+// data to be ensured and,  more generally, to use and operate it in the
+// same conditions as regards security.
+//
+// The fact that you are presently reading this means that you have had
+// knowledge of the CeCILL license and that you accept its terms.
+// ****************************************************************************
+
+// This file is designed to be overriden by themes, etc.
+override_priority -1
+
+// Set pie colors
+theme_color Theme:text, "pie", "chart_legend", N:integer -> color "black"
+theme_color Theme:text, "pie", Style:text, N:integer -> color_hsv N * 40, 1.0, 1.0
+
+// ============================================================================
+//
+//    Pie chart layout
+//
+// ============================================================================
+
+theme_chart_layout Theme:text, "pie", Style:text, Format:text ->
+// ----------------------------------------------------------------------------
+//    Default pie chart layout
+// ----------------------------------------------------------------------------
+    box Style, 0, 0, chart_width, chart_height
+
+    flow 0, 300, 900, 50, "chart_title"
+    flow 300, -25, 300, 500, "chart_legend"
+
+    chart -300, -50, 600, 600, Style, Format
+
+
+// ============================================================================
+//
+//    Exploded 2D pie chart
+//
+// ============================================================================
+
+// Offset angle to start current pie
+// at the end of the previous
+pie_chart_offset -> 0.0
+
+theme_chart Theme:text, "pie", "exploded", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default pie chart
+// ----------------------------------------------------------------------------
+    // Compute angle of pie
+    Angle := Ratio * 360
+
+    // Compute offset between each pie
+    Offset := 10 * (chart_count N)
+
+    // Compute the semi-angle of current pie
+    Angle2 := ((Angle / 2.0 + 90 + pie_chart_offset) * pi) / 180
+
+    locally
+        // Show data value at the middle of the pie
+        translate Offset/2.0 * cos Angle2, Offset/2.0 * sin Angle2, 1
+
+        theme_chart Theme, "pie", "", Format, W - Offset, H - Offset, N, Index, Ratio
+
+
+// ============================================================================
+//
+//    Default pie chart
+//
+// ============================================================================
+
+theme_chart Theme:text, "pie", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default pie chart
+// ----------------------------------------------------------------------------
+    if(Index = 0) then
+        pie_chart_offset := 0.0
+
+    // Compute angle of pie
+    Angle := Ratio * 360
+
+    locally
+        rotatez 90
+        theme_format Theme, "pie", "pie", Format
+        theme_color Theme, "pie", "pie", (Index + 1)
+        ellipse_sector 0, 0, H, W, pie_chart_offset, Angle
+
+    locally
+        // Compute the semi-angle of current pie
+        Angle2 := ((Angle / 2.0 + 90 + pie_chart_offset) * pi) / 180
+
+        // Show data value inside the pie
+        translate W * 0.35 * cos Angle2, H * 0.35 * sin Angle2, 0
+
+        // Show value
+        V := text (chart_data(N, Index))
+        theme_format Theme, "pie", "chart_data", Format
+        theme_text Theme, "pie", "chart_data", 0, 0, (text_width V), (text_height V),
+            text V
+
+    // Update offset
+    pie_chart_offset := pie_chart_offset + Angle
+
+
+// ============================================================================
+//
+//    Others
+//
+// ============================================================================
+
+// Default axis for others charts
+theme_chart_xaxis Theme:text, "pie", Style:text, Format:text, W:real, H:real -> false
+theme_chart_yaxis Theme:text, "pie", Style:text, Format:text, W:real, H:real -> false

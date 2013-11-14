@@ -1,0 +1,15 @@
+module_description
+    id "21ffd360-3595-11e3-aa6e-0800200c9a66"
+    name "Charts"
+    description ""
+    import_name "Charts"
+    author "Taodyne SAS"
+    website "http://www.taodyne.com"
+    version 1.0
+
+module_description "fr",
+    name "Diagrammes"
+    description ""
+
+import "charts2.xl.crypt"
+

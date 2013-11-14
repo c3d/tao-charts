@@ -1,0 +1,151 @@
+// ****************************************************************************
+//  linechart.xl                                                    Tao project
+// ****************************************************************************
+//
+//   File Description:
+//
+//     Define defaut linechart styles.
+//
+//
+//
+//
+//
+//
+//
+//
+// ****************************************************************************
+// Copyright Taodyne SAS, 2012
+// Contributors:
+//   Baptiste Soulisse <baptiste.soulisse@taodyne.com>
+//   Christophe de Dinechin <christophe@taodyne.com>
+//   Jérôme Forissier <jerome@taodyne.com>
+//   Catherine Burvelle <cathy@taodyne.com>
+//
+// <contact@taodyne.com>
+//
+// This software is a computer program whose purpose is to serve as a
+// document template for the Tao Presentations application.
+//
+// This software is governed by the CeCILL license under French law and
+// abiding by the rules of distribution of free software.  You can  use,
+// modify and/ or redistribute the software under the terms of the CeCILL
+// license as circulated by CEA, CNRS and INRIA at the following URL
+// "http://www.cecill.info".
+//
+// As a counterpart to the access to the source code and  rights to copy,
+// modify and redistribute granted by the license, users are provided only
+// with a limited warranty  and the software's author,  the holder of the
+// economic rights,  and the successive licensors  have only  limited
+// liability.
+//
+// In this respect, the user's attention is drawn to the risks associated
+// with loading,  using,  modifying and/or developing or reproducing the
+// software by the user in light of its specific status of free software,
+// that may mean  that it is complicated to manipulate,  and  that  also
+// therefore means  that it is reserved for developers  and  experienced
+// professionals having in-depth computer knowledge. Users are therefore
+// encouraged to load and test the software's suitability as regards their
+// requirements in conditions enabling the security of their systems and/or
+// data to be ensured and,  more generally, to use and operate it in the
+// same conditions as regards security.
+//
+// The fact that you are presently reading this means that you have had
+// knowledge of the CeCILL license and that you accept its terms.
+// ****************************************************************************
+
+// This file is designed to be overriden by themes, etc.
+override_priority -1
+
+// Default size of lines and points
+theme_size Theme:text, "line", "line" -> 5
+theme_size Theme:text, "line", "point" -> 15
+
+// Default color of lines
+theme_color Theme:text, "line", "chart_legend", N -> color "black"
+theme_color Theme:text, "line", "line", N -> line_color_hsv N * 40, 1.0, 1.0
+theme_color Theme:text, "line", Style:text, N -> color_hsv N * 40, 1.0, 1.0
+
+// Default format of points
+theme_format Theme:text, "line", "point", "3D" -> false
+
+// ============================================================================
+//
+//                              Point Chart
+//
+// ============================================================================
+
+
+theme_chart Theme:text, "line", "point", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default point chart
+// ----------------------------------------------------------------------------
+    locally
+        theme_format Theme, "line", "point", Format
+        theme_color Theme, "line", "point", N
+
+        // Compute coordinates of point
+        if(chart_max_count > 1) then
+            X := Index * (W / (chart_max_count - 1))
+        else
+            X := 0
+
+        Y := Ratio * H
+        S := theme_size(Theme, "line", "point")
+        point X, Y, 0, S
+
+
+// ============================================================================
+//
+//                              Line Chart
+//
+// ============================================================================
+
+// Previous coordinates
+LINE_PREVIOUS_X -> 0.0
+LINE_PREVIOUS_Y -> 0.0
+
+theme_chart Theme:text, "line", "line", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default line chart
+// ----------------------------------------------------------------------------
+    locally
+        S := theme_size(Theme, "line", "line")
+
+        // Set line width
+        line_width S
+
+        // Compute coordinates of line
+        if (chart_max_count > 1) then
+            X := Index * (W / (chart_max_count - 1))
+        else
+            X := 0
+
+        Y := Ratio * H
+
+        // Do not show line for first index
+        if (Index <> 0) then
+            theme_format Theme, "line", "line", Format
+            theme_color Theme, "line", "line", N
+            path
+                move_to LINE_PREVIOUS_X, LINE_PREVIOUS_Y
+                endpoints_style NONE, NONE
+                line_to X, Y
+
+        // Save previous coordinates
+        LINE_PREVIOUS_X := X
+        LINE_PREVIOUS_Y := Y
+
+
+// ============================================================================
+//
+//                       Complete Line Chart (points & lines)
+//
+// ============================================================================
+
+
+theme_chart Theme:text, "line", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default point&line chart
+// ----------------------------------------------------------------------------
+    theme_chart Theme, "line", "point", Format, W, H, N, Index, Ratio
+    theme_chart Theme, "line", "line", Format, W, H, N, Index, Ratio

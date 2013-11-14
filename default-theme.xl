@@ -1,0 +1,360 @@
+// ****************************************************************************
+//  default-theme.xl                                              Tao project
+// ****************************************************************************
+//
+//   File Description:
+//
+//     Define a default theme for charts.
+//
+//
+//
+//
+//
+//
+//
+//
+// ****************************************************************************
+// Copyright Taodyne SAS, 2012
+// Contributors:
+//   Baptiste Soulisse <baptiste.soulisse@taodyne.com>
+//   Christophe de Dinechin <christophe@taodyne.com>
+//   Jérôme Forissier <jerome@taodyne.com>
+//   Catherine Burvelle <cathy@taodyne.com>
+//
+// <contact@taodyne.com>
+//
+// This software is a computer program whose purpose is to serve as a
+// document template for the Tao Presentations application.
+//
+// This software is governed by the CeCILL license under French law and
+// abiding by the rules of distribution of free software.  You can  use,
+// modify and/ or redistribute the software under the terms of the CeCILL
+// license as circulated by CEA, CNRS and INRIA at the following URL
+// "http://www.cecill.info".
+//
+// As a counterpart to the access to the source code and  rights to copy,
+// modify and redistribute granted by the license, users are provided only
+// with a limited warranty  and the software's author,  the holder of the
+// economic rights,  and the successive licensors  have only  limited
+// liability.
+//
+// In this respect, the user's attention is drawn to the risks associated
+// with loading,  using,  modifying and/or developing or reproducing the
+// software by the user in light of its specific status of free software,
+// that may mean  that it is complicated to manipulate,  and  that  also
+// therefore means  that it is reserved for developers  and  experienced
+// professionals having in-depth computer knowledge. Users are therefore
+// encouraged to load and test the software's suitability as regards their
+// requirements in conditions enabling the security of their systems and/or
+// data to be ensured and,  more generally, to use and operate it in the
+// same conditions as regards security.
+//
+// The fact that you are presently reading this means that you have had
+// knowledge of the CeCILL license and that you accept its terms.
+// ****************************************************************************
+//
+//  These files define styles of legend, title, axis, labels and charts
+//  In all of these ones, we define:
+//     - Theme: Current theme
+//     - Master: Current chart master (area, bar, line, pie)
+//     - Style: Current chart style (according to master)
+//     - Format: Current chart format (2D or 3D)
+//     - W: Chart width in percent
+//     - H: Chart height in percent
+//     - N: Current dataset (from 1 to 4)
+//     - Index: Current index of data in the dataset
+//     - Ratio: Ratio of current value ( Value / MaxValue )
+//     - chart_max_data: The maximum data (according to chart master)
+//
+// ****************************************************************************
+
+
+import Slides
+
+// This file is designed to be overriden by themes, etc.
+override_priority -2
+
+
+// Import charts types
+import "pie_chart.xl"
+import "line_chart.xl"
+import "bar_chart.xl"
+import "area_chart.xl"
+
+
+// Default theme size of charts
+chart_width  -> theme_drawing_width theme
+chart_height -> theme_drawing_height theme
+
+
+// ============================================================================
+//
+//    Easily configurable parameters
+//
+// ============================================================================
+
+// Default size of charts components
+theme_size  Theme:text, Master:text, "chart_data" -> 20
+theme_size  Theme:text, Master:text, "chart_label" -> 20
+theme_size  Theme:text, Master:text, "chart_tick" -> 20
+theme_size  Theme:text, Master:text, "chart_title" -> 40
+theme_size  Theme:text, Master:text, "chart_legend" -> 30
+theme_size Theme:text, Master:text, "chart_legend", N:integer -> 30
+
+// Default color of charts components
+theme_color Theme:text, Master:text, "chart_data" -> color "black"
+theme_color Theme:text, Master:text, "chart_label" -> color "black"
+theme_color Theme:text, Master:text, "chart_tick" -> color "black"
+theme_color Theme:text, Master:text, "chart_legend" -> color "black"
+theme_color Theme:text, Master:text, "chart_legend", N:integer -> color "black"
+
+// Default format of charts components
+theme_format Theme:text, Master:text, "chart_data", "3D" -> translatez 50
+theme_format Theme:text, Master:text, Style:text, "3D" -> extrude_depth 50; translatez 50
+theme_format Theme:text, Master:text, Style:text, Format:text -> false
+
+// Default alignment of charts components
+theme_align Theme:text, Master:text, "chart_data" -> align 0.5; vertical_align 0.5
+theme_align Theme:text, Master:text, "chart_tick" -> align 0.5; vertical_align 0.5
+theme_align Theme:text, Master:text, "chart_label" -> align 0.0; vertical_align 0.45
+theme_align Theme:text, Master:text, "chart_title" -> align 0.5; vertical_align 0.5
+theme_align Theme:text, Master:text, "chart_entry", N:integer -> theme_align Theme,Master,"chart_legend",N
+theme_align Theme:text, Master:text, "chart_legend" ->
+    align 0.0
+    vertical_align 0.5
+    paragraph_space 0, 30
+    margins 90, 0
+
+// Default style of boxes
+theme_boxstyle Theme:text, Master:text, "chart_legend" -> color "black", 0.1
+theme_boxstyle Theme:text, Master:text, "chart_title" -> color "black", 0.1
+
+
+// ============================================================================
+//
+//    Charts Layout
+//
+// ============================================================================
+
+theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
+// ----------------------------------------------------------------------------
+//    Default chart layout
+// ----------------------------------------------------------------------------
+    box Style, 0, 0, chart_width, chart_height
+
+    chart_xaxis -750, -275, 1200, 500, Style, Format
+    chart_yaxis -750, -275, 1200, 500, Style, Format
+
+    flow 500, -275, 80, 50, "chart_xlabel"
+    flow -750, 250, 80, 50, "chart_ylabel"
+    flow 0, 300, 900, 50, "chart_title"
+    flow 700, -25, 300, 500, "chart_legend"
+
+    chart -750, -275, 1200, 500, Style, Format
+
+
+// ============================================================================
+//
+//    Chart
+//
+// ============================================================================
+
+theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Index:integer ->
+// ----------------------------------------------------------------------------
+//    Display a unique data in a chart
+// ----------------------------------------------------------------------------
+    // Compute ratio for current data
+    Ratio := (chart_data(N, Index)) / chart_max_data
+    theme_chart Theme, Master, Style, Format, W, H, N, Index, Ratio
+
+
+// ============================================================================
+//
+//    Data
+//
+// ============================================================================
+
+theme_text Theme:text,Master:text,"chart_data",X:real,Y:real,W:real,H:real,Body ->
+// ----------------------------------------------------------------------------
+//    Override text implementation (don't show any box)
+// ----------------------------------------------------------------------------
+    theme_text_without_box Theme, Master, "chart_data", X, Y, W, H, Body
+
+
+// ============================================================================
+//
+//    Title
+//
+// ============================================================================
+
+theme_chart_title Theme:text, Master:text, Body ->
+// ----------------------------------------------------------------------------
+//    Default implementation of chart title
+// ----------------------------------------------------------------------------
+    text_flow "chart_title",
+        theme_style Theme, Master, "chart_title"
+        Body
+
+
+// ============================================================================
+//
+//    Legend
+//
+// ============================================================================
+
+theme_chart_legend Theme:text, Master:text, Body ->
+// ----------------------------------------------------------------------------
+//    Default implementation of chart title
+// ----------------------------------------------------------------------------
+    text_flow "chart_legend",
+        theme_style Theme, Master, "chart_legend"
+        Body
+
+
+theme_chart_entry Theme:text, Master:text, N:integer, Body ->
+// ----------------------------------------------------------------------------
+//   Default style of legend entry
+// ----------------------------------------------------------------------------
+    text_span
+        theme_style Theme, Master, "chart_legend"
+        paragraph_break
+        anchor
+            locally
+                theme_color Theme, Master, "chart_entry", N
+                rectangle -50, 10, 50, 20
+        Body
+
+
+// ============================================================================
+//
+//    Axis label
+//
+// ============================================================================
+
+theme_chart_xlabel Theme:text, Master:text, Body ->
+// ----------------------------------------------------------------------------
+//    Default implementation of x-label
+// ----------------------------------------------------------------------------
+    text_flow "chart_xlabel",
+        theme_style Theme, Master, "chart_label"
+        Body
+
+
+theme_text Theme:text,Master:text,"chart_xlabel",X:real,Y:real,W:real,H:real,Body ->
+// ----------------------------------------------------------------------------
+//    Override text implementation (don't show any box)
+// ----------------------------------------------------------------------------
+    theme_text_without_box Theme, Master, "chart_xlabel", X, Y, W, H, Body
+
+
+theme_chart_ylabel Theme:text, Master:text, Body ->
+// ----------------------------------------------------------------------------
+//    Default implementation y-label
+// ----------------------------------------------------------------------------
+    text_flow "chart_ylabel",
+        theme_style Theme, Master, "chart_label"
+        Body
+
+
+theme_text Theme:text,Master:text,"chart_ylabel",X:real,Y:real,W:real,H:real,Body ->
+// ----------------------------------------------------------------------------
+//    Override text implementation (don't show any box)
+// ----------------------------------------------------------------------------
+    theme_text_without_box Theme, Master, "chart_ylabel", X, Y, W, H, Body
+
+
+// ============================================================================
+//
+//    Axis
+//
+// ============================================================================
+
+theme_text Theme:text,Master:text,"chart_tick",X:real,Y:real,W:real,H:real,Body ->
+// ----------------------------------------------------------------------------
+//    Override text implementation (don't show any box)
+// ----------------------------------------------------------------------------
+    theme_text_without_box Theme, Master, "chart_tick", X, Y, W, H, Body
+
+
+theme_chart_xaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//    Default style of x-axis
+// ----------------------------------------------------------------------------
+    locally
+        translate X, Y, 0.0
+
+        color "black"
+        rectangle W/2.0, 0, W, 0.5
+
+        if(chart_xticks > 0) then
+
+            // Compute x-interval length
+            L := W / chart_xticks
+
+            // Show x-label below chart
+            for I in 0..chart_xticks loop
+                locally
+                    translatex L * I
+
+                    // Show vertical line
+                    rectangle 0, H/2, 0.5, H
+
+                    // Get x-label
+                    Label := chart_xticks_label I
+
+                    theme_text Theme, Master, "chart_tick", 0, -50, L, 50,
+                        text Label
+
+
+// ============================================================================
+//
+//    Y-Axis
+//
+// ============================================================================
+
+theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//    Default style of y-axis
+// ----------------------------------------------------------------------------
+    locally
+        translate X, Y, 0.0
+
+        color "black"
+        rectangle 0, H/2, 0.5, H
+
+        if(chart_yticks > 0) then
+            // Compute y-interval length
+            L := H / chart_yticks
+
+            // Show y-label
+            for I in 0..chart_yticks loop
+                locally
+                    translatey L * I
+
+                    // Show horizontal line
+                    rectangle W/2, 0, W, 0.5
+
+                    // Get y-label
+                    Label := chart_yticks_label I
+                    theme_text Theme, Master, "chart_tick", -50, 0, 50, L,
+                        text Label
+
+
+// Other charts
+theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real -> false
+
+
+// ============================================================================
+//
+//   Texts without boxes
+//
+// ============================================================================
+
+theme_text_without_box Theme:text,Master:text,Style:text,X:real,Y:real,W:real,H:real,Body ->
+// ----------------------------------------------------------------------------
+//   Draw a default text box
+// ----------------------------------------------------------------------------
+    contents 0,
+        text_box X, Y, W, H,
+            theme_style Theme, Master, Style
+            Body

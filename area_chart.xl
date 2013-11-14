@@ -1,0 +1,165 @@
+// ****************************************************************************
+//  areachart.xl                                                    Tao project
+// ****************************************************************************
+//
+//   File Description:
+//
+//     Define defaut area chart styles.
+//
+//
+//
+//
+//
+//
+//
+//
+// ****************************************************************************
+// Copyright Taodyne SAS, 2012
+// Contributors:
+//   Baptiste Soulisse <baptiste.soulisse@taodyne.com>
+//   Christophe de Dinechin <christophe@taodyne.com>
+//   Jérôme Forissier <jerome@taodyne.com>
+//   Catherine Burvelle <cathy@taodyne.com>
+//
+// <contact@taodyne.com>
+//
+// This software is a computer program whose purpose is to serve as a
+// document template for the Tao Presentations application.
+//
+// This software is governed by the CeCILL license under French law and
+// abiding by the rules of distribution of free software.  You can  use,
+// modify and/ or redistribute the software under the terms of the CeCILL
+// license as circulated by CEA, CNRS and INRIA at the following URL
+// "http://www.cecill.info".
+//
+// As a counterpart to the access to the source code and  rights to copy,
+// modify and redistribute granted by the license, users are provided only
+// with a limited warranty  and the software's author,  the holder of the
+// economic rights,  and the successive licensors  have only  limited
+// liability.
+//
+// In this respect, the user's attention is drawn to the risks associated
+// with loading,  using,  modifying and/or developing or reproducing the
+// software by the user in light of its specific status of free software,
+// that may mean  that it is complicated to manipulate,  and  that  also
+// therefore means  that it is reserved for developers  and  experienced
+// professionals having in-depth computer knowledge. Users are therefore
+// encouraged to load and test the software's suitability as regards their
+// requirements in conditions enabling the security of their systems and/or
+// data to be ensured and,  more generally, to use and operate it in the
+// same conditions as regards security.
+//
+// The fact that you are presently reading this means that you have had
+// knowledge of the CeCILL license and that you accept its terms.
+// ****************************************************************************
+
+// This file is designed to be overriden by themes, etc.
+override_priority -1
+
+// Set area colors
+theme_color Theme:text, "area", "chart_legend", N:integer -> color "black"
+theme_color Theme:text, "area", Style:text, N:integer -> color_hsv N * 40, 1.0, 1.0
+
+
+// Useful variables to save
+// previous position of lines
+AREA_PREVIOUS_X -> 0.0
+AREA_PREVIOUS_X := 0.0
+AREA_PREVIOUS_Y -> 0.0
+AREA_PREVIOUS_Y := 0.0
+
+// ============================================================================
+//
+//                              Stacked area Chart
+//
+// ============================================================================
+
+
+data area_chart_offset
+
+
+theme_chart Theme:text, "area", "stacked", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default area chart
+// ----------------------------------------------------------------------------
+    locally
+        // Useful function to get correct offset
+        get_area_offset V:real -> V
+        get_area_offset Other -> 0
+
+        // Variables to save previous and current offset
+        offset -> 0.0
+        previousOffset -> 0.0
+
+        I := Index // XL Bug
+
+        // Compute current coordinates
+        if(chart_max_count > 1) then
+            X := Index * (W / (chart_max_count - 1))
+        else
+            X := 0
+
+        Y := Ratio * H
+
+        if(chart_datasets_count > 1) then
+            // If first set, then use no offset
+            // Otherwise get offset
+            if(N <> 1) then
+                offset := (get_area_offset(area_chart_offset[I]))
+                area_chart_offset[I] := Y + offset
+            else
+                offset := 0.0
+                area_chart_offset[I] := Y
+
+        // Do not display area for first index
+        if(Index <> 0) then
+            theme_format Theme, "area", "area", Format
+            theme_color Theme, "area", "area", N
+            path
+                move_to AREA_PREVIOUS_X, previousOffset
+                endpoints_style NONE, NONE
+                line_to AREA_PREVIOUS_X, (AREA_PREVIOUS_Y + previousOffset)
+                line_to X, (Y + offset)
+                line_to X, offset
+
+        // Update previous offset
+        previousOffset := offset
+
+        // Update previous coordinates
+        AREA_PREVIOUS_X := X
+        AREA_PREVIOUS_Y := Y
+
+
+// ============================================================================
+//
+//                              Default area Chart
+//
+// ============================================================================
+
+theme_chart Theme:text, "area", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+// ----------------------------------------------------------------------------
+//    Default area chart
+// ----------------------------------------------------------------------------
+    locally
+        // Compute current coordinates
+        if(chart_max_count > 1) then
+            X := Index * (W / (chart_max_count - 1))
+        else
+            X := 0
+
+        Y := Ratio * H
+
+        // Do not display area for first index
+        if (Index <> 0) then
+            theme_format Theme, "area", "area", Format
+            theme_color Theme, "area", "area", N
+            path
+                move_to AREA_PREVIOUS_X, 0
+                endpoints_style NONE, NONE
+                line_to AREA_PREVIOUS_X, AREA_PREVIOUS_Y
+                line_to X, Y
+                line_to X, 0
+
+        // Update previous coordinates
+        AREA_PREVIOUS_X := X
+        AREA_PREVIOUS_Y := Y
