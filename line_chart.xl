@@ -61,7 +61,6 @@ theme_size Theme:text, "line", "line" -> 5
 theme_size Theme:text, "line", "point" -> 15
 
 // Default color of lines
-theme_color Theme:text, "line", "chart_legend", N -> color "black"
 theme_color Theme:text, "line", "line", N -> line_color_hsv N * 40, 1.0, 1.0
 theme_color Theme:text, "line", Style:text, N -> color_hsv N * 40, 1.0, 1.0
 

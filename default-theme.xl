@@ -102,15 +102,14 @@ theme_size  Theme:text, Master:text, "chart_legend" -> 30
 theme_size Theme:text, Master:text, "chart_legend", N:integer -> 30
 
 // Default color of charts components
-theme_color Theme:text, Master:text, "chart_data" -> color "black"
-theme_color Theme:text, Master:text, "chart_label" -> color "black"
-theme_color Theme:text, Master:text, "chart_tick" -> color "black"
-theme_color Theme:text, Master:text, "chart_legend" -> color "black"
-theme_color Theme:text, Master:text, "chart_legend", N:integer -> color "black"
+theme_color Theme:text, Master:text, "chart_legend", N:integer -> theme_color Theme, Master,"story"
 
 // Default format of charts components
 theme_format Theme:text, Master:text, "chart_data", "3D" -> translatez 50
-theme_format Theme:text, Master:text, Style:text, "3D" -> extrude_depth 50; translatez 50
+theme_format Theme:text, Master:text, Style:text, "3D" ->
+    extrude_depth 50
+    translatez 50
+
 theme_format Theme:text, Master:text, Style:text, Format:text -> false
 
 // Default alignment of charts components

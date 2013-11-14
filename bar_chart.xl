@@ -57,7 +57,6 @@
 override_priority -1
 
 // Set bar colors
-theme_color Theme:text, "bar", "chart_legend", N -> color "black"
 theme_color Theme:text, "bar", Style:text, N -> color_hsv N * 40, 1.0, 1.0
 
 
