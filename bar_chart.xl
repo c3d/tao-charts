@@ -231,7 +231,7 @@ theme_chart_xaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
         translate X, Y, 0.0
 
         // Draw horizontal line
-        color "black"
+        theme_color Theme, "bar", "axis"
         rectangle W/2.0, 0, W, 0.5
 
         if(chart_yticks > 0) then
@@ -247,7 +247,7 @@ theme_chart_xaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
                     rectangle 0, H/2, 0.5, H
 
                     // Show y-label
-                    theme_text Theme, "bar", "chart_tick", 0, -50, L, H,
+                    theme_text Theme, "bar", "chart_tick", 0, -30, L, H,
                         text (chart_yticks_label I)
 
 
@@ -259,7 +259,7 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
         translate X, Y, 0.0
 
         // Draw horizontal line
-        color "black"
+        theme_color Theme, "bar", "axis"
         rectangle 0.0, H/2.0, 0.5, H
 
         if(chart_xticks > 0) then
@@ -273,7 +273,7 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
                     translatey L * I
 
                     // Show x label
-                    theme_text Theme, "bar", "chart_tick", -50, (L/2.0), W, L,
+                    theme_text Theme, "bar", "chart_tick", -30, (L/2.0), W, L,
                         text (chart_xticks_label I)
 
 
@@ -335,7 +335,7 @@ theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:
         translate X, Y, 0.0
 
         // Draw horizontal line
-        color "black"
+        theme_color Theme, "bar", "axis"
         rectangle W/2.0, 0.0, W, 0.5
 
         if(chart_xticks > 0) then
@@ -349,6 +349,5 @@ theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:
                     translatex L * I
 
                     // Show x label
-                    theme_text Theme, "bar", "chart_tick", (L/2.0), -50, L, H,
+                    theme_text Theme, "bar", "chart_tick", (L/2.0), -30, L, 50,
                         text (chart_xticks_label I)
-

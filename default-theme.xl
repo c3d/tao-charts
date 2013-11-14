@@ -282,7 +282,7 @@ theme_chart_xaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
     locally
         translate X, Y, 0.0
 
-        color "black"
+        theme_color Theme, Master, "axis"
         rectangle W/2.0, 0, W, 0.5
 
         if(chart_xticks > 0) then
@@ -301,7 +301,7 @@ theme_chart_xaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
                     // Get x-label
                     Label := chart_xticks_label I
 
-                    theme_text Theme, Master, "chart_tick", 0, -50, L, 50,
+                    theme_text Theme, Master, "chart_tick", 0, -30, L, 50,
                         text Label
 
 
@@ -318,7 +318,7 @@ theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
     locally
         translate X, Y, 0.0
 
-        color "black"
+        theme_color Theme, Master, "axis"
         rectangle 0, H/2, 0.5, H
 
         if(chart_yticks > 0) then
@@ -335,7 +335,7 @@ theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
 
                     // Get y-label
                     Label := chart_yticks_label I
-                    theme_text Theme, Master, "chart_tick", -50, 0, 50, L,
+                    theme_text Theme, Master, "chart_tick", -30, 0, 50, L,
                         text Label
 
 
