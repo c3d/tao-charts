@@ -172,24 +172,32 @@ theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real
     bar_chart_offset[I] := Ratio * W + offset
 
 
-theme_chart_layout Theme:text, "bar", "horizontal_stacked", Format:text ->
+theme_chart_xaxis Theme:text, "bar", "horizontal_stacked", Format:text, X:real, Y:real, W:real, H:real ->
 // ----------------------------------------------------------------------------
-//    Layout for horizontal stacked bar chart
+//    Default x-axis for stacked horizontal bar chart
 // ----------------------------------------------------------------------------
-    box "horizontal_stacked", 0, 0, chart_width, chart_height
+    theme_chart_xaxis Theme, "bar", "horizontal", Format, X, Y, W, H
 
-    // Show horizontal axis
-    chart_xaxis -750, -275, 1200, 500, "horizontal", Format
-    chart_yaxis -750, -275, 1200, 500, "horizontal", Format
 
-    // Invert X and Y labels
-    flow 500, -275, 80, 50, "chart_ylabel"
-    flow -750, 250, 80, 50, "chart_xlabel"
+theme_chart_yaxis Theme:text, "bar", "horizontal_stacked", Format:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//    Default y-axis for stacked horizontal bar chart
+// ----------------------------------------------------------------------------
+    theme_chart_yaxis Theme, "bar", "horizontal", Format, X, Y, W, H
 
-    flow 0, 300, 900, 50, "chart_title"
-    flow 700, -25, 300, 500, "chart_legend"
 
-    chart -750, -275, 1200, 500, "horizontal_stacked", Format
+theme_chart_xlabel Theme:text, "bar", "horizontal_stacked", Body ->
+// ----------------------------------------------------------------------------
+//    Default x-label for stacked horizontal bar chart
+// ----------------------------------------------------------------------------
+    theme_chart_xlabel Theme, "bar", "horizontal", Body
+
+
+theme_chart_ylabel Theme:text, "bar", "horizontal_stacked", Body ->
+// ----------------------------------------------------------------------------
+//    Default y-label for stacked horizontal bar chart
+// ----------------------------------------------------------------------------
+    theme_chart_ylabel Theme, "bar", "horizontal", Body
 
 
 // ============================================================================
@@ -277,23 +285,18 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
                         text (chart_xticks_label I)
 
 
-theme_chart_layout Theme:text, "bar", "horizontal", Format:text ->
+theme_chart_xlabel Theme:text, "bar", "horizontal", Body ->
 // ----------------------------------------------------------------------------
-//    Layout for horizontal bar chart
+//    Default x-label for horizontal bar chart
 // ----------------------------------------------------------------------------
-    box "horizontal", 0, 0, chart_width, chart_height
+    theme_chart_ylabel Theme, "bar", "", Body
 
-    chart_xaxis -750, -275, 1200, 500, "horizontal", Format
-    chart_yaxis -750, -275, 1200, 500, "horizontal", Format
 
-    // Invert X and Y labels
-    flow 500, -275, 80, 50, "chart_ylabel"
-    flow -750, 250, 80, 50, "chart_xlabel"
-
-    flow 0, 300, 900, 50, "chart_title"
-    flow 700, -25, 300, 500, "chart_legend"
-
-    chart -750, -275, 1200, 500, "horizontal", Format
+theme_chart_ylabel Theme:text, "bar", "horizontal", Body ->
+// ----------------------------------------------------------------------------
+//    Default y-label for horizontal bar chart
+// ----------------------------------------------------------------------------
+    theme_chart_xlabel Theme, "bar", "", Body
 
 
 // ============================================================================

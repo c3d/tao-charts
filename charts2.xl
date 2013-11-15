@@ -369,7 +369,7 @@ chart_draw_title ->
 // ----------------------------------------------------------------------------
     if(chart_title <> "") then
         slide_flow["chart_title"] := true
-        theme_chart_title theme, chart_master,
+        theme_chart_title theme, chart_master, chart_style,
             text chart_title
 
 
@@ -388,9 +388,9 @@ chart_draw_legend ->
 // ----------------------------------------------------------------------------
     if(chart_legends_count > 0) then
         slide_flow["chart_legend"] := true
-        theme_chart_legend theme, chart_master,
+        theme_chart_legend theme, chart_master, chart_style,
             for N in 1..chart_legends_count loop
-                theme_chart_entry theme, chart_master, N,
+                theme_chart_entry theme, chart_master, chart_style, N,
                     text chart_legends[N]
 
 
@@ -427,7 +427,7 @@ chart_draw_xlabel ->
 // ----------------------------------------------------------------------------
     if(chart_xlabel <> "") then
         slide_flow["chart_xlabel"] := true
-        theme_chart_xlabel theme, chart_master,
+        theme_chart_xlabel theme, chart_master, chart_style,
             text chart_xlabel
 
 
@@ -442,7 +442,7 @@ chart_draw_ylabel ->
 // ----------------------------------------------------------------------------
     if(chart_ylabel <> "") then
         slide_flow["chart_ylabel"] := true
-        theme_chart_ylabel theme, chart_master,
+        theme_chart_ylabel theme, chart_master, chart_style,
             text chart_ylabel
 
 

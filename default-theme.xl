@@ -94,12 +94,11 @@ chart_height -> theme_drawing_height theme
 // ============================================================================
 
 // Default size of charts components
-theme_size  Theme:text, Master:text, "chart_data" -> 20
-theme_size  Theme:text, Master:text, "chart_label" -> 20
-theme_size  Theme:text, Master:text, "chart_tick" -> 20
-theme_size  Theme:text, Master:text, "chart_title" -> 40
-theme_size  Theme:text, Master:text, "chart_legend" -> 30
-theme_size Theme:text, Master:text, "chart_legend", N:integer -> 30
+theme_size Theme:text, Master:text, "chart_data" -> 20
+theme_size Theme:text, Master:text, "chart_label" -> 20
+theme_size Theme:text, Master:text, "chart_tick" -> 20
+theme_size Theme:text, Master:text, "chart_title" -> 40
+theme_size Theme:text, Master:text, "chart_legend" -> 30
 
 // Default color of charts components
 theme_color Theme:text, Master:text, "chart_legend", N:integer -> theme_color Theme, Master,"story"
@@ -124,9 +123,6 @@ theme_align Theme:text, Master:text, "chart_legend" ->
     paragraph_space 0, 30
     margins 90, 0
 
-// Default style of boxes
-theme_boxstyle Theme:text, Master:text, "chart_legend" -> color "black", 0.1
-theme_boxstyle Theme:text, Master:text, "chart_title" -> color "black", 0.1
 
 
 // ============================================================================
@@ -139,17 +135,22 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
 // ----------------------------------------------------------------------------
 //    Default chart layout
 // ----------------------------------------------------------------------------
-    box Style, 0, 0, chart_width, chart_height
+    // Draw main box
+    box "chart", 0, 0, chart_width, chart_height
 
-    chart_xaxis -750, -275, 1200, 500, Style, Format
-    chart_yaxis -750, -275, 1200, 500, Style, Format
+    // Draw axis
+    chart_xaxis -800, -275, 1200, 500, Style, Format
+    chart_yaxis -800, -275, 1200, 500, Style, Format
 
-    flow 500, -275, 80, 50, "chart_xlabel"
-    flow -750, 250, 80, 50, "chart_ylabel"
-    flow 0, 300, 900, 50, "chart_title"
-    flow 700, -25, 300, 500, "chart_legend"
+    // Draw components
+    flow 475, -275, 100, 50, "chart_xlabel"
+    flow -800, 250, 100, 50, "chart_ylabel"
+    flow 0, 325, 800, 50, "chart_title"
+    flow 725, -30, 300, 600, "chart_legend"
 
-    chart -750, -275, 1200, 500, Style, Format
+    // Draw chart
+    box Master, -175, -30, 1400, 600
+    chart -800, -275, 1200, 500, Style, Format
 
 
 // ============================================================================
@@ -186,7 +187,7 @@ theme_text Theme:text,Master:text,"chart_data",X:real,Y:real,W:real,H:real,Body 
 //
 // ============================================================================
 
-theme_chart_title Theme:text, Master:text, Body ->
+theme_chart_title Theme:text, Master:text, Style:text, Body ->
 // ----------------------------------------------------------------------------
 //    Default implementation of chart title
 // ----------------------------------------------------------------------------
@@ -201,7 +202,7 @@ theme_chart_title Theme:text, Master:text, Body ->
 //
 // ============================================================================
 
-theme_chart_legend Theme:text, Master:text, Body ->
+theme_chart_legend Theme:text, Master:text, Style:text, Body ->
 // ----------------------------------------------------------------------------
 //    Default implementation of chart title
 // ----------------------------------------------------------------------------
@@ -210,7 +211,7 @@ theme_chart_legend Theme:text, Master:text, Body ->
         Body
 
 
-theme_chart_entry Theme:text, Master:text, N:integer, Body ->
+theme_chart_entry Theme:text, Master:text, Style:text, N:integer, Body ->
 // ----------------------------------------------------------------------------
 //   Default style of legend entry
 // ----------------------------------------------------------------------------
@@ -230,7 +231,7 @@ theme_chart_entry Theme:text, Master:text, N:integer, Body ->
 //
 // ============================================================================
 
-theme_chart_xlabel Theme:text, Master:text, Body ->
+theme_chart_xlabel Theme:text, Master:text, Style:text, Body ->
 // ----------------------------------------------------------------------------
 //    Default implementation of x-label
 // ----------------------------------------------------------------------------
@@ -246,7 +247,7 @@ theme_text Theme:text,Master:text,"chart_xlabel",X:real,Y:real,W:real,H:real,Bod
     theme_text_without_box Theme, Master, "chart_xlabel", X, Y, W, H, Body
 
 
-theme_chart_ylabel Theme:text, Master:text, Body ->
+theme_chart_ylabel Theme:text, Master:text, Style:text, Body ->
 // ----------------------------------------------------------------------------
 //    Default implementation y-label
 // ----------------------------------------------------------------------------
