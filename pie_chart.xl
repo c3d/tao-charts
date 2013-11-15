@@ -147,13 +147,16 @@ theme_chart Theme:text, "pie", Style:text, Format:text, W:real, H:real, N:intege
         // Compute the semi-angle of current pie
         Angle2 := ((Angle / 2.0 + 90 + pie_chart_offset) * pi) / 180
 
-        // Show data value inside the pie
-        translate W * 0.35 * cos Angle2, H * 0.35 * sin Angle2, 0
+        V := text (chart_data(N, Index))
+        X := W * 0.35 * cos Angle2
+        Y := H * 0.35 * sin Angle2
+        VW := text_width V
+        VH := text_height V
 
         // Show value
-        V := text (chart_data(N, Index))
-        theme_text Theme, "pie", "chart_data", 0, 0, (text_width V), (text_height V),
+        theme_text Theme, "pie", "chart_data", X, Y, VW, VH,
             text V
+
 
     // Update offset
     pie_chart_offset := pie_chart_offset + Angle

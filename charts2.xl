@@ -277,8 +277,7 @@ chart_master Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:rea
         // Init chart
         chart_init Master, Style
 
-        contents 0,
-            theme_chart_layout theme, Master, Style, Format
+        theme_chart_layout theme, Master, Style, Format
 
 chart_max_data -> 0.0
 
@@ -287,7 +286,7 @@ chart X:real, Y:real, W:real, H:real, Style:text, Format:text ->
 //   Draw current chart
 // ----------------------------------------------------------------------------
     if(CHART_DATA_COUNT > 0) then
-        locally
+        contents 0,
             translate X, Y, 0.0
 
             Start     := chart_first_set[chart_master] // Get first set to draw

@@ -176,9 +176,11 @@ theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:
 
 theme_text Theme:text,Master:text,"chart_data",X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
-//    Override text implementation (don't show any box)
+//    Override text implementation
 // ----------------------------------------------------------------------------
-    theme_text_without_box Theme, Master, "chart_data", X, Y, W, H, Body
+    text_box X, Y, W, H,
+        theme_style Theme, Master:text, "chart_data"
+        Body
 
 
 // ============================================================================
