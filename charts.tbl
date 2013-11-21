@@ -1,0 +1,369 @@
+// ****************************************************************************
+//  charts.tbl                                                     Tao project
+// ****************************************************************************
+//
+//   File Description:
+//
+//     Definition of the interface between XLR and native code
+//     for the "Charts" module.
+//
+//
+//
+//
+//
+//
+//
+// ****************************************************************************
+// This software is property of Taodyne SAS - Confidential
+// Ce logiciel est la propriété de Taodyne SAS - Confidentiel
+//  (C) 2011 Baptiste Soulisse <baptiste.soulisse@taodyne.com>
+//  (C) 2011 Taodyne SAS
+// ****************************************************************************
+
+
+// ============================================================================
+//
+//   Data
+//
+// ============================================================================
+
+PREFIX(ChartPush,  tree, "chart_push_data",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, )
+       PARM(data, real, ),
+       return ChartFactory::chart_push_data(name, set, data),
+       GROUP(module.Charts)
+       SYNOPSIS("Push a data in a set")
+       DESCRIPTION("Push a data in a set"))
+
+PREFIX(ChartData,  tree, "chart_data",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, )
+       PARM(index, integer, ),
+       return ChartFactory::chart_data(name, set, index),
+       GROUP(module.Charts)
+       SYNOPSIS("Return a data of a chart")
+       DESCRIPTION("Return a data of a chart"))
+
+PREFIX(ChartDataRatio,  tree, "chart_data_ratio",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, )
+       PARM(index, integer, ),
+       return ChartFactory::chart_data_ratio(name, set, index),
+       GROUP(module.Charts)
+       SYNOPSIS("Return ratio for a data of a chart")
+       DESCRIPTION("Return ratio for a data of a chart"))
+
+PREFIX(ChartSum,  tree,  "chart_sum",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, ),
+       return ChartFactory::chart_sum(name, set),
+       GROUP(module.Charts)
+       SYNOPSIS("Sum data in a dataset")
+       DESCRIPTION("Sum data in a dataset"))
+
+PREFIX(ChartMax,  tree,  "chart_max",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, ),
+       return ChartFactory::chart_max(name, set),
+       GROUP(module.Charts)
+       SYNOPSIS("Return maximum data of a dataset")
+       DESCRIPTION("Return maximum data of a dataset"))
+
+PREFIX(ChartMaxCount,  tree, "chart_max_count",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_max_count(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return max data count")
+       DESCRIPTION("Return max data count"))
+
+PREFIX(ChartDatasetsCount,  tree, "chart_datasets_count",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_datasets_count(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return count of datasets to draw")
+       DESCRIPTION("Return count of datasets to draw"))
+
+PREFIX(ChartCount,  tree, "chart_count",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, ),
+       return ChartFactory::chart_count(name, set),
+       GROUP(module.Charts)
+       SYNOPSIS("Return size of a dataset")
+       DESCRIPTION("Return size of a dataset"))
+
+
+
+// ============================================================================
+//
+//   Chart mechanism
+//
+// ============================================================================
+
+PREFIX(ChartReset,  tree, "chart_reset",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_reset(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Reset data of a chart")
+       DESCRIPTION("Reset data of a chart"))
+
+PREFIX(ChartOnly,  tree, "chart_only",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_only(name),
+       SYNOPSIS("Purge all other charts from memory")
+       DESCRIPTION("Purge all other charts from memory"))
+
+PREFIX(ChartDrop,  tree, "chart_drop",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_drop(name),
+       SYNOPSIS("Purge the given chart from memory")
+       DESCRIPTION("Purge the given chart from memory"))
+
+PREFIX(ChartCurrent,  tree, "chart_current",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_current(name),
+       SYNOPSIS("Set chart with given name as current")
+       DESCRIPTION("Set chart with given name as current"))
+
+PREFIX(ChartCreate,  tree, "chart_create",
+       PARM(name, text, "The name of the chart")
+       PARM(start, integer, )
+       PARM(end, integer, )
+       PARM(master, text, )
+       PARM(p, code, "The program to init chart"),
+       return ChartFactory::chart_create(context, name, start, end, master, p),
+       GROUP(module.Charts)
+       SYNOPSIS("Create a chart")
+       DESCRIPTION("Create a chart"))
+
+PREFIX(ChartName,  tree, "chart_name",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_name(name),
+       SYNOPSIS("Return current chart name")
+       DESCRIPTION("Return current chart name"))
+
+PREFIX(ChartMaster,  tree, "chart_master",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_master(name),
+       SYNOPSIS("Return master of a chart")
+       DESCRIPTION("Return master of a chart"))
+
+PREFIX(ChartStyle,  tree, "chart_style",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_style(name),
+       SYNOPSIS("Return style of a chart")
+       DESCRIPTION("Return style of a chart"))
+
+PREFIX(ChartStyle2,  tree, "chart_set_style",
+       PARM(name, text, "The name of the chart")
+       PARM(style, text, "The style of the chart"),
+       return ChartFactory::chart_style(name, style),
+       SYNOPSIS("Change style of chart")
+       DESCRIPTION("Change style of chart"))
+
+PREFIX(ChartFormat,  tree, "chart_format",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_format(name),
+       SYNOPSIS("Return format of a chart")
+       DESCRIPTION("Return format of a chart"))
+
+PREFIX(ChartFormat2,  tree, "chart_set_format",
+       PARM(name, text, "The name of the chart")
+       PARM(format, text, "The format of the chart"),
+       return ChartFactory::chart_format(name, format),
+       SYNOPSIS("Change format of a chart")
+       DESCRIPTION("Change format of a chart"))
+
+PREFIX(ChartFirst,  tree, "chart_first",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_first(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return first dataset of the chart")
+       DESCRIPTION("Return first dataset of the chart"))
+
+PREFIX(ChartLast,  tree, "chart_last",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_last(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return last dataset of the chart")
+       DESCRIPTION("Return last dataset of the chart"))
+
+
+// ============================================================================
+//
+//   Chart Title
+//
+// ============================================================================
+
+
+PREFIX(ChartTitle,  tree, "chart_title",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_title(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return title of a chart")
+       DESCRIPTION("Return title of a chart"))
+
+PREFIX(ChartSetTitle,  tree, "chart_set_title",
+       PARM(name, text, "The name of the chart")
+       PARM(title, text, "The title of the chart"),
+       return ChartFactory::chart_title(name, title),
+       GROUP(module.Charts)
+       SYNOPSIS("Set title of a chart")
+       DESCRIPTION("Set title of a chart"))
+
+
+// ============================================================================
+//
+//   Chart Legend
+//
+// ============================================================================
+
+PREFIX(ChartLegend,  tree, "chart_legend",
+       PARM(name, text, "The name of the chart")
+       PARM(index, integer, "Entry number"),
+       return ChartFactory::chart_legend(name, index),
+       GROUP(module.Charts)
+       SYNOPSIS("Return a legend of a chart")
+       DESCRIPTION("Return a legend of a chart"))
+
+PREFIX(ChartSetLegend,  tree, "chart_set_legend",
+       PARM(name, text, "The name of the chart")
+       PARM(index, integer, "Entry number")
+       PARM(entry, text, "The entry of the legend"),
+       return ChartFactory::chart_legend(name, index, entry),
+       GROUP(module.Charts)
+       SYNOPSIS("Set a legend of a chart")
+       DESCRIPTION("Set a legend of a chart"))
+
+
+// ============================================================================
+//
+//   Chart Axis labels
+//
+// ============================================================================
+
+
+PREFIX(ChartXLabel,  tree, "chart_xlabel",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_xlabel(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return x-label of a chart")
+       DESCRIPTION("Return x-label of a chart"))
+
+PREFIX(ChartSetXLabel,  tree, "chart_set_xlabel",
+       PARM(name, text, "The name of the chart")
+       PARM(label, text, "The label of x-axis"),
+       return ChartFactory::chart_xlabel(name, label),
+       GROUP(module.Charts)
+       SYNOPSIS("Set x-label of a chart")
+       DESCRIPTION("Set x-label of a chart"))
+
+PREFIX(ChartYLabel,  tree, "chart_ylabel",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_ylabel(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return y-label of a chart")
+       DESCRIPTION("Return y-label of a chart"))
+
+PREFIX(ChartSetYLabel,  tree, "chart_set_ylabel",
+       PARM(name, text, "The name of the chart")
+       PARM(label, text, "The label of y-axis"),
+       return ChartFactory::chart_ylabel(name, label),
+       GROUP(module.Charts)
+       SYNOPSIS("Set y-label of a chart")
+       DESCRIPTION("Set y-label of a chart"))
+
+
+
+// ============================================================================
+//
+//   Chart Axis
+//
+// ============================================================================
+
+PREFIX(ChartMaxAxis,  tree, "chart_max_axis",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_max_axis(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return maximum value on the axis")
+       DESCRIPTION("Return maximum value on the axis"))
+
+PREFIX(ChartSetMaxAxis,  tree, "chart_set_max_axis",
+       PARM(name, text, "The name of the chart")
+       PARM(max, real, )
+       PARM(adjust, boolean, ),
+       return ChartFactory::chart_max_axis(name, max, adjust),
+       GROUP(module.Charts)
+       SYNOPSIS("Set maximum value on the axis")
+       DESCRIPTION("Set maximum value on the axis"))
+
+PREFIX(ChartXTicks,  tree, "chart_xticks",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_xticks(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return ticks number for x-axis")
+       DESCRIPTION("Return ticks number for x-axis"))
+
+PREFIX(ChartSetXTicks,  tree, "chart_set_xticks",
+       PARM(name, text, "The name of the chart")
+       PARM(ticks, real, ),
+       return ChartFactory::chart_xticks(name, ticks),
+       GROUP(module.Charts)
+       SYNOPSIS("Set ticks number for x-axis")
+       DESCRIPTION("Set ticks number for x-axis"))
+
+PREFIX(ChartYTicks,  tree, "chart_yticks",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_yticks(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return ticks number for y-axis")
+       DESCRIPTION("Return ticks number for y-axis"))
+
+PREFIX(ChartSetYTicks,  tree, "chart_set_yticks",
+       PARM(name, text, "The name of the chart")
+       PARM(ticks, real, ),
+       return ChartFactory::chart_yticks(name, ticks),
+       GROUP(module.Charts)
+       SYNOPSIS("Set ticks number for y-axis")
+       DESCRIPTION("Set ticks number for y-axis"))
+
+
+// ============================================================================
+//
+//   Chart ticks labels
+//
+// ============================================================================
+
+PREFIX(ChartXTicksLabel,  tree, "chart_xticks_label",
+       PARM(name, text, "The name of the chart")
+       PARM(n, integer, ),
+       return ChartFactory::chart_xticks_label(name, n),
+       GROUP(module.Charts)
+       SYNOPSIS("Return ticks label for x-axis")
+       DESCRIPTION("Return ticks label for x-axis"))
+
+PREFIX(ChartSetXTicksLabel,  tree, "chart_set_xticks_label",
+       PARM(name, text, "The name of the chart")
+       PARM(n, integer, )
+       PARM(label, text, ),
+       return ChartFactory::chart_xticks_label(name, n, label),
+       GROUP(module.Charts)
+       SYNOPSIS("Return ticks label for y-axis")
+       DESCRIPTION("Return ticks label for y-axis"))
+
+PREFIX(ChartYTicksLabel,  tree, "chart_yticks_label",
+       PARM(name, text, "The name of the chart")
+       PARM(n, integer, ),
+       return ChartFactory::chart_yticks_label(name, n),
+       GROUP(module.Charts)
+       SYNOPSIS("Set ticks label for x-axis")
+       DESCRIPTION("Set ticks label for x-axis"))
+
+PREFIX(ChartSetYTicksLabel,  tree, "chart_set_yticks_label",
+       PARM(name, text, "The name of the chart")
+       PARM(n, integer, )
+       PARM(label, text, ),
+       return ChartFactory::chart_yticks_label(name, n, label),
+       GROUP(module.Charts)
+       SYNOPSIS("Set ticks label for y-axis")
+       DESCRIPTION("Set ticks label for y-axis"))

@@ -81,8 +81,8 @@ theme_chart_layout Theme:text, "pie", Style:text, Format:text ->
     box "chart", 0, 0, chart_width, chart_height
 
     // Draw components
-    flow 0, 325, 800, 50, "chart_title"
-    flow 725, -30, 300, 600, "chart_legend"
+    chart_flow 0, 325, 800, 50, "chart_title"
+    chart_flow 725, -30, 300, 600, "chart_legend"
 
     // Draw chart
     box "pie", 0, -30, 600, 600

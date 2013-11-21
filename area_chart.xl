@@ -100,15 +100,14 @@ theme_chart Theme:text, "area", "stacked", Format:text, W:real, H:real, N:intege
 
         Y := Ratio * H
 
-        if(chart_datasets_count > 1) then
-            // If first set, then use no offset
-            // Otherwise get offset
-            if(N <> 1) then
-                offset := (get_area_offset(area_chart_offset[I]))
-                area_chart_offset[I] := Y + offset
-            else
-                offset := 0.0
-                area_chart_offset[I] := Y
+        // If first set, then use no offset
+        // Otherwise get offset
+        if(N <> chart_first) then
+            offset := (get_area_offset(area_chart_offset[I]))
+            area_chart_offset[I] := Y + offset
+        else
+            offset := 0.0
+            area_chart_offset[I] := Y
 
         // Do not display area for first index
         if(Index <> 0) then

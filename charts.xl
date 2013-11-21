@@ -11,5 +11,5 @@ module_description "fr",
     name "Diagrammes"
     description ""
 
-import "charts2.xl.crypt"
+import "charts2.xl"
 

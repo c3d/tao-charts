@@ -24,113 +24,7 @@
 
 import Slides
 
-// Define the default theme
 import "default-theme.xl"
-
-
-// ============================================================================
-//
-//                              Charts data count
-//
-// ============================================================================
-
-// Maximum number of data (between all sets)
-CHART_DATA_COUNT -> 0
-CHART_DATA_COUNT := 0
-
-chart_max_count ->
-// ----------------------------------------------------------------------------
-//   Return the max count between datasets
-// ----------------------------------------------------------------------------
-    CHART_DATA_COUNT
-
-// Array containing data count per dataset
-data chart_data_count
-
-// Useful function to get correct data count
-chart_count N:integer ->
-// ----------------------------------------------------------------------------
-//   Return data count in the given dataset
-// ----------------------------------------------------------------------------
-    chart_get_integer(chart_data_count[N])
-
-
-// Total number of used datasets
-CHART_DATASETS_COUNT -> 0
-
-chart_datasets_count ->
-// ----------------------------------------------------------------------------
-//   Return total number of filled datasets
-// ----------------------------------------------------------------------------
-    CHART_DATASETS_COUNT
-
-
-// ============================================================================
-//
-//                              Charts data
-//
-// ============================================================================
-
-// Maximum number of datasets
-CHART_DATASETS_MAX -> 4
-CHART_DATASETS_MAX := 4
-
-// Charts datasets
-data chart_dataset1
-data chart_dataset2
-data chart_dataset3
-data chart_dataset4
-
-// Useful shortcut functions to get a dataset
-chart_dataset 1 -> chart_dataset1
-chart_dataset 2 -> chart_dataset2
-chart_dataset 3 -> chart_dataset3
-chart_dataset 4 -> chart_dataset4
-chart_dataset Other -> false
-
-
-// Shortcut to push a real into a dataset S
-chart_push_data S:integer, D:real -> chart_push_data2 S, D
-
-chart_push_data2 S:integer, D ->
-// ----------------------------------------------------------------------------
-//   Push data D into the given dataset S
-// ----------------------------------------------------------------------------
-    N := S // Don't know why but needed to use array (XL BUG?)
-    if(N > 0 and N < 5) then
-        L := chart_count N
-
-        // Push data in the given dataset
-        if(N = 1) then
-            chart_dataset1[L] := D
-        else if(N = 2) then
-            chart_dataset2[L] := D
-        else if(N = 3) then
-            chart_dataset3[L] := D
-        else if(N = 4) then
-            chart_dataset4[L] := D
-
-        // Update dataset count if newly used
-        if(L = 0) then
-            CHART_DATASETS_COUNT := CHART_DATASETS_COUNT + 1
-
-        // Update global data count if necessary
-        if(L >= CHART_DATA_COUNT) then
-            CHART_DATA_COUNT := L + 1
-
-        // Update data count for the given dataset
-        chart_data_count[N] := L + 1
-
-        // Now we have pushed data, need init charts
-        CHART_NEED_INIT := 1
-
-
-chart_data S:integer, I:integer ->
-// ----------------------------------------------------------------------------
-//   Get data at the given index I in the dataset S
-// ----------------------------------------------------------------------------
-    (chart_dataset S)[I]
-
 
 // ============================================================================
 //
@@ -167,25 +61,25 @@ chart_add_data A:real, B:real, C:real, D:real ->
 chart_add_data Other -> false
 
 
-chart_load_csv T:text ->
+chart_load_csv Name:text, T:text ->
 // ----------------------------------------------------------------------------
 //   Load data from a csv file
 // ----------------------------------------------------------------------------
-    chart_reset
+    chart_current Name
     load_csv T, "chart_add_data"
 
 
-chart_load_tsv T:text ->
+chart_load_tsv Name:text, T:text ->
 // ----------------------------------------------------------------------------
 //   Load data from a tsv file
 // ----------------------------------------------------------------------------
-    chart_reset
+    chart_current Name
     load_tsv T, "chart_add_data"
 
 
 // ============================================================================
 //
-//                            Pie Chart
+//                            Init Pie Chart
 //
 // ============================================================================
 
@@ -194,67 +88,87 @@ chart_init "pie", Style:text ->
 //   Initialize pie chart
 // ----------------------------------------------------------------------------
     // Compute sum for pie chart
-    if(CHART_NEED_INIT = 1) then
-        chart_max["pie"] := chart_sum CHART_DATASET
+    chart_set_max_axis (chart_sum chart_first), false
 
-
-chart "pie", X:real, Y:real, W:real, H:real ->
-// ----------------------------------------------------------------------------
-//   Draw only first dataset if no set are specified
-// ----------------------------------------------------------------------------
-    chart 1, "pie", X, Y, W, H
 
 // ============================================================================
 //
-//                            Default Chart
+//                            Init Default Chart
 //
 // ============================================================================
 
-CHART_DATASET -> 1
-
-// Range of charts set
-data chart_first_set
-data chart_last_set
-
-chart_master -> ""
-
-chart N:integer, Master:text, X:real, Y:real, W:real, H:real ->
+chart_init Master:text, Style:text ->
 // ----------------------------------------------------------------------------
-//   Compute a chart with given set
+//   Initialize charts and variables
 // ----------------------------------------------------------------------------
-    M := Master // XL BUG
-
-    // Save previous count
-    T -> 1
-    T := CHART_DATASETS_COUNT
-    CHART_DATASETS_COUNT := 1
-
-    // If set has changed, then force init
-    if(CHART_DATASET <> N) then
-        CHART_NEED_INIT := 1
-        CHART_DATASET := N
-
-    // Set range of sets
-    chart_first_set[M] := N
-    chart_last_set[M]  := N
-
-    // Draw chart
-    chart_master Master, chart_style, chart_format, X, Y, W, H
-
-    // Restore count
-    CHART_DATASETS_COUNT := T
+    chart_set_max_axis 0.0
+    for N in chart_first..chart_last loop
+        Max := chart_max N
+        chart_max_axis Style, Max
 
 
-chart Master:text, X:real, Y:real, W:real, H:real ->
+// Compute max axis for stacked charts
+chart_max_axis "vertical_stacked", M:real   -> chart_max_axis "stacked", M
+chart_max_axis "horizontal_stacked", M:real   -> chart_max_axis "stacked", M
+chart_max_axis "stacked", M:real   ->
 // ----------------------------------------------------------------------------
-//   Compute a chart with all sets
+//   Compute max for stacked charts
 // ----------------------------------------------------------------------------
-    // Set range of sets
-    M := Master
-    chart_first_set[M] := 1
-    chart_last_set[M]  := chart_datasets_count
+    chart_set_max_axis (chart_max_axis + M) // We sum maximum values
 
-    chart_master Master, chart_style, chart_format, X, Y, W, H
+
+chart_max_axis Style:text, M:real ->
+// ----------------------------------------------------------------------------
+//   Compute max for regular charts
+// ----------------------------------------------------------------------------
+    if(chart_max_axis < M) then
+        chart_set_max_axis M
+
+
+// ============================================================================
+//
+//                            Draw Chart
+//
+// ============================================================================
+chart_id -> 0
+chart_id := 0
+
+chart Name:text, N:integer, Master:text ->
+// ----------------------------------------------------------------------------
+//   Create a chart with all sets
+// ----------------------------------------------------------------------------
+    chart Name, N, N, Master, 0, 0, 1, 1
+
+
+chart Name:text, N:integer, Master:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//   Create a chart with an unique set
+// ----------------------------------------------------------------------------
+    chart Name, N, N, Master, X, Y, W, H
+
+
+chart Name:text, Master:text ->
+// ----------------------------------------------------------------------------
+//   Create a chart with all sets
+// ----------------------------------------------------------------------------
+    chart Name, 1, 4, Master, 0, 0, 1, 1
+
+
+chart Name:text, Master:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//   Create a chart with all sets
+// ----------------------------------------------------------------------------
+    chart Name, 1, 4, Master, X, Y, W, H
+
+
+chart Name:text, First:integer, Last:integer, Master:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//   Create a chart
+// ----------------------------------------------------------------------------
+    if((chart_max_count Name) > 0 and Last < 5) then
+        chart_create Name, First, Last, Master,
+            chart_init Master, chart_style
+        chart_master Master, (chart_style Name), chart_format, X, Y, W, H
 
 
 chart_master Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:real ->
@@ -262,96 +176,31 @@ chart_master Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:rea
 //   Compute a chart
 // ----------------------------------------------------------------------------
     locally
+        chart_id := chart_id + 1
         translate X, Y, 0.0
         scale W, H, 1.0
 
-        // Master has changed, then force init
-        if(chart_master <> Master) then
-            chart_master := Master
-
-        chart_draw_legend // Draw legend
-        chart_draw_title  // Draw title
+        chart_draw_title
         chart_draw_xlabel
         chart_draw_ylabel
-
-        // Init chart
-        chart_init Master, Style
+        chart_draw_legend
 
         theme_chart_layout theme, Master, Style, Format
 
-chart_max_data -> 0.0
 
 chart X:real, Y:real, W:real, H:real, Style:text, Format:text ->
 // ----------------------------------------------------------------------------
 //   Draw current chart
 // ----------------------------------------------------------------------------
-    if(CHART_DATA_COUNT > 0) then
-        contents 0,
-            translate X, Y, 0.0
+    Master := chart_master
+    contents 0,
+        translate X, Y, 0.0
+        for N in chart_first..chart_last loop
+            S := chart_count N
+            if(S > 0) then
+                for I in 0..(S - 1) loop
+                    theme_chart theme, Master, Style, Format, W, H, N, I
 
-            Start     := chart_first_set[chart_master] // Get first set to draw
-            End       := chart_last_set[chart_master]  // Get last set to draw
-            chart_max_data := chart_max[chart_master]  // Get the maximum data
-
-            for N in Start..End loop
-                if((chart_count N) > 0) then
-                    for I in 0..(chart_data_count[N] - 1) loop
-                        theme_chart theme, chart_master, Style, Format, W, H, N, I
-
-
-// Charts need init or not
-CHART_NEED_INIT -> 1
-
-chart_init Master:text, Style:text ->
-// ----------------------------------------------------------------------------
-//   Initialize charts and variables
-// ----------------------------------------------------------------------------
-    M := Master // XL BUG
-
-    // Init only if needed
-    if(CHART_NEED_INIT = 1) then
-
-        // Init maximum
-        chart_max[M] := 0.0
-        Start := chart_first_set[chart_master] // Get first set to draw
-        End   := chart_last_set[chart_master]  // Get last set to draw
-
-        // Get max value in all datasets
-        for n in Start..End loop
-            if((chart_count n) > 0) then
-                Max := 0.0
-                for d in 0..(chart_data_count[n] - 1) loop
-                    Max := chart_max (Max, (chart_data (n, d)))
-
-                chart_compute_max Style, Max
-
-        // Compute ticks and labels
-        chart_autocompute_ticks
-        chart_autocompute_ticks_labels
-
-        // Init done
-        CHART_NEED_INIT := 0
-
-
-// ============================================================================
-//
-//                          Chart style
-//
-// ============================================================================
-
-chart_style -> ""
-chart_style := ""
-chart_style T:text -> chart_style := T
-
-// ============================================================================
-//
-//                          Chart format
-//
-// ============================================================================
-
-chart_format -> ""
-chart_format := ""
-chart_format T:text -> chart_format := T
 
 // ============================================================================
 //
@@ -359,88 +208,80 @@ chart_format T:text -> chart_format := T
 //
 // ============================================================================
 
-chart_title -> ""
-chart_title T:text -> chart_title := T
-
 chart_draw_title ->
 // ----------------------------------------------------------------------------
 //   Draw a title of a regular chart
 // ----------------------------------------------------------------------------
     if(chart_title <> "") then
-        slide_flow["chart_title"] := true
+        slide_flow[(chart_id & "chart_title")] := true
         theme_chart_title theme, chart_master, chart_style,
             text chart_title
 
 
 // ============================================================================
 //
-//                          Chart legends
+//                          Chart legend
 //
 // ============================================================================
-
-chart_legends_count -> 0
-data chart_legends
 
 chart_draw_legend ->
 // ----------------------------------------------------------------------------
 //   Draw legend of a regular chart
 // ----------------------------------------------------------------------------
-    if(chart_legends_count > 0) then
-        slide_flow["chart_legend"] := true
-        theme_chart_legend theme, chart_master, chart_style,
-            for N in 1..chart_legends_count loop
-                theme_chart_entry theme, chart_master, chart_style, N,
-                    text chart_legends[N]
+    slide_flow[(chart_id & "chart_legend")] := true
+    theme_chart_legend theme, chart_master, chart_style,
+        chart_draw_entries chart_master
 
 
-chart_legend Body ->
+chart_draw_entries "pie"->
 // ----------------------------------------------------------------------------
-//   Compute legend of a regular chart
+//   Draw entries of a pie chart legend
 // ----------------------------------------------------------------------------
-    chart_legends_count := 0
-    locally Body
+    for N in 1..(chart_count chart_first) loop
+        theme_chart_entry theme, "pie", chart_style, N,
+            T := (chart_legend N)
+            if(T <> "") then
+                text T
+            else
+                text text N
 
 
-chart_entry Text:text ->
+chart_draw_entries Master:text ->
 // ----------------------------------------------------------------------------
-//   Add entry to legend
+//   Draw entries of a chart legend
 // ----------------------------------------------------------------------------
-    chart_legends_count := chart_legends_count + 1
-    chart_legends[chart_legends_count] := Text
+    for N in chart_first..chart_last loop
+        if(chart_count N > 0) then
+            theme_chart_entry theme, Master, chart_style, N,
+                T := (chart_legend N)
+                if(T <> "") then
+                    text T
+                else
+                    text text N
 
 
 // ============================================================================
 //
-//                          Chart axis label
+//                          Chart axis labels
 //
 // ============================================================================
-
-chart_xlabel -> "x-axis"
-chart_xlabel := "x-axis"
-
-chart_xlabel T:text -> chart_xlabel := T
 
 chart_draw_xlabel ->
 // ----------------------------------------------------------------------------
 //   Draw a x label of a regular chart
 // ----------------------------------------------------------------------------
     if(chart_xlabel <> "") then
-        slide_flow["chart_xlabel"] := true
+        slide_flow[(chart_id & "chart_xlabel")] := true
         theme_chart_xlabel theme, chart_master, chart_style,
             text chart_xlabel
 
-
-chart_ylabel -> "y-axis"
-chart_ylabel := "y-axis"
-
-chart_ylabel T:text -> chart_ylabel := T
 
 chart_draw_ylabel ->
 // ----------------------------------------------------------------------------
 //   Draw a y label of a regular chart
 // ----------------------------------------------------------------------------
     if(chart_ylabel <> "") then
-        slide_flow["chart_ylabel"] := true
+        slide_flow[(chart_id & "chart_ylabel")] := true
         theme_chart_ylabel theme, chart_master, chart_style,
             text chart_ylabel
 
@@ -467,285 +308,115 @@ chart_yaxis X:real, Y:real, W:real, H:real, Style:text, Format:text ->
 
 // ============================================================================
 //
-//                          Chart ticks
+//                          Chart flow
 //
 // ============================================================================
 
-// Maximum ticks in charts
-CHART_MAX_TICKS -> 10
-CHART_MAX_TICKS := 10
-
-// Number of ticks in x and y axis
-CHART_TICKS_X -> 1
-CHART_TICKS_X := 1
-
-CHART_TICKS_Y -> 1
-CHART_TICKS_Y := 1
-
-// Autocompute ticks number or not
-CHART_AUTO_TICKS_X -> 1
-CHART_AUTO_TICKS_X := 1
-
-CHART_AUTO_TICKS_Y -> 1
-CHART_AUTO_TICKS_Y := 1
-
-
-chart_xticks N:integer ->
+chart_flow X:real, Y:real, W:real, H:real, Flow:text ->
 // ----------------------------------------------------------------------------
-//   Set ticks number for x-axis
+//   Create a unique flow per chart
 // ----------------------------------------------------------------------------
-    CHART_TICKS_X := N
-    CHART_AUTO_TICKS_X := 0        // Disable autocomputation of x-ticks number
-    chart_autocompute_ticks_labels // Recompute associate labels
+    flow_name -> ""
+    flow_name := (chart_id & Flow)
+    if slide_flow[flow_name] then
+        theme_text theme, chart_master, Flow, X, Y, W, H,
+            text_flow flow_name
+        slide_flow[flow_name] := false
 
 
-chart_xticks ->
+chart_flows X:real, Y:real, W:real, H:real, Flow1:text, Flow2:text ->
 // ----------------------------------------------------------------------------
-//   Return ticks number for x-axis
+//   Create uniques flow per chart
 // ----------------------------------------------------------------------------
-    CHART_TICKS_X
+    flow_name1 -> ""
+    flow_name2 -> ""
+    flow_name1 := (chart_id & Flow1)
+    flow_name2 := (chart_id & Flow2)
+    if slide_flow[flow_name1] then
+        theme_text theme, chart_master, Flow1, X, Y, W, H,
+            text_flow flow_name1
+            if slide_flow[flow_name2] then
+                paragraph_break
+                text_flow flow_name2
+    else if slide_flow[flow_name2] then
+        theme_text theme, chart_master, Flow1, X, Y, W, H,
+            text_flow flow_name2
+
+    slide_flow[flow_name1] := false
+    slide_flow[flow_name2] := false
 
 
-chart_yticks N:integer ->
+chart_text_flow Flow:text, Body ->
 // ----------------------------------------------------------------------------
-//   Set ticks number for y-axis
+//   Show unique flow per chart
 // ----------------------------------------------------------------------------
-    CHART_TICKS_Y := N
-    CHART_AUTO_TICKS_Y := 0        // Disable autocomputation of y-ticks number
-    chart_autocompute_ticks_labels // Recompute associate labels
-
-
-chart_yticks ->
-// ----------------------------------------------------------------------------
-//   Return ticks number for y-axis
-// ----------------------------------------------------------------------------
-    CHART_TICKS_Y
-
-
-chart_autocompute_ticks ->
-// ----------------------------------------------------------------------------
-//   Compute automatically nice ticks for charts (minimum ticks number)
-// ----------------------------------------------------------------------------
-    // Compute y-ticks number
-    if(CHART_AUTO_TICKS_Y <> 0) then
-        CHART_MAX := chart_max[chart_master]
-        CHART_MIN := 0.0
-
-        CHART_RANGE   := chart_compute_fraction ((CHART_MAX - CHART_MIN), false)
-        CHART_TICKS   := chart_compute_fraction ((CHART_RANGE / CHART_MAX_TICKS), true)
-        CHART_MAX     := (ceil(CHART_MAX / CHART_TICKS)) * CHART_TICKS
-        CHART_TICKS_Y := integer CHART_MAX / CHART_TICKS
-
-        // Update new max
-        chart_max[chart_master] := CHART_MAX
-
-    // Compute x-ticks number
-    if(CHART_AUTO_TICKS_X <> 0) then
-        CHART_TICKS_X := (CHART_DATA_COUNT - 1)
+    text_flow (chart_id & Flow), Body
 
 
 // ============================================================================
 //
-//                          Chart ticks label
+//                            Shortcut functions
 //
 // ============================================================================
+// Due to XL bug #2975, we have to define some of these
+// shortcut functions in this file
 
-// Autocompute ticks label or not
-CHART_AUTO_XTICKS_LABEL -> 1
-CHART_AUTO_XTICKS_LABEL := 1
-CHART_AUTO_YTICKS_LABEL -> 1
-CHART_AUTO_YTICKS_LABEL := 1
+// Chart
+chart_name -> chart_name ""
+chart_first -> chart_first chart_name
+chart_last -> chart_last chart_name
+chart_master -> chart_master chart_name
+chart_style -> chart_style chart_name
+chart_set_style T:text -> chart_set_style chart_name, T
+chart_format -> chart_format chart_name
+chart_set_format T:text -> chart_set_format chart_name, T
 
-// Arrays containing ticks labels
-data chart_xticks_labels
-data chart_yticks_labels
+// Data
+chart_push_data N:integer, R:real -> chart_push_data chart_name, N, R
+chart_load_csv T:text -> chart_load_csv chart_name, T
+chart_load_tsv T:text -> chart_load_tsv chart_name, T
+chart_max N:integer -> chart_max chart_name, N
+chart_sum N:integer -> chart_sum chart_name, N
+chart_max_count -> chart_max_count chart_name
+chart_datasets_count -> chart_datasets_count chart_name
+chart_count N:integer -> chart_count chart_name, N
+chart_data_ratio N:integer, I:integer -> chart_data_ratio chart_name, N, I
+chart_data N:integer, I:integer -> chart_data chart_name, N, I
 
-// Ticks labels count
-chart_xticks_labels_count -> 0
-chart_xticks_labels_count := 0
-chart_yticks_labels_count -> 0
-chart_yticks_labels_count := 0
+// Title
+chart_title -> chart_title chart_name
+chart_set_title T:text -> chart_set_title chart_name, T
 
+// Legend
+chart_legend N:integer -> chart_legend chart_name, N
+chart_set_legend N:integer, T:text -> chart_set_legend chart_name, N, T
 
-chart_autocompute_ticks_labels ->
-// ----------------------------------------------------------------------------
-//   Autocompute ticks labels
-// ----------------------------------------------------------------------------
-    if(CHART_AUTO_XTICKS_LABEL = 1) then
-        // Set x-ticks labels
-        for d in 0..CHART_TICKS_X loop
-            chart_xticks_labels[d] := text (d + 1)
+// Axis : USE ONLY IN THIS FILE
+chart_set_max_axis R:real -> chart_set_max_axis chart_name, R, true
+chart_set_max_axis R:real, B:boolean -> chart_set_max_axis chart_name, R, B
+chart_max_axis -> chart_max_axis chart_name
 
-        // Update count
-        chart_xticks_labels_count := CHART_TICKS_X
+// Axis labels
+chart_xlabel -> chart_xlabel chart_name
+chart_ylabel -> chart_ylabel chart_name
+chart_set_xlabel L:text -> chart_set_xlabel chart_name, L
+chart_set_ylabel L:text -> chart_set_ylabel chart_name, L
 
-    if(CHART_AUTO_YTICKS_LABEL = 1) then
-        CHART_MAX := chart_max[chart_master]
-        for s in 0..CHART_TICKS_Y loop
-            chart_yticks_labels[s] := text ((CHART_MAX / CHART_TICKS_Y) * s)
+// Ticks
+chart_xticks -> chart_xticks chart_name
+chart_set_xticks N:integer -> chart_set_xticks chart_name, N
+chart_yticks -> chart_yticks chart_name
+chart_set_yticks N:integer -> chart_set_yticks chart_name, N
 
-        // Update count
-        chart_yticks_labels_count := CHART_TICKS_Y
+// Ticks labels
+chart_xticks_label N:integer -> chart_xticks_label chart_name, N
+chart_yticks_label N:integer -> chart_yticks_label chart_name, N
+chart_set_xticks_label N:integer, T:text -> chart_set_xticks_label chart_name, N, T
+chart_set_yticks_label N:integer, T:text -> chart_set_yticks_label chart_name, N, T
+chart_set_xticks_labels Name:text, L:tree ->
+    for i in 1 .. size L loop
+        chart_set_xticks_label Name, i - 1, (L at i)
+chart_set_yticks_labels Name:text, L:code ->
+    for i in 1 .. size L loop
+        chart_set_yticks_label Name, i - 1, (L at i)
 
-
-chart_xticks_labels L ->
-// ----------------------------------------------------------------------------
-//   Set xticks labels
-// ----------------------------------------------------------------------------
-    S := (size L)
-
-    // Set given labels to the corresponding array
-    for d in 0 .. S loop
-        Label := chart_get_text (L at (d + 1))
-        chart_xticks_labels [d] := Label
-
-    chart_xticks_labels_count := S
-
-    // Disable autogeneration of ticks labels
-    CHART_AUTO_XTICKS_LABEL := 0
-
-
-chart_yticks_labels L ->
-// ----------------------------------------------------------------------------
-//   Set yticks labels
-// ----------------------------------------------------------------------------
-    S := (size L)
-
-    for d in 0..S loop
-        Label := chart_get_text (L at (d + 1))
-        chart_yticks_labels [d] := Label
-
-    chart_yticks_labels_count := S
-
-    // Disable autogeneration of ticks labels
-    CHART_AUTO_YTICKS_LABEL := 0
-
-
-chart_xticks_label N:integer ->
-// ----------------------------------------------------------------------------
-//   Get x-ticks label at index N
-// ----------------------------------------------------------------------------
-    if(N <= chart_xticks_labels_count) then
-        chart_xticks_labels[N]
-    else
-        ""
-
-
-chart_yticks_label N:integer ->
-// ----------------------------------------------------------------------------
-//   Get y-ticks label at index N
-// ----------------------------------------------------------------------------
-    if(N <= chart_yticks_labels_count) then
-        chart_get_text (chart_yticks_labels[N])
-    else
-        ""
-
-// ============================================================================
-//
-//                     Minimum and maximum computation
-//
-// ============================================================================
-
-data chart_max
-
-// Compute max for stacked charts
-chart_compute_max "vertical_stacked", M:real   -> chart_compute_max "stacked", M
-chart_compute_max "horizontal_stacked", M:real   -> chart_compute_max "stacked", M
-chart_compute_max "stacked", M:real   ->
-// ----------------------------------------------------------------------------
-//   Compute max for stacked charts
-// ----------------------------------------------------------------------------
-    chart_max[chart_master] := (chart_max[chart_master]) + M // We sum maximum values
-
-
-chart_compute_max Style:text, M:real ->
-// ----------------------------------------------------------------------------
-//   Compute max for regular charts
-// ----------------------------------------------------------------------------
-    chart_max[chart_master] := chart_max M, (chart_max[chart_master]) // We keep the maximum value
-
-
-chart_max A:real, B:real ->
-// ----------------------------------------------------------------------------
-//   Simple function to return max between two values
-// ----------------------------------------------------------------------------
-    if(A < B) then
-        B
-    else
-        A
-
-
-// ============================================================================
-//
-//                          Chart general functions
-//
-// ============================================================================
-
-chart_reset->
-// ----------------------------------------------------------------------------
-//   Reset all datasets
-// ----------------------------------------------------------------------------
-    for I in 1..CHART_DATASETS_MAX loop
-        chart_data_count[I] := 0
-    CHART_DATA_COUNT := 0
-    CHART_DATASETS_COUNT := 0
-    chart_legends_count := 0
-
-chart_sum N:integer ->
-// ----------------------------------------------------------------------------
-//   Compute data sum of dataset N
-// ----------------------------------------------------------------------------
-    if(chart_data_count[N] > 0) then
-        CHART_SUM := 0.0
-        for d in 0..(chart_data_count[N] - 1) loop
-            CHART_SUM := CHART_SUM + chart_data (N, d)
-
-        CHART_SUM
-    else
-        0
-
-
-chart_compute_fraction Range:real, Round:boolean ->
-// ----------------------------------------------------------------------------
-//   A short function to compute nice fractions for a chart
-//   see http://stackoverflow.com/questions/8506881/nice-label-algorithm-for-charts-with-minimum-ticks/16363437#16363437
-// ----------------------------------------------------------------------------
-    exponent -> 0 // exponent of range
-    fraction -> 0.0 // fractional part of range
-
-    if(Range > 0.0) then
-        exponent := integer floor (log10 (Range))
-    else
-        exponent := 1
-    fraction := Range / (10 ^ exponent)
-
-    // Compute nice, rounded fraction
-    if (Round) then
-        if (fraction < 1.5) then
-            fraction := 1
-        else if (fraction < 3) then
-            fraction := 2
-        else if (fraction < 7) then
-            fraction := 5
-        else
-            fraction := 10
-    else
-        if (fraction <= 1) then
-            fraction := 1
-        else if (fraction <= 2) then
-            fraction := 2
-        else if (fraction <= 5) then
-            fraction := 5
-        else
-            fraction := 10
-
-    fraction * (10 ^ exponent)
-
-
-// Useful functions to get correct values in array
-chart_get_integer N:integer -> N
-chart_get_integer Other -> 0
-
-chart_get_text L:real -> text L
-chart_get_text L:text -> L
-chart_get_text Other -> ""

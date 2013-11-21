@@ -95,11 +95,10 @@ theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, 
 
     // Translate vertically data at the same index (not for first dataset)
     offset -> 0.0
-    if(chart_datasets_count > 1) then
-        if(N <> 1) then
-            offset := (chart_get_bar_offset(bar_chart_offset[I]))
-        else
-            offset := 0.0
+    if(N <> chart_first) then
+        offset := (chart_get_bar_offset(bar_chart_offset[I]))
+    else
+        offset := 0.0
 
     // Get size of interval
     L := W / chart_max_count
@@ -144,11 +143,10 @@ theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real
 
     // Translate vertically data at the same index (not for first dataset)
     offset -> 0.0
-    if(chart_datasets_count > 1) then
-        if(N <> 1) then
-            offset := (chart_get_bar_offset(bar_chart_offset[I]))
-        else
-            offset := 0.0
+    if(N <> chart_first) then
+        offset := (chart_get_bar_offset(bar_chart_offset[I]))
+    else
+        offset := 0.0
 
     // Get size of interval
     L := H / chart_max_count
@@ -221,8 +219,7 @@ theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:inte
         translatey L * Index
 
         // Translate data at the same index for different datasets
-        if(chart_datasets_count > 1) then
-            translatey S * (N - 1)
+        translatey S * (N - chart_first)
 
         // Add a translation to start intervals at X=0
         // (Avoid to display first bar at X=0)
@@ -235,7 +232,7 @@ theme_chart_xaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
 // ----------------------------------------------------------------------------
 //    Default x-axis for horizontal bar chart
 // ----------------------------------------------------------------------------
-    locally
+    contents 0,
         translate X, Y, 0.0
 
         // Draw horizontal line
@@ -255,7 +252,8 @@ theme_chart_xaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
                     rectangle 0, H/2, 0.5, H
 
                     // Show y-label
-                    theme_text Theme, "bar", "chart_tick", 0, -30, L, H,
+                    text_box 0, -30, L, H,
+                        theme_style Theme, "bar", "chart_tick"
                         text (chart_yticks_label I)
 
 
@@ -263,7 +261,7 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
 // ----------------------------------------------------------------------------
 //    Default y-axis for vertical bar chart
 // ----------------------------------------------------------------------------
-    locally
+    contents 0,
         translate X, Y, 0.0
 
         // Draw horizontal line
@@ -281,8 +279,10 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
                     translatey L * I
 
                     // Show x label
-                    theme_text Theme, "bar", "chart_tick", -30, (L/2.0), W, L,
+                    text_box -30, (L/2.0), W, L,
+                        theme_style Theme, "bar", "chart_tick"
                         text (chart_xticks_label I)
+
 
 
 theme_chart_xlabel Theme:text, "bar", "horizontal", Body ->
@@ -297,7 +297,6 @@ theme_chart_ylabel Theme:text, "bar", "horizontal", Body ->
 //    Default y-label for horizontal bar chart
 // ----------------------------------------------------------------------------
     theme_chart_xlabel Theme, "bar", "", Body
-
 
 // ============================================================================
 //
@@ -320,8 +319,7 @@ theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:intege
         translatex L * Index
 
         // Translate data at the same index for different datasets
-        if(chart_datasets_count > 1) then
-            translatex S * (N - 1)
+        translatex S * (N - chart_first)
 
         // Add a translation to start intervals at X=0
         // (Avoid to display first bar at X=0)
@@ -334,7 +332,7 @@ theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:
 // ----------------------------------------------------------------------------
 //    Default x-axis for vertical bar chart
 // ----------------------------------------------------------------------------
-    locally
+    contents 0,
         translate X, Y, 0.0
 
         // Draw horizontal line
@@ -352,5 +350,6 @@ theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:
                     translatex L * I
 
                     // Show x label
-                    theme_text Theme, "bar", "chart_tick", (L/2.0), -30, L, 50,
+                    text_box (L/2.0), -30, L, 50,
+                        theme_style Theme, "bar", "chart_tick"
                         text (chart_xticks_label I)
