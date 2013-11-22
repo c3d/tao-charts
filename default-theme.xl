@@ -111,7 +111,7 @@ theme_format Theme:text, Master:text, Style:text, Format:text -> false
 // Default alignment of charts components
 theme_align Theme:text, Master:text, "chart_data" -> align 0.5; vertical_align 0.5
 theme_align Theme:text, Master:text, "chart_tick" -> align 0.5; vertical_align 0.5
-theme_align Theme:text, Master:text, "chart_label" -> align 0.0; vertical_align 0.45
+theme_align Theme:text, Master:text, "chart_label" -> align 0.5; vertical_align 0.45
 theme_align Theme:text, Master:text, "chart_title" -> align 0.5; vertical_align 0.5
 theme_align Theme:text, Master:text, "chart_entry", N:integer -> theme_align Theme,Master,"chart_legend",N
 theme_align Theme:text, Master:text, "chart_legend" ->
@@ -139,7 +139,7 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
     chart_yaxis -800, -275, 1200, 500, Style, Format
 
     chart_flow 0, 325, 800, 50, "chart_title"
-    chart_flow 475, -275, 100, 50, "chart_xlabel"
+    chart_flow 455, -275, 100, 50, "chart_xlabel"
     chart_flow -800, 250, 100, 50, "chart_ylabel"
     chart_flow 725, -30, 300, 600, "chart_legend"
 
@@ -306,7 +306,7 @@ theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
 
                     // Get y-label
                     Label := chart_yticks_label I
-                    text_box -30, 0, 50, L,
+                    text_box -40, 0, 50, L,
                         theme_style Theme, Master, "chart_tick"
                         text Label
 

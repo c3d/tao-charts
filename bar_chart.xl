@@ -279,7 +279,7 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
                     translatey L * I
 
                     // Show x label
-                    text_box -30, (L/2.0), W, L,
+                    text_box -40, (L/2.0), 60, L,
                         theme_style Theme, "bar", "chart_tick"
                         text (chart_xticks_label I)
 

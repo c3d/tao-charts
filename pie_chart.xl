@@ -103,6 +103,9 @@ theme_chart Theme:text, "pie", "exploded", Format:text, W:real, H:real, N:intege
 // ----------------------------------------------------------------------------
 //    Default pie chart
 // ----------------------------------------------------------------------------
+    if(Index = 0) then
+        pie_chart_offset := 0.0
+
     // Compute angle of pie
     Angle := Ratio * 360
 

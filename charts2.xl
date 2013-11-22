@@ -90,6 +90,14 @@ chart_init "pie", Style:text ->
     // Compute sum for pie chart
     chart_set_max_axis (chart_sum chart_first), false
 
+chart Name:text, First:integer, Last:integer, "pie", X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//   Create a pie chart (keep only the first dataset)
+// ----------------------------------------------------------------------------
+    if((chart_max_count Name) > 0 and Last < 5) then
+        chart_create Name, First, First, "pie",
+            chart_init "pie", chart_style
+        chart_master "pie", (chart_style Name), chart_format, X, Y, W, H
 
 // ============================================================================
 //
@@ -133,11 +141,13 @@ chart_max_axis Style:text, M:real ->
 chart_id -> 0
 chart_id := 0
 
-chart Name:text, N:integer, Master:text ->
-// ----------------------------------------------------------------------------
-//   Create a chart with all sets
-// ----------------------------------------------------------------------------
-    chart Name, N, N, Master, 0, 0, 1, 1
+ALL_CHARTS -> ""
+ALL_CHARTS := "re:"
+
+// Shortcuts
+chart Name:text, N:integer, Master:text -> chart Name, N, N, Master
+chart Name:text, Master:text -> chart Name, 1, 4, Master
+chart Name:text, First:integer, Last:integer, Master:text -> chart Name, First, Last, Master, 0, 0, 1, 1
 
 
 chart Name:text, N:integer, Master:text, X:real, Y:real, W:real, H:real ->
@@ -145,13 +155,6 @@ chart Name:text, N:integer, Master:text, X:real, Y:real, W:real, H:real ->
 //   Create a chart with an unique set
 // ----------------------------------------------------------------------------
     chart Name, N, N, Master, X, Y, W, H
-
-
-chart Name:text, Master:text ->
-// ----------------------------------------------------------------------------
-//   Create a chart with all sets
-// ----------------------------------------------------------------------------
-    chart Name, 1, 4, Master, 0, 0, 1, 1
 
 
 chart Name:text, Master:text, X:real, Y:real, W:real, H:real ->
@@ -372,6 +375,7 @@ chart_format -> chart_format chart_name
 chart_set_format T:text -> chart_set_format chart_name, T
 
 // Data
+chart_reset -> chart_reset chart_name
 chart_push_data N:integer, R:real -> chart_push_data chart_name, N, R
 chart_load_csv T:text -> chart_load_csv chart_name, T
 chart_load_tsv T:text -> chart_load_tsv chart_name, T
