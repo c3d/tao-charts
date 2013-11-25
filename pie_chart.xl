@@ -67,6 +67,12 @@ theme_format Theme:text, "pie", Style:text, "3D" ->
     translate 0, 30, 200
     rotatex -35
 
+theme_align Theme:text, "pie", "chart_legend" ->
+    align 0.0
+    vertical_align 0.5
+    paragraph_space 0, (30.0 / (chart_count chart_first))
+    margins 90, 0
+
 // ============================================================================
 //
 //    Pie chart layout
