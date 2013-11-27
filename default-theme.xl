@@ -203,7 +203,8 @@ theme_chart_entry Theme:text, Master:text, Style:text, N:integer, Body ->
         anchor
             locally
                 theme_color Theme, Master, "chart_entry", N
-                rectangle -50, 10, 50, 20
+                S := theme_size Theme, Master, "chart_legend"
+                rectangle -2 * S, S/3.0, 2 * S, S
         Body
 
 

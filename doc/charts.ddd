@@ -137,7 +137,6 @@ picture_slide "3D pie chart",
 // ----------------------------------------------------------------------------
 //   Display a classic 3D pie chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart "My chart", 1, "pie"
 
@@ -146,7 +145,6 @@ picture_slide "3D exploded pie chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D exploded pie chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_style "exploded"
     chart_set_format "3D"
     chart "My chart", 1, "pie"
@@ -156,7 +154,6 @@ picture_slide "3D vertical bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D vertical bar chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart "My chart", "bar"
 
@@ -165,7 +162,6 @@ picture_slide "3D vertical stacked bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D vertical-stacked bar chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart_set_style "vertical_stacked"
     chart "My chart", "bar"
@@ -175,7 +171,6 @@ picture_slide "3D horizontal bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D horizontal-stacked bar chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart_set_style "horizontal"
     chart "My chart", "bar"
@@ -185,7 +180,6 @@ picture_slide "3D horizontal stacked bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D horizontal-stacked bar chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart_set_style "horizontal_stacked"
     chart "My chart", "bar"
@@ -195,7 +189,6 @@ picture_slide "3D point chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D point chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart_set_style "point"
     chart "My chart", "line"
@@ -205,7 +198,6 @@ picture_slide "3D line chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D line chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart_set_style "line"
     chart "My chart", "line"
@@ -215,7 +207,6 @@ picture_slide "3D line&point chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D line & point chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart "My chart", "line"
 
@@ -224,7 +215,6 @@ picture_slide "3D area chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D area chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart "My chart", "area"
 
@@ -233,7 +223,6 @@ picture_slide "3D stacked area chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D area stacked bar chart
 // ----------------------------------------------------------------------------
-    rotatey 30
     chart_set_format "3D"
     chart_set_style "stacked"
     chart "My chart", "area"
