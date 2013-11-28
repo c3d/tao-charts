@@ -428,7 +428,7 @@ float Chart::computeFraction(float range, bool round)
         exponent = floor (log10 (range));
     else
         exponent = 1;
-    fraction = range / pow(10, exponent);
+    fraction = range / pow(10.0, exponent);
 
     // Compute nice, rounded fraction
     if (round)
