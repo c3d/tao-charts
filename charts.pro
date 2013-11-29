@@ -40,7 +40,9 @@ OTHER_FILES = charts.xl \
               bar_chart.xl \
               area_chart.xl \
               charts.tbl \
-              traces.tbl
+              traces.tbl \
+              doc/Doxyfile.in \
+              doc/charts.doxy.h
 
 QT          += core \
                gui \
@@ -57,5 +59,6 @@ include(../sign_xl.pri)
 QMAKE_SUBSTITUTES = doc/Doxyfile.in
 DOXYFILE = doc/Doxyfile
 DOXYLANG = en,fr
+DOXYADDFILES = doc/charts.ddd
 include(../modules_doc.pri)
 
