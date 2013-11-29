@@ -1,4 +1,3 @@
-
 import Charts
 
 chart_current "My chart"
@@ -18,8 +17,6 @@ chart_push_data 2, 110
 chart_push_data 3, 165
 chart_push_data 3, 85
 chart_push_data 3, 188
-
-chart_load_csv "charts.csv"
 
 chart_set_xticks_labels {"First", "Second", "Third"}
 

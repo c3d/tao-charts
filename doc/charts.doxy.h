@@ -3,17 +3,18 @@
  * @taomoduledescription{Charts, Charts}
  * <tt>import Charts</tt> - 2D and 3D Charts.@n
  *
- * This module allows to add some 2D and 3d charts in your presentations, in particular:
- *    - Area charts
- *    - Bar charts
- *    - Line charts
- *    - Pie charts
+ * This module allows to add some 2D and 3D charts to your presentations, in particular:
+ *    - @ref Areacharts
+ *    - @ref Barcharts
+ *    - @ref Linecharts
+ *    - @ref Piecharts
  *
- * To use these differents charts, you can define four differents datasets at the most, and
+ * To use these differents charts, you may define up to four differents datasets, and
  * fill them with @ref chart_load_csv, @ref chart_load_tsv or @ref chart_push_data.
- * The style of these charts can changed according to the slide theme used (see Slides module).
+ * The style of these charts can change according to the slide theme used (see the
+ * Slides module).
  *
- * @anchor RegExp <b>Regular expressions in resource names (re: syntax)</b>
+ * @anchor RegExp <b>Regular expressions in resource names (<tt>re:</tt> syntax)</b>
  *
  * Several functions such as @ref chart_set_style can be apply to several charts simultaneously.
  * To specifiy several charts in a single @p name parameter, you use the <tt>re:</tt> prefix followed by a regular
@@ -27,7 +28,8 @@ chart_set_style "re:chart"
  *
  * @anchor Example <b>Example of some features</b>
  *
- * The code below presents some features containing in this module.
+ * The code below (<a href="charts.ddd">charts.ddd</a>) presents some features
+ * of this module.
  *
  * @include charts.ddd
  *
@@ -37,18 +39,18 @@ chart_set_style "re:chart"
  * @taomoduledescription{Charts, Diagrammes}
  * <tt>import Charts</tt> - Diagrammes 2D & 3D.@n
  *
- * Ce module permet d'ajouter facile des diagrammes 2D et 3D dans vos présentations, parmis lesquels:
- *   - Diagrammes circulaires
- *   - Diagrammes à barres
- *   - Diagrammes linéaires
- *   - Diagrammes de zones
+ * Ce module permet d'ajouter facilement des diagrammes 2D et 3D dans vos présentations, parmis lesquels:
+ *    - @ref Areacharts
+ *    - @ref Barcharts
+ *    - @ref Linecharts
+ *    - @ref Piecharts
  *
  * Pour utiliser ces différents diagrammes, vous pouvez définir jusqu'à quatre différentes séries de
  * données, et les remplir grâce aux fonctions @ref chart_load_csv, @ref chart_load_tsv ou
  * @ref chart_push_data.
  * Le style de ces diagrammes peut changer suivant le choix du thème de diapositive (voir le module Slides).
  *
- * @anchor RegExp <b>Expressions régulières dans les noms (syntaxe re:)</b>
+ * @anchor RegExp <b>Expressions régulières dans les noms (syntaxe <tt>re:</tt>)</b>
  *
  * Plusieurs fonctions, comme @ref chart_set_style par exemple, peuvent s'appliquer
  * à plusieurs diagrammes simultanément. Pour cela vous pouvez utiliser le
@@ -62,7 +64,8 @@ chart_set_style "re:diagramme"
  * signalées dans cette documentation.
  *
  * @anchor Exemple <b>Exemple de quelques fonctionnalités de ce module</b>
- * Le code ci-dessous présente quelques fonctionnalités de ce module.
+ * Le code ci-dessous (<a href="charts.ddd">charts.ddd</a>) présente quelques
+ * fonctionnalités de ce module.
  *
  * @include charts.ddd
  *
@@ -144,19 +147,20 @@ chart(Name:text, First:text, Last:text, Type:text);
  * @~english
  * Draw a chart using all datasets.
  *
- * This function draws chart named @p Name with all filled datasets.\n
- * There is four types of chart:
- *    - "area" for area charts
- *    - "bar" for bar charts
- *    - "line" for line charts
- *    - "pie" for Pie charts
+ * There are four types of charts:
+ * <ul>
+ * <li> @ref Areacharts "@c area"
+ * <li> @ref Barcharts "@c bar"
+ * <li> @ref Linecharts "@c line"
+ * <li> @ref Piecharts "@c pie"
+ * </ul>
  *
- * You can change chart style and format with @ref chart_style
+ * You may change the chart style and/or format format with @ref chart_style
  * and @ref chart_format.\n
- * (@p W, @p H) represent the size of chart in percent.\n
- * The absolute size of chart corresponds to the size of the slide drawing zone (@ref picture)
- * and, by this way, depends also of the chosen theme.\n
- * For instance, with default theme, this size is equal to (1800, 750).
+ * (@p W, @p H) represent the size of chart in percents, relative to the size
+ * of the slide drawing zone (@ref picture) which may depend on the chosen
+ * theme. For instance, with the default theme, this size is equals
+ * (1800, 750).
  *
  * @warning For pie chart, this function draws only the first dataset.
  *
@@ -173,11 +177,13 @@ chart(Name:text, First:text, Last:text, Type:text);
  *
  * Cette fonction affiche le diagramme nommé @p Name
  * à partir des différentes séries de données remplies.\n
- * Il existe quatre types de diagramme:
- *    - "area" pour les diagrammes de zones
- *    - "bar" pour les diagrammes à barres (ou batons)
- *    - "line" pour les diagrammes linéaires
- *    - "pie" pour les diagrammes circulaires
+ * Il existe quatre types de diagrammes:
+ * <ul>
+ * <li> @c area : @ref Areacharts
+ * <li> @c bar : @ref Barcharts
+ * <li> @c line : @ref Linecharts
+ * <li> @c pie : @ref Piecharts
+ * </ul>
  *
  * Vous pouvez change le style et le format du diagramme avec @ref chart_style
  * et @ref chart_format.\n
@@ -204,18 +210,20 @@ chart(Name:text, Type:text, X:real, Y:real, W:real, H:real);
  * Draw a chart using an unique dataset.
  *
  * This function draws chart named @p Name with dataset @p N.\n
- * There is four types of chart:
- *    - "area" for area charts
- *    - "bar" for bar charts
- *    - "line" for line charts
- *    - "pie" for Pie charts
+ * There are four types of charts:
+ * <ul>
+ * <li> @ref Areacharts "@c area"
+ * <li> @ref Barcharts "@c bar"
+ * <li> @ref Linecharts "@c line"
+ * <li> @ref Piecharts "@c pie"
+ * </ul>
  *
- * You can change chart style and format with @ref chart_style
+ * You may change the chart style and/or format format with @ref chart_style
  * and @ref chart_format.\n
- * (@p W, @p H) represent the size of chart in percent.\n
- * The absolute size of chart corresponds to the size of the slide drawing zone (@ref picture)
- * and, by this way, depends also of the chosen theme.\n
- * For instance, with default theme, this size is equal to (1800, 750).
+ * (@p W, @p H) represent the size of chart in percents, relative to the size
+ * of the slide drawing zone (@ref picture) which may depend on the chosen
+ * theme. For instance, with the default theme, this size is equals
+ * (1800, 750).
  *
  * @param Name Chart name.
  * @param N Index of the dataset (from 1 to 4).
@@ -231,11 +239,13 @@ chart(Name:text, Type:text, X:real, Y:real, W:real, H:real);
  *
  * Cette fonction affiche le diagramme nommé @p Name
  * à partir de la série de données @p N.\n
- * Il existe quatre types de diagramme:
- *    - "area" pour les diagrammes de zones
- *    - "bar" pour les diagrammes à barres (ou batons)
- *    - "line" pour les diagrammes linéaires
- *    - "pie" pour les diagrammes circulaires
+ * Il existe quatre types de diagrammes:
+ * <ul>
+ * <li> @c area : @ref Areacharts
+ * <li> @c bar : @ref Barcharts
+ * <li> @c line : @ref Linecharts
+ * <li> @c pie : @ref Piecharts
+ * </ul>
  *
  * Vous pouvez change le style et le format du diagramme avec @ref chart_style
  * et @ref chart_format.\n
@@ -262,18 +272,20 @@ chart(Name:text, N:integer, Type:text, X:real, Y:real, W:real, H:real);
  *
  * This function draws chart named @p Name using datasets from @p First
  * to @p Last.\n
- * There is four types of chart:
- *    - "area" for area charts
- *    - "bar" for bar charts
- *    - "line" for line charts
- *    - "pie" for Pie charts
+ * There are four types of charts:
+ * <ul>
+ * <li> @ref Areacharts "@c area"
+ * <li> @ref Barcharts "@c bar"
+ * <li> @ref Linecharts "@c line"
+ * <li> @ref Piecharts "@c pie"
+ * </ul>
  *
- * You can change chart style and format with @ref chart_style
+ * You may change the chart style and/or format format with @ref chart_style
  * and @ref chart_format.\n
- * (@p W, @p H) represent the size of chart in percent.\n
- * The absolute size of chart corresponds to the size of the slide drawing zone (@ref picture)
- * and, by this way, depends also of the chosen theme.\n
- * For instance, with default theme, this size is equal to (1800, 750).
+ * (@p W, @p H) represent the size of chart in percents, relative to the size
+ * of the slide drawing zone (@ref picture) which may depend on the chosen
+ * theme. For instance, with the default theme, this size is equals
+ * (1800, 750).
  *
 @code
 // Show only datasets 2, 3 and 4
@@ -297,11 +309,13 @@ chart "mychart", 2, 4, "bar", 0, 0, 1, 1
  *
  * Cette fonction affiche le diagramme nommé @p Nom
  * à partir des données de la série @p First jusqu'à la série @p Last.
- * Il existe quatre types de diagramme:
- *    - "area" pour les diagrammes de zones
- *    - "bar" pour les diagrammes à barres (ou batons)
- *    - "line" pour les diagrammes linéaires
- *    - "pie" pour les diagrammes circulaires
+ * Il existe quatre types de diagrammes:
+ * <ul>
+ * <li> @c area : @ref Areacharts
+ * <li> @c bar : @ref Barcharts
+ * <li> @c line : @ref Linecharts
+ * <li> @c pie : @ref Piecharts
+ * </ul>
  *
  * Vous pouvez change le style et le format du diagramme avec @ref chart_style
  * et @ref chart_format.\n
@@ -342,10 +356,10 @@ chart(Name:text, First:integer, Last:integer, Type:text, X:real, Y:real, W:real,
  * @param S Index of the dataset (from 1 to 4).
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_count 1 // Return size of first dataset for chart named "mychart"
- * @endcode
+@code
+chart_current "mychart"
+chart_count 1 // Return size of first dataset for chart named "mychart"
+@endcode
  *
  * @~french
  *
@@ -357,10 +371,10 @@ chart(Name:text, First:integer, Last:integer, Type:text, X:real, Y:real, W:real,
  * @param S Numéro de la série de données (de 1 à 4).
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_count 1 // Renvoie la taille de la première série pour le diagramme nommé "mychart"
- * @endcode
+@code
+chart_current "mychart"
+chart_count 1 // Renvoie la taille de la première série pour le diagramme nommé "mychart"
+@endcode
  *
  **/
 chart_count(Name:text, S:integer);
@@ -374,13 +388,13 @@ chart_count(Name:text, S:integer);
  * This function is useful to change easily multiple settings of a same chart
  * without specifying each time the @p Name value.
  * Example:
- * @code
- * chart_current "mychart"
- * chart_set_style "stacked"
- * chart_set_format "3D"
- * chart_push_data 1, 500
- * chart_push_data 2, 300
- * @endcode
+@code
+chart_current "mychart"
+chart_set_style "stacked"
+chart_set_format "3D"
+chart_push_data 1, 500
+chart_push_data 2, 300
+@endcode
  *
  * @param Name Chart name.
  *
@@ -391,13 +405,13 @@ chart_count(Name:text, S:integer);
  * Cela permet ainsi de modifier facilement plusieurs champs d'un même diagramme sans avoir à
  * indiquer le champ @p Name à chaque fois.\n
  * Exemple:
- * @code
- * chart_current "mychart"
- * chart_set_style "stacked"
- * chart_set_format "3D"
- * chart_push_data 1, 500
- * chart_push_data 2, 300
- * @endcode
+@code
+chart_current "mychart"
+chart_set_style "stacked"
+chart_set_format "3D"
+chart_push_data 1, 500
+chart_push_data 2, 300
+@endcode
  *
  * @param Name Nom du diagramme.
  *
@@ -423,11 +437,11 @@ text text (chart_data("mychart", 1, 0)) // Display 50
  * @param I Position of data into dataset.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_push_data 1, 50
- * text text (chart_data(1, 0))
- * @endcode
+@code
+chart_current "mychart"
+chart_push_data 1, 50
+text text (chart_data(1, 0))
+@endcode
  *
  * @~french
  * Renvoie une valeur contenue dans une série de données.
@@ -445,11 +459,11 @@ text text (chart_data("mychart", 1, 0)) // Affiche 50
  * @param I Position de la donnée dans la série.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_push_data 1, 50
- * text text (chart_data(1, 0))
- * @endcode
+@code
+chart_current "mychart"
+chart_push_data 1, 50
+text text (chart_data(1, 0))
+@endcode
  *
  */
 chart_data(Name:text N:integer, I:integer);
@@ -467,10 +481,10 @@ chart_data(Name:text N:integer, I:integer);
  * @param I Position of data into dataset.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_data_ratio(1, 0)
- * @endcode
+@code
+chart_current "mychart"
+chart_data_ratio(1, 0)
+@endcode
  *
  * @~french
  * Renvoie le ratio d'une valeur contenue dans une série de données.
@@ -482,10 +496,10 @@ chart_data(Name:text N:integer, I:integer);
  * @param I Position de la donnée dans la série.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_data_ratio(1, 0)
- * @endcode
+@code
+chart_current "mychart"
+chart_data_ratio(1, 0)
+@endcode
  *
  */
 chart_data_ratio(Name:text N:integer, I:integer);
@@ -501,10 +515,10 @@ chart_data_ratio(Name:text N:integer, I:integer);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_datasets_count // Return count of datasets for chart named "mychart"
- * @endcode
+@code
+chart_current "mychart"
+chart_datasets_count // Return count of datasets for chart named "mychart"
+@endcode
  *
  * @~french
  *
@@ -517,17 +531,17 @@ chart_data_ratio(Name:text N:integer, I:integer);
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_datasets_count // Renvoie le nombre de séries de données du diagramme nommé "mychart"
- * @endcode
+@code
+chart_current "mychart"
+chart_datasets_count // Renvoie le nombre de séries de données du diagramme nommé "mychart"
+@endcode
  **/
 chart_datasets_count(Name:text);
 
 
 /**
  * @~english
- * Drop completly one or some charts.
+ * Drop completly one or multiple charts.
  *
  * This command drops all charts named @p Name.\n
  * Unlike @p chart_reset, this function deletes completly charts.
@@ -560,10 +574,10 @@ chart_drop(Name:text);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * text chart_first
- * @endcode
+@code
+chart_current "mychart"
+text chart_first
+@endcode
  *
  * @~french
  * Renvoie le numéro de la première série utilisée dans un diagramme.
@@ -575,10 +589,10 @@ chart_drop(Name:text);
  * @param Name   Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * text chart_first
- * @endcode
+@code
+chart_current "mychart"
+text chart_first
+@endcode
  *
  * @~
  */
@@ -599,10 +613,10 @@ chart_format "mychart"
  * @param Name   Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * text chart_format
- * @endcode
+@code
+chart_current "mychart"
+text chart_format
+@endcode
  *
  * @~french
  * Renvoie le format d'un diagramme.
@@ -617,10 +631,10 @@ text chart_format("mychart") // Affiche le format du diagramme nommé "mychart"
  * @param Name   Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * text chart_format
- * @endcode
+@code
+chart_current "mychart"
+text chart_format
+@endcode
  *
  * @~
  */
@@ -638,10 +652,10 @@ chart_format(Name:text);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * text chart_last
- * @endcode
+@code
+chart_current "mychart"
+text chart_last
+@endcode
  *
  * @~french
  * Renvoie le numéro de la dernière série utilisée dans un diagramme.
@@ -653,10 +667,10 @@ chart_format(Name:text);
  * @param Name   Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * text chart_last
- * @endcode
+@code
+chart_current "mychart"
+text chart_last
+@endcode
  *
  * @~
  */
@@ -674,10 +688,10 @@ chart_last(Name:text);
  * @param N Legend index.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_legend 1
- * @endcode
+@code
+chart_current "mychart"
+chart_legend 1
+@endcode
  *
  * @~french
  * Renvoie une légende d'un diagramme.
@@ -689,10 +703,10 @@ chart_last(Name:text);
  * @param N Numéro de la légende.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_legend 1
- * @endcode
+@code
+chart_current "mychart"
+chart_legend 1
+@endcode
  *
  */
 chart_legend(Name:text, N:integer);
@@ -710,10 +724,10 @@ chart_legend(Name:text, N:integer);
  * @param F filename of csv file.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_load_csv "data.csv"
- * @endcode
+@code
+chart_current "mychart"
+chart_load_csv "data.csv"
+@endcode
  *
  * @~french
  * Charge des séries de données à partir d'un fichier csv.
@@ -727,10 +741,10 @@ chart_legend(Name:text, N:integer);
  * @param F Nom du fichier csv.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_load_csv "data.csv"
- * @endcode
+@code
+chart_current "mychart"
+chart_load_csv "data.csv"
+@endcode
  */
 chart_load_csv(Name:text, F:text);
 
@@ -747,10 +761,10 @@ chart_load_csv(Name:text, F:text);
  * @param F filename of tsv file.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_load_tsv "data.tsv"
- * @endcode
+@code
+chart_current "mychart"
+chart_load_tsv "data.tsv"
+@endcode
  *
  * @~french
  * Charge des séries de données à partir d'un fichier tsv.
@@ -764,10 +778,10 @@ chart_load_csv(Name:text, F:text);
  * @param F Nom du fichier tsv.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_load_tsv "data.tsv"
- * @endcode
+@code
+chart_current "mychart"
+chart_load_tsv "data.tsv"
+@endcode
  */
 chart_load_tsv(Name:text, F:text);
 
@@ -783,10 +797,10 @@ chart_load_tsv(Name:text, F:text);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_max_count
- * @endcode
+@code
+chart_current "mychart"
+chart_max_count
+@endcode
  *
  * @~french
  *
@@ -800,10 +814,10 @@ chart_load_tsv(Name:text, F:text);
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_max_count
- * @endcode
+@code
+chart_current "mychart"
+chart_max_count
+@endcode
  *
  **/
 chart_max_count(Name:text);
@@ -856,12 +870,12 @@ chart_push_data "mychart", 2, 40 // Add 40 to second dataset
  * @param D Data to push.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_push_data 1, 25
- * chart_push_data 1, 40
- * chart_push_data 2, 40
- * @endcode
+@code
+chart_current "mychart"
+chart_push_data 1, 25
+chart_push_data 1, 40
+chart_push_data 2, 40
+@endcode
  *
  * @~french
  * Ajoute une valeur à une série de donnée d'un diagramme.
@@ -881,19 +895,19 @@ chart_push_data "mychart", 2, 40 // Ajoute 40 à la série 2
  * @param D Donnée à ajouter.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_push_data 1, 25
- * chart_push_data 1, 40
- * chart_push_data 2, 40
- * @endcode
+@code
+chart_current "mychart"
+chart_push_data 1, 25
+chart_push_data 1, 40
+chart_push_data 2, 40
+@endcode
  *
  */
 chart_push_data(Name:text, N:integer, D:real);
 
 /**
  * @~english
- * Reset one or some charts.
+ * Reset one or multiple charts.
  *
  * This function reset some charts named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.\n
@@ -906,10 +920,10 @@ chart_reset ALL_CHARTS
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_reset
- * @endcode
+@code
+chart_current "mychart"
+chart_reset
+@endcode
  *
  * @~french
  *
@@ -926,10 +940,10 @@ chart_reset ALL_CHARTS
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_reset
- * @endcode
+@code
+chart_current "mychart"
+chart_reset
+@endcode
  * @~
 
  **/
@@ -938,7 +952,7 @@ chart_reset(Name:text);
 
 /**
  * @~english
- * Change the format of one or some charts.
+ * Change the format of one or multiple charts.
  *
  * This function allows to change the format of charts named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.\n
@@ -954,10 +968,10 @@ chart_set_format "mychart", "3D"
  * @param Format Chart format. Default is "2D".
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_format "3D" // Change format of chart named "mychart"
- * @endcode
+@code
+chart_current "mychart"
+chart_set_format "3D" // Change format of chart named "mychart"
+@endcode
  *
  * @~french
  * Change le format d'un ou plusieurs diagrammes.
@@ -978,10 +992,10 @@ chart_set_format "mychart", "3D"
  * @param Format Format du diagramme. La valeur par défaut est "2D".
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_format "3D"
- * @endcode
+@code
+chart_current "mychart"
+chart_set_format "3D"
+@endcode
  *
  */
 chart_set_format(Name:text, T:text);
@@ -989,7 +1003,7 @@ chart_set_format(Name:text, T:text);
 
 /**
  * @~english
- * Change a legend of one or some charts.
+ * Change a legend of one or multiple charts.
  *
  * This function sets @p T as legend @p N of chart named @p Name.
  * The @ref RegExp "re:" syntax is supported as chart name.
@@ -999,10 +1013,10 @@ chart_set_format(Name:text, T:text);
  * @param T Legend to set.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_legend 1, "mylegend"
- * @endcode
+@code
+chart_current "mychart"
+chart_legend 1, "mylegend"
+@endcode
  *
  * @~french
  * Renvoie une légende d'un ou plusieurs diagrammes.
@@ -1015,10 +1029,10 @@ chart_set_format(Name:text, T:text);
  * @param T Légende à appliquer.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_legend 1, "mylegend"
- * @endcode
+@code
+chart_current "mychart"
+chart_legend 1, "mylegend"
+@endcode
  *
  */
 chart_set_legend(Name:text, N:integer, text T);
@@ -1026,9 +1040,9 @@ chart_set_legend(Name:text, N:integer, text T);
 
 /**
  * @~english
- * Change the style of one or some charts.
+ * Change the style of one or multiple charts.
  *
- * This function allows to change the style of one or some charts named @p Name.\n
+ * This function allows to change the style of one or multiple charts named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  * Possible values are varying according to the chart type:
  *   - @ref Areacharts : "", "stacked"
@@ -1040,11 +1054,11 @@ chart_set_legend(Name:text, N:integer, text T);
  * @param Style Chart style. Default is "".
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_style "stacked"
- * text chart_style
- * @endcode
+@code
+chart_current "mychart"
+chart_set_style "stacked"
+text chart_style
+@endcode
  *
  * @~french
  * Change le type d'un ou plusieurs diagrammes.
@@ -1061,11 +1075,11 @@ chart_set_legend(Name:text, N:integer, text T);
  * @param Style Style du diagramme. La valeur par défaut est "".
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_style "stacked"
- * text chart_style
- * @endcode
+@code
+chart_current "mychart"
+chart_set_style "stacked"
+text chart_style
+@endcode
  *
  * @~
  */
@@ -1083,11 +1097,11 @@ chart_set_style(Name:text, Style:text);
  * @param Title Chart title
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_title "mytitle"
- * text chart_title
- * @endcode
+@code
+chart_current "mychart"
+chart_set_title "mytitle"
+text chart_title
+@endcode
  *
  * @~french
  *
@@ -1100,11 +1114,11 @@ chart_set_style(Name:text, Style:text);
  * @param Title Titre du diagramme
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_title "mytitle"
- * text chart_title
- * @endcode
+@code
+chart_current "mychart"
+chart_set_title "mytitle"
+text chart_title
+@endcode
  *
  **/
 chart_set_title(Name:text, Title:text);
@@ -1112,9 +1126,9 @@ chart_set_title(Name:text, Title:text);
 
 /**
  * @~english
- * Set label of X-axis of one or some charts.
+ * Set label of X-axis of one or multiple charts.
  *
- * This functions allows to change the X-axis label of one or some charts
+ * This functions allows to change the X-axis label of one or multiple charts
  * named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  *
@@ -1122,11 +1136,11 @@ chart_set_title(Name:text, Title:text);
  * @param Label X-axis label.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xlabel "x-axis"
- * text chart_xlabel
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xlabel "x-axis"
+text chart_xlabel
+@endcode
  *
  * @~french
  *
@@ -1139,11 +1153,11 @@ chart_set_title(Name:text, Title:text);
  * @param Label Nom de l'axe X.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xlabel "x-axis"
- * text chart_xlabel
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xlabel "x-axis"
+text chart_xlabel
+@endcode
  *
  **/
 chart_set_xlabel(Name:text, Label:text);
@@ -1151,9 +1165,9 @@ chart_set_xlabel(Name:text, Label:text);
 
 /**
  * @~english
- * Set ticks number of X-axis of one or some charts.
+ * Set ticks number of X-axis of one or multiple charts.
  *
- * This functions allows to set @p N ticks on X-axis for one or some charts
+ * This functions allows to set @p N ticks on X-axis for one or multiple charts
  * named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  *
@@ -1161,11 +1175,11 @@ chart_set_xlabel(Name:text, Label:text);
  * @param Ticks Ticks number.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xticks 5
- * text chart_xticks
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xticks 5
+text chart_xticks
+@endcode
  *
  * @~french
  *
@@ -1179,11 +1193,11 @@ chart_set_xlabel(Name:text, Label:text);
  * @param Ticks Nombre d'intervalles.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xticks 5
- * text chart_xticks
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xticks 5
+text chart_xticks
+@endcode
  *
  **/
 chart_set_xticks(Name:text, N:integer);
@@ -1194,7 +1208,7 @@ chart_set_xticks(Name:text, N:integer);
  * Set label of a tick located on the X-axis.
  *
  * This functions changes the label of tick @p N located on the X-axis for
- * one or some charts named @p Name.\n
+ * one or multiple charts named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  *
  * @param Name Chart name.
@@ -1202,11 +1216,11 @@ chart_set_xticks(Name:text, N:integer);
  * @param L Tick Label.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xticks_label 1, "First tick"
- * text (chart_xticks_label 1)
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xticks_label 1, "First tick"
+text (chart_xticks_label 1)
+@endcode
  *
  * @~french
  *
@@ -1221,11 +1235,11 @@ chart_set_xticks(Name:text, N:integer);
  * @param L Nom de l'intervalle.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xticks_label 1, "Premier intervalle"
- * text (chart_xticks_label 1)
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xticks_label 1, "Premier intervalle"
+text (chart_xticks_label 1)
+@endcode
  *
  **/
 chart_set_xticks_label(Name:text, N:integer, L:text);
@@ -1236,7 +1250,7 @@ chart_set_xticks_label(Name:text, N:integer, L:text);
  * Set labels of ticks located on the X-axis.
  *
  * This functions changes labels of ticks located on the X-axis for
- * one or some charts named @p Name.\n
+ * one or multiple charts named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  * Example:
 @code
@@ -1269,9 +1283,9 @@ chart_set_xticks_labels(Name:text, L:list);
 
 /**
  * @~english
- * Set label of Y-axis of one or some charts.
+ * Set label of Y-axis of one or multiple charts.
  *
- * This functions allows to change the Y-axis label of one or some charts
+ * This functions allows to change the Y-axis label of one or multiple charts
  * named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  *
@@ -1279,11 +1293,11 @@ chart_set_xticks_labels(Name:text, L:list);
  * @param Label Y-axis label.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_ylabel "x-axis"
- * text chart_ylabel
- * @endcode
+@code
+chart_current "mychart"
+chart_set_ylabel "x-axis"
+text chart_ylabel
+@endcode
  *
  * @~french
  *
@@ -1296,11 +1310,11 @@ chart_set_xticks_labels(Name:text, L:list);
  * @param Label Nom de l'axe Y.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_ylabel "y-axis"
- * text chart_ylabel
- * @endcode
+@code
+chart_current "mychart"
+chart_set_ylabel "y-axis"
+text chart_ylabel
+@endcode
  *
  **/
 chart_set_ylabel(Name:text, Label:text);
@@ -1308,9 +1322,9 @@ chart_set_ylabel(Name:text, Label:text);
 
 /**
  * @~english
- * Set ticks number of Y-axis of one or some charts.
+ * Set ticks number of Y-axis of one or multiple charts.
  *
- * This functions allows to set @p N ticks on Y-axis for one or some charts
+ * This functions allows to set @p N ticks on Y-axis for one or multiple charts
  * named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  *
@@ -1318,11 +1332,11 @@ chart_set_ylabel(Name:text, Label:text);
  * @param Ticks Ticks number.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_yticks 5
- * text chart_yticks
- * @endcode
+@code
+chart_current "mychart"
+chart_set_yticks 5
+text chart_yticks
+@endcode
  *
  * @~french
  *
@@ -1336,11 +1350,11 @@ chart_set_ylabel(Name:text, Label:text);
  * @param Ticks Nombre d'intervalles.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_yticks 5
- * text chart_yticks
- * @endcode
+@code
+chart_current "mychart"
+chart_set_yticks 5
+text chart_yticks
+@endcode
  *
  **/
 chart_set_yticks(Name:text, N:integer);
@@ -1351,7 +1365,7 @@ chart_set_yticks(Name:text, N:integer);
  * Set label of a tick located on the Y-axis.
  *
  * This functions changes the label of tick @p N located on the Y-axis for
- * one or some charts named @p Name.\n
+ * one or multiple charts named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  *
  * @param Name Chart name.
@@ -1359,11 +1373,11 @@ chart_set_yticks(Name:text, N:integer);
  * @param T Tick Label.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_yticks_label 1, "First tick"
- * text (chart_yticks_label 1)
- * @endcode
+@code
+chart_current "mychart"
+chart_set_yticks_label 1, "First tick"
+text (chart_yticks_label 1)
+@endcode
  *
  * @~french
  *
@@ -1378,11 +1392,11 @@ chart_set_yticks(Name:text, N:integer);
  * @param T Nom de l'intervalle.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_yticks_label 1, "Premier intervalle"
- * text (chart_yticks_label 1)
- * @endcode
+@code
+chart_current "mychart"
+chart_set_yticks_label 1, "Premier intervalle"
+text (chart_yticks_label 1)
+@endcode
  *
  **/
 chart_set_yticks_label(Name:text, N:integer, T:text);
@@ -1393,7 +1407,7 @@ chart_set_yticks_label(Name:text, N:integer, T:text);
  * Set labels of ticks located on the Y-axis.
  *
  * This functions changes labels of ticks located on the Y-axis for
- * one or some charts named @p Name.\n
+ * one or multiple charts named @p Name.\n
  * The @ref RegExp "re:" syntax is supported as chart name.
  * Example:
 @code
@@ -1439,11 +1453,11 @@ chart_set_yticks_labels(Name:text, L:list);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_style "stacked"
- * text chart_style
- * @endcode
+@code
+chart_current "mychart"
+chart_set_style "stacked"
+text chart_style
+@endcode
  *
  * @~french
  * Renvoie le type d'un diagramme
@@ -1459,11 +1473,11 @@ chart_set_yticks_labels(Name:text, L:list);
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_style "stacked"
- * text chart_style
- * @endcode
+@code
+chart_current "mychart"
+chart_set_style "stacked"
+text chart_style
+@endcode
  *
  * @~
  */
@@ -1489,10 +1503,10 @@ chart_sum 2 // Return 97
  * @param N Index of dataset (from 1 to 4).
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_sum 2
- * @endcode
+@code
+chart_current "mychart"
+chart_sum 2
+@endcode
  *
  * @~french
  *
@@ -1514,10 +1528,10 @@ chart_sum "mychart", 2 // Renvoie 97
  * @param N Numéro de la série de données (de 1 à 4).
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_sum 2
- * @endcode
+@code
+chart_current "mychart"
+chart_sum 2
+@endcode
  *
  * @~
 
@@ -1535,11 +1549,11 @@ chart_sum(Name:text, N:integer);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_title "mytitle"
- * text chart_title
- * @endcode
+@code
+chart_current "mychart"
+chart_set_title "mytitle"
+text chart_title
+@endcode
  *
  * @~french
  *
@@ -1551,11 +1565,11 @@ chart_sum(Name:text, N:integer);
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_title "mytitle"
- * text chart_title
- * @endcode
+@code
+chart_current "mychart"
+chart_set_title "mytitle"
+text chart_title
+@endcode
  *
  **/
 chart_title(Name:text);
@@ -1571,11 +1585,11 @@ chart_title(Name:text);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xlabel "x-axis"
- * text chart_xlabel
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xlabel "x-axis"
+text chart_xlabel
+@endcode
  *
  * @~french
  *
@@ -1587,11 +1601,11 @@ chart_title(Name:text);
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xlabel "x-axis"
- * text chart_xlabel
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xlabel "x-axis"
+text chart_xlabel
+@endcode
  *
  **/
 chart_xlabel(Name:text);
@@ -1607,11 +1621,11 @@ chart_xlabel(Name:text);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xticks 5
- * text chart_xticks
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xticks 5
+text chart_xticks
+@endcode
  *
  * @~french
  *
@@ -1623,11 +1637,11 @@ chart_xlabel(Name:text);
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xticks 5
- * text chart_xticks
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xticks 5
+text chart_xticks
+@endcode
  *
  **/
 chart_xticks(Name:text);
@@ -1645,11 +1659,11 @@ chart_xticks(Name:text);
  * @param N Tick index.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xticks_label 1, "First tick"
- * text (chart_xticks_label 1)
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xticks_label 1, "First tick"
+text (chart_xticks_label 1)
+@endcode
  *
  * @~french
  *
@@ -1663,11 +1677,11 @@ chart_xticks(Name:text);
  * @param N Numéro de l'intervalle.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xticks_label 1, "Premier intervalle"
- * text (chart_xticks_label 1)
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xticks_label 1, "Premier intervalle"
+text (chart_xticks_label 1)
+@endcode
  *
  **/
 chart_xticks_label(Name:text, N:integer);
@@ -1683,11 +1697,11 @@ chart_xticks_label(Name:text, N:integer);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_xlabel "y-axis"
- * text chart_ylabel
- * @endcode
+@code
+chart_current "mychart"
+chart_set_xlabel "y-axis"
+text chart_ylabel
+@endcode
  *
  * @~french
  *
@@ -1699,11 +1713,11 @@ chart_xticks_label(Name:text, N:integer);
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_ylabel "y-axis"
- * text chart_ylabel
- * @endcode
+@code
+chart_current "mychart"
+chart_set_ylabel "y-axis"
+text chart_ylabel
+@endcode
  *
  **/
 chart_ylabel(Name:text);
@@ -1719,11 +1733,11 @@ chart_ylabel(Name:text);
  * @param Name Chart name.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_yticks 5
- * text chart_yticks
- * @endcode
+@code
+chart_current "mychart"
+chart_set_yticks 5
+text chart_yticks
+@endcode
  *
  * @~french
  *
@@ -1735,11 +1749,11 @@ chart_ylabel(Name:text);
  * @param Name Nom du diagramme.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_yticks 5
- * text chart_yticks
- * @endcode
+@code
+chart_current "mychart"
+chart_set_yticks 5
+text chart_yticks
+@endcode
  *
  **/
 chart_yticks(Name:text);
@@ -1757,11 +1771,11 @@ chart_yticks(Name:text);
  * @param N Tick index.
  *
  * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_yticks_label 1, "First tick"
- * text (chart_yticks_label 1)
- * @endcode
+@code
+chart_current "mychart"
+chart_set_yticks_label 1, "First tick"
+text (chart_yticks_label 1)
+@endcode
  *
  * @~french
  *
@@ -1775,11 +1789,11 @@ chart_yticks(Name:text);
  * @param N Numéro de l'intervalle.
  *
  * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
- * @code
- * chart_current "mychart"
- * chart_set_yticks_label 1, "Premier intervalle"
- * text (chart_yticks_label 1)
- * @endcode
+@code
+chart_current "mychart"
+chart_set_yticks_label 1, "Premier intervalle"
+text (chart_yticks_label 1)
+@endcode
  *
  **/
 chart_yticks_label(Name:text, N:integer);
@@ -1789,7 +1803,7 @@ chart_yticks_label(Name:text, N:integer);
 /**
  * @~english
  * \defgroup Areacharts Area charts
- * This page show all area styles with some examples and screenshots
+ * This page shows all styles of area charts with some examples and screenshots
  * using the default theme.
  * First, for all these charts, we need to initialize our datasets:
 @code
@@ -1937,7 +1951,7 @@ chart "My chart", "area"
 /**
  * @~english
  * \defgroup Barcharts Bar charts
- * This page show all bar styles with some examples and screenshots
+ * This page shows all styles of bar charts with some examples and screenshots
  * using the default theme.
  * First, for all these charts, we need to initialize our datasets:
 @code
@@ -2186,7 +2200,7 @@ chart "My chart", "bar"
 /**
  * @~english
  * \defgroup Linecharts Line charts
- * This page show all line styles with some examples and screenshots
+ * This page shows all line styles with some examples and screenshots
  * using the default theme.
  * First, for all these charts, we need to initialize our datasets:
 @code
@@ -2389,7 +2403,7 @@ chart "My chart", "line"
 /**
  * @~english
  * \defgroup Piecharts Pie charts
- * This page show all pie styles with some examples and screenshots
+ * This page shows all pie styles with some examples and screenshots
  * using the default theme.
  * First, for all these charts, we need to initialize our datasets:
 @code
