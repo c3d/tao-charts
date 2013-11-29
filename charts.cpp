@@ -231,6 +231,26 @@ Tree_p ChartFactory::chart_datasets_count(text name)
 }
 
 
+Tree_p ChartFactory::chart_data_property(text name, int s, uint i, text property)
+// ----------------------------------------------------------------------------
+//  Return value of a data property
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    return new Real(chart->getDataProperty(s, i, property));
+}
+
+
+Tree_p ChartFactory::chart_data_set_property(text name, int s, uint i, text property, double value)
+// ----------------------------------------------------------------------------
+//  Set value of a data property
+// ----------------------------------------------------------------------------
+{
+    Chart* chart  = instance()->chart(name);
+    bool result = chart->setDataProperty(s, i, property, value);
+    return result ? xl_true : xl_false;
+}
+
 // ============================================================================
 //
 //   Chart mechanism

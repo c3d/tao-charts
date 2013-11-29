@@ -29,6 +29,7 @@ chart_set_legend 3, "Third set"
 chart_set_title "Sample chart"
 chart_set_format "2D"
 
+chart_data_set_property 1, 2, "exploded_slice", 0
 
 // ============================================================================
 //
@@ -47,7 +48,8 @@ picture_slide "2D exploded pie chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D exploded pie chart
 // ----------------------------------------------------------------------------
-    chart_set_style "exploded"
+    // Explode the thrid slice
+    chart_data_set_property 1, 2, "exploded_slice", 100
     chart "My chart", 1, "pie"
 
 
@@ -143,7 +145,8 @@ picture_slide "3D exploded pie chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D exploded pie chart
 // ----------------------------------------------------------------------------
-    chart_set_style "exploded"
+    // Explode the thrid slice
+    chart_data_set_property 1, 2, "exploded_slice", 100
     chart_set_format "3D"
     chart "My chart", 1, "pie"
 

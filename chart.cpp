@@ -140,6 +140,8 @@ void Chart::pushData(uint set, double data)
 //   Add data to chart
 // ----------------------------------------------------------------------------
 {
+    ChartData* d = new ChartData(data);
+
     uint count = datasets[set].size();
 
     // Update maximum data count if needed
@@ -147,7 +149,7 @@ void Chart::pushData(uint set, double data)
         data_count = count + 1;
 
     // Push data
-    datasets[set].push_back(data);
+    datasets[set].push_back(d);
 
     // As we have change data, need init
     needInit = true;
@@ -172,9 +174,37 @@ double Chart::getData(uint s, uint i)
 // ----------------------------------------------------------------------------
 {
     if(datasets.size() > 0 && datasets[s].size() > 0)
-        return datasets[s][i];
+        return datasets[s][i]->data;
     else
         return 0;
+}
+
+
+double Chart::getDataProperty(int s, uint i, text property)
+// ----------------------------------------------------------------------------
+//   Return value of a data property
+// ----------------------------------------------------------------------------
+{
+    if(datasets.size() > 0 && datasets[s].size() > 0)
+        if(datasets[s][i]->properties.find(property) != datasets[s][i]->properties.end())
+            return datasets[s][i]->properties[property];
+
+    return 0;
+}
+
+
+bool Chart::setDataProperty(int s, uint i, text property, double value)
+// ----------------------------------------------------------------------------
+//   Set value of a data property
+// ----------------------------------------------------------------------------
+{
+    if(datasets.size() > 0 && datasets[s].size() > 0)
+    {
+        datasets[s][i]->properties[property] = value;
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -188,7 +218,7 @@ double Chart::computeSum(uint s)
     {
         uint size = datasets[s].size();
         for(uint i = 0; i < size; i++)
-            sum += datasets[s][i];
+            sum += datasets[s][i]->data;
     }
 
     return sum;
@@ -206,7 +236,7 @@ double Chart::computeMax(uint s)
         uint size = datasets[s].size();
         for(uint i = 0; i < size; i++)
         {
-            double value = datasets[s][i];
+            double value = datasets[s][i]->data;
             if(max < value)
                 max = value;
         }

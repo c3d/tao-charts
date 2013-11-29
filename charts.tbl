@@ -92,6 +92,27 @@ PREFIX(ChartCount,  tree, "chart_count",
        SYNOPSIS("Return size of a dataset")
        DESCRIPTION("Return size of a dataset"))
 
+PREFIX(ChartDataProperty,  tree, "chart_data_property",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, )
+       PARM(index, integer, )
+       PARM(property, text, ),
+       return ChartFactory::chart_data_property(name, set, index, property),
+       GROUP(module.Charts)
+       SYNOPSIS("Return a data property of a chart")
+       DESCRIPTION("Return a data property of a chart"))
+
+PREFIX(ChartDataSetProperty,  tree, "chart_data_set_property",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, )
+       PARM(index, integer, )
+       PARM(property, text, )
+       PARM(value, real, ),
+       return ChartFactory::chart_data_set_property(name, set, index, property, value),
+       GROUP(module.Charts)
+       SYNOPSIS("Set a data property of a chart")
+       DESCRIPTION("Set a data property of a chart"))
+
 
 
 // ============================================================================

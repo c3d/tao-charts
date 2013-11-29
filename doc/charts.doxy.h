@@ -452,7 +452,48 @@ text text (chart_data("mychart", 1, 0)) // Affiche 50
  * @endcode
  *
  */
-chart_data(Name:text N:integer, I:integer);
+chart_data(Name:text, N:integer, I:integer);
+
+
+/**
+ * @~english
+ * Return valeur of a property of a specific data.
+ *
+ * This function return the value of property @p P of a specific data
+ * situed at the position @p I into dataset @p N of chart @p Name.\n
+ * This value is setted with @ref chart_data_set_property.
+ *
+ * @param Name Chart name.
+ * @param N Index of dataset (from 1 to 4).
+ * @param I Position of data into dataset.
+ * @param P Property to get.
+ *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart_data_property 1, 0, "exploded_slice"
+@endcode
+ *
+ * @~french
+ * Renvoie la valeur d'un attribut d'une donnée particulière.
+ *
+ * Cette fonction renvoie la valeur de l'attribut @p P pour une valeur située à la position @p I
+ * dans la série de données @p N du diagramme nommé @p Name.\n
+ * Cette valeur est modifiée par la fonction @ref chart_data_set_property.
+ *
+ * @param Name Nom du diagramme.
+ * @param N Numéro de la série de données (de 1 à 4).
+ * @param I Position de la donnée dans la série.
+ * @param P Attribut à récupérer.
+ *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart_data_property 1, 0, "exploded_slice"
+@endcode
+ *
+ */
+chart_data_property(Name:text, N:integer, I:integer, P:text);
 
 
 /**
@@ -488,7 +529,61 @@ chart_data(Name:text N:integer, I:integer);
  * @endcode
  *
  */
-chart_data_ratio(Name:text N:integer, I:integer);
+chart_data_ratio(Name:text, N:integer, I:integer);
+
+
+/**
+ * @~english
+ * Set a property on a specific data of a dataset.
+ *
+ * This function change a property on a specific data
+ * situed at the position @p I into dataset @p N of chart @p Name.\n
+ * These properties allow to manage in more depth, the behavior of charts.\n
+ * For instance, To explode the first slice of a pie chart from 100 pixels, you can use
+ * the predefined property "exploded_slice".\n
+@code
+chart_data_set_property "mychart", 1, 0, "exploded_slice", 100
+@endcode
+ *
+ * @param Name Chart name.
+ * @param N Index of dataset (from 1 to 4).
+ * @param I Position of data into dataset.
+ * @param P Property to change.
+ * @param V New value of property.
+ *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart_data_set_property 1, 0, "exploded_slice", 100
+@endcode
+ *
+ * @~french
+ * Modifie la valeur d'un attribut d'une donnée particulière.
+ *
+ * Cette fonction modifie l'attribut @p P d'une valeur située à la position @p I
+ * dans la série de données @p N du diagramme nommé @p Name.\n
+ * Ces attributs sont particulièrement utiles pour gérer de manière approndie le comportement
+ * des différents diagrammes.\n
+ * Par exemple, pour éclater la premier tranche d'un diagramme circulaire de 100 pixels,
+ * vous pouvez utiliser l'attribut prédéfinit "exploded_slice" de la façon suivante:
+@code
+chart_data_set_property "mychart", 1, 0, "exploded_slice", 100
+@endcode
+ *
+ * @param Name Nom du diagramme.
+ * @param N Numéro de la série de données (de 1 à 4).
+ * @param I Position de la donnée dans la série.
+ * @param P Attribut à modifier.
+ * @param V Nouvelle valeur de l'attribut.
+ *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart_data_set_property 1, 0, "exploded_slice", 100
+@endcode
+ *
+ */
+chart_data_set_property(Name:text, N:integer, I:integer, P:text, V:real);
 
 
 /**
@@ -1034,7 +1129,7 @@ chart_set_legend(Name:text, N:integer, text T);
  *   - @ref Areacharts : "", "stacked"
  *   - @ref Barcharts : "", "vertical", "vertical_stacked", "horizontal", "horizontal_stacked"
  *   - @ref Linecharts : "", "point", "line", "line&point"
- *   - @ref Piecharts :  "", "exploded"
+ *   - @ref Piecharts :  ""
  *
  * @param Name Chart name.
  * @param Style Chart style. Default is "".
@@ -1055,7 +1150,7 @@ chart_set_legend(Name:text, N:integer, text T);
  *   - @ref Areacharts : "", "stacked"
  *   - @ref Barcharts : "", "vertical", "vertical_stacked", "horizontal", "horizontal_stacked"
  *   - @ref Linecharts : "", "point", "line", "line&point"
- *   - @ref Piecharts :  "", "exploded"
+ *   - @ref Piecharts :  ""
  *
  * @param Name Nom du diagramme.
  * @param Style Style du diagramme. La valeur par défaut est "".
@@ -1433,7 +1528,7 @@ chart_set_yticks_labels(Name:text, L:list);
  *   - @ref Areacharts : "", "stacked"
  *   - @ref Barcharts : "", "vertical", "vertical_stacked", "horizontal", "horizontal_stacked"
  *   - @ref Linecharts : "", "point", "line", "line&point"
- *   - @ref Piecharts :  "", "exploded"
+ *   - @ref Piecharts :  ""
  * You can modify this value with @ref chart_set_style.
  *
  * @param Name Chart name.
@@ -1453,7 +1548,7 @@ chart_set_yticks_labels(Name:text, L:list);
  *   - @ref Areacharts : "", "stacked"
  *   - @ref Barcharts : "", "vertical", "vertical_stacked", "horizontal", "horizontal_stacked"
  *   - @ref Linecharts : "", "point", "line", "line&point"
- *   - @ref Piecharts :  "", "exploded"
+ *   - @ref Piecharts :  ""
  * Vous pouvez modifier cette valeur grâce à @ref chart_set_style.
  *
  * @param Name Nom du diagramme.
@@ -2413,6 +2508,9 @@ for i in 1..6 loop
  *
  * \section pie1 Regular
  *
+ * You can use @ref chart_data_set_property with "exploded_slice" as property to explode
+ * a specific slice of the pie chart.
+ *
  * \subsection two 2D
  *
 @code
@@ -2433,30 +2531,6 @@ chart "My chart", "pie"
 @endcode
  *
  * @image html "pie_regular_3d.png" "Example of 3D regular pie chart"
- *
- *
- * \section pie2 Exploded
- *
- * \subsection two 2D
- *
-@code
-chart_set_style "exploded"
-chart_set_format "2D"
-chart "My chart", "pie"
-@endcode
- *
- * @image html "pie_exploded_2d.png" "Example of 2D exploded pie chart"
- *
- *
- * \subsection third 3D
-@code
-light 0
-chart_set_style "exploded"
-chart_set_format "3D"
-chart "My chart", "pie"
-@endcode
- *
- * @image html "pie_exploded_3d.png" "Example of 3D exploded pie chart"
  *
  * @~french
  * \defgroup Piecharts Diagrammes circulaires
@@ -2485,6 +2559,9 @@ for i in 1..6 loop
  *
  * \section pie1 Classique
  *
+ * Vous pouvez éclater une part spécifique du diagramme circulaire en changeant la valeur
+ * de l'attribut "exploded_slice" grâce à @ref chart_data_set_property.
+ *
  * \subsection two 2D
  *
 @code
@@ -2505,30 +2582,6 @@ chart "My chart", "pie"
 @endcode
  *
  * @image html "pie_regular_3d.png" "Exemple de diagramme circulaire classique 3D"
- *
- *
- * \section pie2 Eclaté
- *
- * \subsection two 2D
- *
-@code
-chart_set_style "exploded"
-chart_set_format "2D"
-chart "My chart", "pie"
-@endcode
- *
- * @image html "pie_exploded_2d.png" "Exemple de diagramme circulaire éclaté 2D"
- *
- *
- * \subsection third 3D
-@code
-light 0
-chart_set_style "exploded"
-chart_set_format "3D"
-chart "My chart", "pie"
-@endcode
- *
- * @image html "pie_exploded_3d.png" "Exemple de diagramme circulaire éclaté 3D"
  *
  */
 

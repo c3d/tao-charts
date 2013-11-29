@@ -386,6 +386,8 @@ chart_datasets_count -> chart_datasets_count chart_name
 chart_count N:integer -> chart_count chart_name, N
 chart_data_ratio N:integer, I:integer -> chart_data_ratio chart_name, N, I
 chart_data N:integer, I:integer -> chart_data chart_name, N, I
+chart_data_property N:integer, I:integer, P:text -> chart_data_property chart_name, N, I, P
+chart_data_set_property N:integer, I:integer, P:text, R:real -> chart_data_set_property chart_name, N, I, P, R
 
 // Title
 chart_title -> chart_title chart_name

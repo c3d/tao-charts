@@ -29,6 +29,14 @@ using namespace std;
 using namespace Tao;
 
 
+struct ChartData {
+    ChartData(double d) : data(d) {}
+
+    double data;
+    std::map<text, double> properties;
+};
+
+
 struct Chart : public QObject
 {
     Chart(text name);
@@ -51,6 +59,8 @@ struct Chart : public QObject
     void pushData(uint s, double d);
     double getDataCount(uint s);
     double getData(uint s, uint i);
+    double getDataProperty(int s, uint i, text property);
+    bool   setDataProperty(int s, uint i, text property, double value);
 
     double computeSum(uint s);
     double computeMax(uint s);
@@ -111,12 +121,10 @@ private:
     bool auto_xticks, auto_yticks;
     bool auto_xticks_labels, auto_yticks_labels;
 
-    typedef std::vector<double> data;
+    typedef std::vector<ChartData*> data;
     typedef std::map<uint, data> data_map;
     data_map  datasets;
-
 };
-
 
 
 #endif
