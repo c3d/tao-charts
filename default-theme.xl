@@ -92,7 +92,7 @@ chart_height -> theme_drawing_height theme
 
 // Default size of charts components
 theme_size Theme:text, Master:text, "chart_data" -> 20
-theme_size Theme:text, Master:text, "chart_label" -> 20
+theme_size Theme:text, Master:text, "chart_label" -> 25
 theme_size Theme:text, Master:text, "chart_tick" -> 20
 theme_size Theme:text, Master:text, "chart_title" -> 40
 theme_size Theme:text, Master:text, "chart_legend" -> 30
@@ -139,7 +139,7 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
     chart_yaxis -800, -275, 1200, 500, Style, Format
 
     chart_flow 0, 325, 800, 50, "chart_title"
-    chart_flow 455, -275, 100, 50, "chart_xlabel"
+    chart_flow 435, -275, 100, 50, "chart_xlabel"
     chart_flow -800, 250, 100, 50, "chart_ylabel"
     chart_flow 725, -30, 300, 600, "chart_legend"
 
@@ -161,6 +161,19 @@ theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:
     // Compute ratio for current data
     Ratio := chart_data_ratio N, Index
     theme_chart Theme, Master, Style, Format, W, H, N, Index, Ratio
+
+
+// ============================================================================
+//
+//    Data
+//
+// ============================================================================
+
+theme_text Theme:text,Master:text,"chart_data",X:real,Y:real,W:real,H:real,Body ->
+// ----------------------------------------------------------------------------
+//    Override text implementation (don't show any box)
+// ----------------------------------------------------------------------------
+    theme_text_without_box Theme, Master, "chart_data", X, Y, W, H, Body
 
 
 // ============================================================================
@@ -252,6 +265,16 @@ theme_text Theme:text,Master:text,"chart_ylabel",X:real,Y:real,W:real,H:real,Bod
 //
 // ============================================================================
 
+theme_chart_axis Theme:text, Master:text, X:real, Y:real, W:real, H:real ->
+// ----------------------------------------------------------------------------
+//    Default style of an axis
+// ----------------------------------------------------------------------------
+    locally
+        translatez -1 // Avoid depth problems
+        theme_color Theme, Master, "axis"
+        rectangle X, Y, W, H
+
+
 theme_chart_xaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:real ->
 // ----------------------------------------------------------------------------
 //    Default style of x-axis
@@ -259,8 +282,7 @@ theme_chart_xaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
     contents 0,
         translate X, Y, 0.0
 
-        theme_color Theme, Master, "axis"
-        rectangle W/2.0, 0, W, 0.5
+        theme_chart_axis Theme, Master, W/2, 0, W, 0.5
 
         if(chart_xticks > 0) then
 
@@ -273,7 +295,7 @@ theme_chart_xaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
                     translatex L * I
 
                     // Show vertical line
-                    rectangle 0, H/2, 0.5, H
+                    theme_chart_axis Theme, Master, 0, H/2, 0.5, H
 
                     // Get x-label
                     Label := do chart_xticks_label I
@@ -290,8 +312,7 @@ theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
     contents 0,
         translate X, Y, 0.0
 
-        theme_color Theme, Master, "axis"
-        rectangle 0, H/2, 0.5, H
+        theme_chart_axis Theme, Master, 0, H/2, 0.5, H
 
         if(chart_yticks > 0) then
             // Compute y-interval length
@@ -303,7 +324,7 @@ theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
                     translatey L * I
 
                     // Show horizontal line
-                    rectangle W/2, 0, W, 0.5
+                    theme_chart_axis Theme, Master, W/2, 0, W, 0.5
 
                     // Get y-label
                     Label := chart_yticks_label I

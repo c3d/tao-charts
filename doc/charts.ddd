@@ -19,8 +19,6 @@ chart_push_data 3, 165
 chart_push_data 3, 85
 chart_push_data 3, 188
 
-chart_load_csv "charts.csv"
-
 chart_set_xticks_labels {"First", "Second", "Third"}
 
 // Change all legends
@@ -28,7 +26,7 @@ chart_set_legend 1, "First set"
 chart_set_legend 2, "Second set"
 chart_set_legend 3, "Third set"
 
-chart_set_title "Sample 2D chart"
+chart_set_title "Sample chart"
 chart_set_format "2D"
 
 

@@ -57,7 +57,8 @@
 override_priority -1
 
 // Set bar colors
-theme_color Theme:text, "bar", Style:text, N -> color_hsv N * 40, 1.0, 1.0
+theme_color Theme:text, "bar", Style:text, N ->
+    color_hsv N * 40, 1.0, 1.0
 
 
 // ============================================================================
@@ -236,8 +237,7 @@ theme_chart_xaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
         translate X, Y, 0.0
 
         // Draw horizontal line
-        theme_color Theme, "bar", "axis"
-        rectangle W/2.0, 0, W, 0.5
+        theme_chart_axis Theme, "bar", W/2.0, 0, W, 0.5
 
         if(chart_yticks > 0) then
             // Compute y-interval length
@@ -249,7 +249,7 @@ theme_chart_xaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
                     translatex L * I
 
                     // Show vertical line
-                    rectangle 0, H/2, 0.5, H
+                    theme_chart_axis Theme, "bar", 0, H/2, 0.5, H
 
                     // Show y-label
                     text_box 0, -30, L, H,
@@ -265,8 +265,7 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
         translate X, Y, 0.0
 
         // Draw horizontal line
-        theme_color Theme, "bar", "axis"
-        rectangle 0.0, H/2.0, 0.5, H
+        theme_chart_axis Theme, "bar", 0, H/2, 0.5, H
 
         if(chart_xticks > 0) then
 
@@ -336,8 +335,7 @@ theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:
         translate X, Y, 0.0
 
         // Draw horizontal line
-        theme_color Theme, "bar", "axis"
-        rectangle W/2.0, 0.0, W, 0.5
+        theme_chart_axis Theme, "bar", W/2, 0, W, 0.5
 
         if(chart_xticks > 0) then
 

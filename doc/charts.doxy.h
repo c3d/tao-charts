@@ -2426,7 +2426,6 @@ chart "My chart", "pie"
  *
  * \subsection third 3D
 @code
-rotatey -15
 light 0
 chart_set_style ""
 chart_set_format "3D"
@@ -2451,7 +2450,6 @@ chart "My chart", "pie"
  *
  * \subsection third 3D
 @code
-rotatey -15
 light 0
 chart_set_style "exploded"
 chart_set_format "3D"
@@ -2500,7 +2498,6 @@ chart "My chart", "pie"
  *
  * \subsection third 3D
 @code
-rotatey -15
 light 0
 chart_set_style ""
 chart_set_format "3D"
@@ -2525,7 +2522,6 @@ chart "My chart", "pie"
  *
  * \subsection third 3D
 @code
-rotatey -15
 light 0
 chart_set_style "exploded"
 chart_set_format "3D"

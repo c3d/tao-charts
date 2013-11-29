@@ -57,7 +57,8 @@
 override_priority -1
 
 // Set pie colors
-theme_color Theme:text, "pie", Style:text, N:integer -> color_hsv N * 40, 1.0, 1.0
+theme_color Theme:text, "pie", Style:text, N:integer ->
+    color_hsv (N - 1) * 360.0 / (chart_count chart_first), 1.0, 1.0
 
 theme_boxstyle Theme:text, Master:text, "pie" -> color "white",0.0
 
