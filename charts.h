@@ -32,7 +32,7 @@
 using namespace XL;
 
 
-class Chart;
+struct Chart;
 
 class ChartFactory
 {
