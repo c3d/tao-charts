@@ -139,7 +139,7 @@ chart(Name:text, N:integer, Type:text);
  * avec (X, Y) égal à (0, 0) et (W, H) égal à (100%, 100%).
  *
  **/
-chart(Name:text, First:text, Last:text, Type:text);
+chart(Name:text, First:integer, Last:integer, Type:text);
 
 
 
@@ -168,7 +168,7 @@ chart(Name:text, First:text, Last:text, Type:text);
  * @param Type Chart type.
  * @param X X-coordinate.
  * @param Y Y-coordinate.
- * @param W Chart with in percent.
+ * @param W Chart width in percent.
  * @param H Chart height in percent.
  *
  * @~french
@@ -230,7 +230,7 @@ chart(Name:text, Type:text, X:real, Y:real, W:real, H:real);
  * @param Type Chart type.
  * @param X X-coordinate.
  * @param Y Y-coordinate.
- * @param W Chart with in percent.
+ * @param W Chart width in percent.
  * @param H Chart height in percent.
  *
  * @~french
@@ -300,7 +300,7 @@ chart "mychart", 2, 4, "bar", 0, 0, 1, 1
  * @param Type Chart type.
  * @param X X-coordinate.
  * @param Y Y-coordinate.
- * @param W Chart with in percent.
+ * @param W Chart width in percent.
  * @param H Chart height in percent.
  *
  * @~french
