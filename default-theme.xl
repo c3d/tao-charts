@@ -286,25 +286,26 @@ theme_chart_xaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
 
         theme_chart_axis Theme, Master, W/2, 0, W, 0.5
 
-        if(chart_xticks > 0) then
+        // Compute x-interval length
+        if(chart_xticks > 1) then
+            L := W / (chart_xticks - 1)
+        else
+            L := 0
 
-            // Compute x-interval length
-            L := W / chart_xticks
+        // Show x-label below chart
+        for I in 0..(chart_xticks - 1) loop
+            locally
+                translatex L * I
 
-            // Show x-label below chart
-            for I in 0..chart_xticks loop
-                locally
-                    translatex L * I
+                // Show vertical line
+                theme_chart_axis Theme, Master, 0, H/2, 0.5, H
 
-                    // Show vertical line
-                    theme_chart_axis Theme, Master, 0, H/2, 0.5, H
+                // Get x-label
+                Label := do chart_xticks_label I
 
-                    // Get x-label
-                    Label := do chart_xticks_label I
-
-                    text_box 0, -30, L, 50,
-                        theme_style Theme, Master, "chart_tick"
-                        text Label
+                text_box 0, -30, L, 50,
+                    theme_style Theme, Master, "chart_tick"
+                    text Label
 
 
 theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:real ->

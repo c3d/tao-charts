@@ -270,10 +270,10 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
         if(chart_xticks > 0) then
 
             // Compute x-interval length
-            L := H / (chart_xticks + 1)
+            L := H / chart_xticks
 
             // Show x-label below chart
-            for I in 0..chart_xticks loop
+            for I in 0..(chart_xticks - 1) loop
                 locally
                     translatey L * I
 
@@ -340,10 +340,10 @@ theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:
         if(chart_xticks > 0) then
 
             // Compute x-interval length
-            L := W / (chart_xticks + 1)
+            L := W / chart_xticks
 
             // Show x-label below chart
-            for I in 0..chart_xticks loop
+            for I in 0..(chart_xticks - 1) loop
                 locally
                     translatex L * I
 

@@ -347,7 +347,7 @@ void Chart::autocomputeTicks()
 
     // Autocompute ticks number of x-axis if needed
     if(auto_xticks)
-        xticks = data_count - 1;
+        xticks = data_count;
 }
 
 
@@ -459,7 +459,6 @@ float Chart::computeFraction(float range, bool round)
     else
         exponent = 1;
     fraction = range / pow(10.0, exponent);
-
     // Compute nice, rounded fraction
     if (round)
     {
@@ -483,8 +482,7 @@ float Chart::computeFraction(float range, bool round)
         else
             fraction = 10;
     }
-
-    return fraction * (10 ^ exponent);
+    return fraction * pow(10.0, exponent);
 }
 
 
