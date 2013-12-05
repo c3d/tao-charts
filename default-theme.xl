@@ -162,6 +162,8 @@ theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:
     Ratio := chart_data_ratio N, Index
     theme_chart Theme, Master, Style, Format, W, H, N, Index, Ratio
 
+// Default chart style
+theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real -> false
 
 // ============================================================================
 //
