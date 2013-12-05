@@ -149,6 +149,16 @@ chart Name:text, N:integer, Master:text -> chart Name, N, N, Master
 chart Name:text, Master:text -> chart Name, 1, 4, Master
 chart Name:text, First:integer, Last:integer, Master:text -> chart Name, First, Last, Master, 0, 0, 1, 1
 
+chart Master:text -> chart chart_name, 1, 4, Master
+chart N:integer, Master:text -> chart chart_name, N, N, Master
+chart First:integer, Last:integer, Master:text -> chart chart_name, First, Last, Master
+chart N:integer, Master:text, X:real, Y:real, W:real, H:real ->
+    chart chart_name, N, Master, X, Y, W, H
+chart Master:text, X:real, Y:real, W:real, H:real ->
+    chart chart_name, Master, X, Y, W, H
+chart First:integer, Last:integer, Master:text, X:real, Y:real, W:real, H:real ->
+    chart chart_name, First, Last, Master, X, Y, W, H
+
 
 chart Name:text, N:integer, Master:text, X:real, Y:real, W:real, H:real ->
 // ----------------------------------------------------------------------------

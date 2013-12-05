@@ -93,7 +93,12 @@ ALL_CHARTS = "re:";
  *
  * This function is a shortcut of @ref chart(Name:text, Type:text, X:real, Y:real, W:real, H:real)
  * with (X,Y) equal to (0,0) and (W,H) equal to (100%, 100%).
-
+ *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart "bar"
+@endcode
  * @~french
  *
  * Affiche un diagramme à partir de toutes les séries de données.
@@ -101,6 +106,11 @@ ALL_CHARTS = "re:";
  * Cette fonction est un raccourci de @ref chart(Name:text, Type:text, X:real, Y:real, W:real, H:real)
  * avec (X, Y) égal à (0, 0) et (W, H) égal à (100%, 100%).
  *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart "bar"
+@endcode
  **/
 chart(Name:text, Type:text);
 
@@ -111,7 +121,12 @@ chart(Name:text, Type:text);
  *
  * This function is a shortcut of @ref chart(Name:text, N:integer, Type:text, X:real, Y:real, W:real, H:real)
  * with (X,Y) equal to (0,0) and (W,H) equal to (100%, 100%).
-
+ *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart 1, "bar"
+@endcode
  * @~french
  *
  * Affiche un diagramme avec une série de donnée unique.
@@ -119,6 +134,11 @@ chart(Name:text, Type:text);
  * Cette fonction est un raccourci de @ref chart(Name:text, N:integer, Type:text, X:real, Y:real, W:real, H:real)
  * avec (X, Y) égal à (0, 0) et (W, H) égal à (100%, 100%).
  *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart 1, "bar"
+@endcode
  **/
 chart(Name:text, N:integer, Type:text);
 
@@ -130,7 +150,12 @@ chart(Name:text, N:integer, Type:text);
  *
  * This function is a shortcut of @ref chart(Name:text, First:integer, Last:integer, Type:text, X:real, Y:real, W:real, H:real)
  * with (X,Y) equal to (0,0) and (W,H) equal to (100%, 100%).
-
+ *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart 1, 3, "bar"
+@endcode
  * @~french
  *
  * Affiche un diagramme à partir d'un intervalle de série de données.
@@ -138,6 +163,11 @@ chart(Name:text, N:integer, Type:text);
  * Cette fonction est un raccourci de @ref chart(Name:text, First:integer, Last:integer, Type:text, X:real, Y:real, W:real, H:real)
  * avec (X, Y) égal à (0, 0) et (W, H) égal à (100%, 100%).
  *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart 1, 3, "bar"
+@endcode
  **/
 chart(Name:text, First:text, Last:text, Type:text);
 
@@ -171,6 +201,11 @@ chart(Name:text, First:text, Last:text, Type:text);
  * @param W Chart with in percent.
  * @param H Chart height in percent.
  *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart "bar", 0, 0, 100%, 100%
+@endcode
  * @~french
  *
  * Affiche un diagramme à partir de toutes les séries de données.
@@ -201,6 +236,11 @@ chart(Name:text, First:text, Last:text, Type:text);
  * @param W Largeur en pourcentage.
  * @param H Hauteur en pourcentage.
  *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart "bar", 0, 0, 100%, 100%
+@endcode
  **/
 chart(Name:text, Type:text, X:real, Y:real, W:real, H:real);
 
@@ -233,6 +273,11 @@ chart(Name:text, Type:text, X:real, Y:real, W:real, H:real);
  * @param W Chart with in percent.
  * @param H Chart height in percent.
  *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart 1, "bar", 0, 0, 100%, 100%
+@endcode
  * @~french
  *
  * Affiche un diagramme avec une série de données unique.
@@ -262,6 +307,11 @@ chart(Name:text, Type:text, X:real, Y:real, W:real, H:real);
  * @param W Largeur en pourcentage.
  * @param H Hauteur en pourcentage.
  *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart 1, "bar", 0, 0, 100%, 100%
+@endcode
  **/
 chart(Name:text, N:integer, Type:text, X:real, Y:real, W:real, H:real);
 
@@ -303,6 +353,11 @@ chart "mychart", 2, 4, "bar", 0, 0, 1, 1
  * @param W Chart with in percent.
  * @param H Chart height in percent.
  *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart 1, 3, "bar", 0, 0, 100%, 100%
+@endcode
  * @~french
  *
  * Affiche un diagramme à partir d'un intervalle de série de données.
@@ -340,6 +395,11 @@ chart "mychart", 2, 4, "bar", 0, 0, 1, 1
  * @param W Largeur en pourcentage.
  * @param H Hauteur en pourcentage.
  *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart 1, 3, "bar", 0, 0, 100%, 100%
+@endcode
  * @~
  **/
 chart(Name:text, First:integer, Last:integer, Type:text, X:real, Y:real, W:real, H:real);
