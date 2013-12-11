@@ -54,16 +54,11 @@ public:
     static Tree_p chart_push_data(text name, uint unit, float value);
     static Tree_p chart_data(text name, uint set, uint index);
     static Tree_p chart_data_ratio(text name, uint set, uint index);
-    static Tree_p chart_sum(text name, uint set, bool abs);
+    static Tree_p chart_sum(text name, uint set);
     static Tree_p chart_max(text name, uint set);
-    static Tree_p chart_min(text name, uint set);
     static Tree_p chart_max_count(text);
     static Tree_p chart_count(text, uint set);
     static Tree_p chart_datasets_count(text);
-    static Tree_p chart_reset_datasets(text name);
-    static Tree_p chart_push_dataset(text name, uint s);
-    static Tree_p chart_dataset(text name, uint index);
-    static Tree_p chart_set_datasets_count(text name, uint count);
     static Tree_p chart_data_property(text name, int s, uint i, text);
     static Tree_p chart_data_set_property(text name, int s, uint i, text, double);
 
@@ -72,10 +67,10 @@ public:
     static Name_p chart_only(text name);
     static Name_p chart_drop(text name);
     static Tree_p chart_current(text name);
-    static Tree_p chart_create(Context *context, text name, Tree_p prog);
+    static Tree_p chart_create(Context *context, text name, uint start,
+                               uint end, text master, Tree_p prog);
     static Tree_p chart_name(text name);
-    static Tree_p chart_type(text name);
-    static Tree_p chart_type(text name, text master);
+    static Tree_p chart_master(text name);
     static Tree_p chart_style(text name);
     static Tree_p chart_style(text name, text style);
     static Tree_p chart_format(text name);
@@ -100,8 +95,6 @@ public:
     // Axis
     static Tree_p chart_max_axis(text name);
     static Tree_p chart_max_axis(text name, double max, bool adjust);
-    static Tree_p chart_min_axis(text name);
-    static Tree_p chart_min_axis(text name, double max, bool adjust);
     static Tree_p chart_xticks(text name);
     static Tree_p chart_xticks(text name, uint ticks);
     static Tree_p chart_yticks(text name);

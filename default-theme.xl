@@ -61,8 +61,7 @@
 //     - Format: Current chart format (2D or 3D)
 //     - W: Chart width in percent
 //     - H: Chart height in percent
-//     - N: Current index of dataset
-//     - Set: Current dataset
+//     - N: Current dataset (from 1 to 4)
 //     - Index: Current index of data in the dataset
 //     - Ratio: Ratio of current value ( Value / MaxValue )
 //     - chart_max_data: The maximum data (according to chart master)
@@ -74,10 +73,6 @@ import Slides
 
 // This file is designed to be overriden by themes, etc.
 override_priority -2
-
-// Compute offset needed to adjust position
-// of charts (case of negative values)
-chart_offset R:real -> -(chart_min_axis * R) / (chart_max_axis - chart_min_axis)
 
 import "area_chart.xl"
 import "bar_chart.xl"
@@ -150,7 +145,7 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
 
     // Draw chart
     box Master, -175, -30, 1400, 600
-    chart_series -800, -275, 1200, 500, Master, Style, Format
+    chart -800, -275, 1200, 500, Style, Format
 
 
 // ============================================================================
@@ -159,17 +154,14 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
 //
 // ============================================================================
 
-theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer ->
+theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Index:integer ->
 // ----------------------------------------------------------------------------
 //    Display a unique data in a chart
 // ----------------------------------------------------------------------------
     // Compute ratio for current data
-    Ratio := chart_data_ratio Set, Index
-    theme_chart Theme, Master, Style, Format, W, H, N, Set, Index, Ratio
+    Ratio := chart_data_ratio N, Index
+    theme_chart Theme, Master, Style, Format, W, H, N, Index, Ratio
 
-
-// Default chart style
-theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real -> false
 
 // ============================================================================
 //
@@ -177,12 +169,11 @@ theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:
 //
 // ============================================================================
 
-theme_flow Theme:text,Master:text,"chart_data",X:real,Y:real,W:real,H:real,Body ->
+theme_text Theme:text,Master:text,"chart_data",X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
 //    Override text implementation (don't show any box)
 // ----------------------------------------------------------------------------
-    theme_text Theme, Master, "chart_data", X, Y, W, H, Body
-
+    theme_text_without_box Theme, Master, "chart_data", X, Y, W, H, Body
 
 
 // ============================================================================
@@ -245,11 +236,11 @@ theme_chart_xlabel Theme:text, Master:text, Style:text, Body ->
         Body
 
 
-theme_flow Theme:text,Master:text,"chart_xlabel",X:real,Y:real,W:real,H:real,Body ->
+theme_text Theme:text,Master:text,"chart_xlabel",X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
 //    Override text implementation (don't show any box)
 // ----------------------------------------------------------------------------
-    theme_text Theme, Master, "chart_xlabel", X, Y, W, H, Body
+    theme_text_without_box Theme, Master, "chart_xlabel", X, Y, W, H, Body
 
 
 theme_chart_ylabel Theme:text, Master:text, Style:text, Body ->
@@ -261,11 +252,11 @@ theme_chart_ylabel Theme:text, Master:text, Style:text, Body ->
         Body
 
 
-theme_flow Theme:text,Master:text,"chart_ylabel",X:real,Y:real,W:real,H:real,Body ->
+theme_text Theme:text,Master:text,"chart_ylabel",X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
 //    Override text implementation (don't show any box)
 // ----------------------------------------------------------------------------
-    theme_text Theme, Master, "chart_ylabel", X, Y, W, H, Body
+    theme_text_without_box Theme, Master, "chart_ylabel", X, Y, W, H, Body
 
 
 // ============================================================================
@@ -293,26 +284,25 @@ theme_chart_xaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
 
         theme_chart_axis Theme, Master, W/2, 0, W, 0.5
 
-        // Compute x-interval length
-        if(chart_xticks > 1) then
-            L := W / (chart_xticks - 1)
-        else
-            L := 0
+        if(chart_xticks > 0) then
 
-        // Show x-label below chart
-        for I in 0..(chart_xticks - 1) loop
-            locally
-                translatex L * I
+            // Compute x-interval length
+            L := W / chart_xticks
 
-                // Show vertical line
-                theme_chart_axis Theme, Master, 0, H/2, 0.5, H
+            // Show x-label below chart
+            for I in 0..chart_xticks loop
+                locally
+                    translatex L * I
 
-                // Get x-label
-                Label := do chart_xticks_label I
+                    // Show vertical line
+                    theme_chart_axis Theme, Master, 0, H/2, 0.5, H
 
-                text_box 0, -30, L, 50,
-                    theme_style Theme, Master, "chart_tick"
-                    text Label
+                    // Get x-label
+                    Label := do chart_xticks_label I
+
+                    text_box 0, -30, L, 50,
+                        theme_style Theme, Master, "chart_tick"
+                        text Label
 
 
 theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:real ->
@@ -349,7 +339,7 @@ theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
 //
 // ============================================================================
 
-theme_text Theme:text,Master:text,Style:text,X:real,Y:real,W:real,H:real,Body ->
+theme_text_without_box Theme:text,Master:text,Style:text,X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
 //   Draw a default text box
 // ----------------------------------------------------------------------------
