@@ -53,6 +53,7 @@ struct Chart : public QObject
     void setFormat(text f);
     void setFirst(uint f);
     void setLast(uint l);
+    void setDatasetsCount(uint count);
 
     // Data
     void reset();
@@ -97,6 +98,7 @@ public:
     text name;
     text master, style, format;
     uint first, last;
+    uint datasets_count; // Total of datasets to draw
 
     // Components
     text title;

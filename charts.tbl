@@ -84,6 +84,14 @@ PREFIX(ChartDatasetsCount,  tree, "chart_datasets_count",
        SYNOPSIS("Return count of datasets to draw")
        DESCRIPTION("Return count of datasets to draw"))
 
+PREFIX(ChartSetDatasetsCount,  tree, "chart_set_datasets_count",
+       PARM(name, text, "The name of the chart")
+       PARM(count, integer, "Total of datasets to draw"),
+       return ChartFactory::chart_set_datasets_count(name, count),
+       GROUP(module.Charts)
+       SYNOPSIS("Set count of datasets to draw")
+       DESCRIPTION("Set count of datasets to draw"))
+
 PREFIX(ChartCount,  tree, "chart_count",
        PARM(name, text, "The name of the chart")
        PARM(set, integer, ),

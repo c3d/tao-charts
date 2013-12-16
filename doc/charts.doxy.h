@@ -172,6 +172,34 @@ chart 1, 3, "bar"
 chart(Name:text, First:integer, Last:integer, Type:text);
 
 
+/**
+ * @~english
+ * Draw a chart using a list of datasets.
+ *
+ * This function is a shortcut of @ref chart(Name:text, L:list, Type:text, X:real, Y:real, W:real, H:real)
+ * with (X,Y) equal to (0,0) and (W,H) equal to (100%, 100%).
+ *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart {1, 3}, "bar"
+@endcode
+ * @~french
+ *
+ * Affiche un diagramme à partir d'une liste de série de données.
+ *
+ * Cette fonction est un raccourci de @ref chart(Name:text, L:list, Type:text, X:real, Y:real, W:real, H:real)
+ * avec (X, Y) égal à (0, 0) et (W, H) égal à (100%, 100%).
+ *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart {1, 3}, "bar"
+@endcode
+ **/
+chart(Name:text, L:list, Type:text);
+
+
 
 /**
  * @~english
@@ -403,6 +431,95 @@ chart 1, 3, "bar", 0, 0, 100%, 100%
  * @~
  **/
 chart(Name:text, First:integer, Last:integer, Type:text, X:real, Y:real, W:real, H:real);
+
+
+/**
+ * @~english
+ * Draw a chart using a list of datasets.
+ *
+ * This function draws a chart named @p Name using datasets given in
+ * the list @p L.\n
+ * There are four types of charts:
+ * <ul>
+ * <li> @ref Areacharts "@c area"
+ * <li> @ref Barcharts "@c bar"
+ * <li> @ref Linecharts "@c line"
+ * <li> @ref Piecharts "@c pie"
+ * </ul>
+ *
+ * You may change the chart style and/or format format with @ref chart_style
+ * and @ref chart_format.\n
+ * (@p W, @p H) represent the size of chart in percents, relative to the size
+ * of the slide drawing zone (@ref picture) which may depend on the chosen
+ * theme. For instance, with the default theme, this size is equals
+ * (1800, 750).
+ *
+@code
+// Show only datasets 1, 3 and 4
+chart "mychart", {1, 3, 4}, "bar", 0, 0, 1, 1
+@endcode
+ *
+ * @warning For pie chart, this function draws only the first dataset.
+ *
+ * @param Name Chart name.
+ * @param First First dataset of chart.
+ * @param Last Last dataset of chart.
+ * @param Type Chart type.
+ * @param X X-coordinate.
+ * @param Y Y-coordinate.
+ * @param W Chart width in percent.
+ * @param H Chart height in percent.
+ *
+ * @note You can also use this function without giving the chart @p Name thanks to @ref chart_current.
+@code
+chart_current "mychart"
+chart {1, 3, 4}, "bar", 0, 0, 100%, 100%
+@endcode
+ * @~french
+ *
+ * Affiche un diagramme à partir d'une liste de séries de données.
+ *
+ * Cette fonction affiche le diagramme nommé @p Nom
+ * à partir des données des séries présentes dans la liste L.\n
+ * Il existe quatre types de diagrammes:
+ * <ul>
+ * <li> @c area : @ref Areacharts
+ * <li> @c bar : @ref Barcharts
+ * <li> @c line : @ref Linecharts
+ * <li> @c pie : @ref Piecharts
+ * </ul>
+ *
+ * Vous pouvez changer le style et le format du diagramme avec @ref chart_style
+ * et @ref chart_format.\n
+ * (@p W, @p H) représente la taille du diagramme en pourcentage.\n
+ * La taille absolue du diagramme correspond à la taille de la zone de dessin d'une slide (@ref picture)
+ * et dépend donc du thème choisi.\n
+ * Par exemple, pour le thème par défaut, la taille d'un diagramme est (1800, 750).\n
+ *
+@code
+// Affiche seulement les séries  1, 3 et 4
+chart "mychart", {1, 3, 4}, "bar", 0, 0, 1, 1
+@endcode
+ *
+ * @warning Dans le cas du diagramme circulaire, cette fonction n'utilise que la première série de données.
+ *
+ * @param Name Nom du diagramme.
+ * @param First Première série du diagramme.
+ * @param Last Dernière série du diagramme.
+ * @param Type Type du diagramme.
+ * @param X Abscisse.
+ * @param Y Ordonnée.
+ * @param W Largeur en pourcentage.
+ * @param H Hauteur en pourcentage.
+ *
+ * @note Vous pouvez aussi utiliser cette fonction sans indiquer le paramètre @p Name grâce à @ref chart_current.
+@code
+chart_current "mychart"
+chart {1, 3, 4}, "bar", 0, 0, 100%, 100%
+@endcode
+ * @~
+ **/
+chart(Name:text, L:list, Type:text, X:real, Y:real, W:real, H:real);
 
 
 /**

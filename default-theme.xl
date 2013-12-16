@@ -61,7 +61,8 @@
 //     - Format: Current chart format (2D or 3D)
 //     - W: Chart width in percent
 //     - H: Chart height in percent
-//     - N: Current dataset (from 1 to 4)
+//     - N: Current index of dataset
+//     - Set: Current dataset
 //     - Index: Current index of data in the dataset
 //     - Ratio: Ratio of current value ( Value / MaxValue )
 //     - chart_max_data: The maximum data (according to chart master)
@@ -154,16 +155,16 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
 //
 // ============================================================================
 
-theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Index:integer ->
+theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer ->
 // ----------------------------------------------------------------------------
 //    Display a unique data in a chart
 // ----------------------------------------------------------------------------
     // Compute ratio for current data
-    Ratio := chart_data_ratio N, Index
-    theme_chart Theme, Master, Style, Format, W, H, N, Index, Ratio
+    Ratio := chart_data_ratio Set, Index
+    theme_chart Theme, Master, Style, Format, W, H, N, Set, Index, Ratio
 
 // Default chart style
-theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real -> false
+theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real -> false
 
 // ============================================================================
 //

@@ -88,7 +88,7 @@ data bar_chart_offset
 chart_get_bar_offset V:real -> V
 chart_get_bar_offset Other -> 0
 
-theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default stacked vertical bar chart
 // ----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, 
 
     // Translate vertically data at the same index (not for first dataset)
     offset -> 0.0
-    if(N <> chart_first) then
+    if(N <> 1) then
         offset := (chart_get_bar_offset(bar_chart_offset[I]))
     else
         offset := 0.0
@@ -136,7 +136,7 @@ theme_chart_xaxis Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:
 //
 // ============================================================================
 
-theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default stacked vertical bar chart
 // ----------------------------------------------------------------------------
@@ -144,7 +144,7 @@ theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real
 
     // Translate vertically data at the same index (not for first dataset)
     offset -> 0.0
-    if(N <> chart_first) then
+    if(N <> 1) then
         offset := (chart_get_bar_offset(bar_chart_offset[I]))
     else
         offset := 0.0
@@ -205,7 +205,7 @@ theme_chart_ylabel Theme:text, "bar", "horizontal_stacked", Body ->
 //
 // ============================================================================
 
-theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default horizontal bar chart
 // ----------------------------------------------------------------------------
@@ -220,7 +220,7 @@ theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:inte
         translatey L * Index
 
         // Translate data at the same index for different datasets
-        translatey S * (N - chart_first)
+        translatey S * (N - 1)
 
         // Add a translation to start intervals at X=0
         // (Avoid to display first bar at X=0)
@@ -303,7 +303,7 @@ theme_chart_ylabel Theme:text, "bar", "horizontal", Body ->
 //
 // ============================================================================
 
-theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default vertical bar chart
 // ----------------------------------------------------------------------------
@@ -318,7 +318,7 @@ theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:intege
         translatex L * Index
 
         // Translate data at the same index for different datasets
-        translatex S * (N - chart_first)
+        translatex S * (N - 1)
 
         // Add a translation to start intervals at X=0
         // (Avoid to display first bar at X=0)

@@ -59,6 +59,7 @@ public:
     static Tree_p chart_max_count(text);
     static Tree_p chart_count(text, uint set);
     static Tree_p chart_datasets_count(text);
+    static Tree_p chart_set_datasets_count(text name, uint count);
     static Tree_p chart_data_property(text name, int s, uint i, text);
     static Tree_p chart_data_set_property(text name, int s, uint i, text, double);
 

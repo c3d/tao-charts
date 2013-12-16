@@ -226,8 +226,18 @@ Tree_p ChartFactory::chart_datasets_count(text name)
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    double count = chart->last - chart->first + 1;
-    return new Integer(count);
+    return new Integer(chart->datasets_count);
+}
+
+
+Tree_p ChartFactory::chart_set_datasets_count(text name, uint count)
+// ----------------------------------------------------------------------------
+//  Set count of datasets to draw
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    chart->setDatasetsCount(count);
+    return xl_true;
 }
 
 

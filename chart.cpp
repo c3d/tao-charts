@@ -127,7 +127,7 @@ SETTER(setStyle, style, text);
 SETTER(setFormat, format, text);
 SETTER(setFirst, first, uint);
 SETTER(setLast, last, uint);
-
+SETTER(setDatasetsCount, datasets_count, uint);
 
 // ============================================================================
 //
