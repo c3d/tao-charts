@@ -90,7 +90,7 @@ chart_init "pie", Style:text ->
 //   Initialize pie chart
 // ----------------------------------------------------------------------------
     // Compute sum for pie chart
-    chart_set_max_axis (chart_sum chart_first), false
+    chart_set_max_axis (chart_sum(chart_first, true)), false
 
 
 chart Name:text, First:integer, Last:integer, "pie", X:real, Y:real, W:real, H:real ->
@@ -131,9 +131,12 @@ chart_init Master:text, Style:text ->
 //   Initialize charts and variables
 // ----------------------------------------------------------------------------
     chart_set_max_axis 0.0
+    chart_set_min_axis 0.0
     for N in 1..chart_datasets_count loop
         Max := chart_max (chart_datasets[N])
+        Min := chart_min (chart_datasets[N])
         chart_max_axis Style, Max
+        chart_min_axis Style, Min
 
 
 // Compute max axis for stacked charts
@@ -152,6 +155,24 @@ chart_max_axis Style:text, M:real ->
 // ----------------------------------------------------------------------------
     if(chart_max_axis < M) then
         chart_set_max_axis M
+
+
+// Compute max axis for stacked charts
+chart_min_axis "vertical_stacked", M:real   -> chart_min_axis "stacked", M
+chart_min_axis "horizontal_stacked", M:real   -> chart_min_axis "stacked", M
+chart_min_axis "stacked", M:real   ->
+// ----------------------------------------------------------------------------
+//   Compute max for stacked charts
+// ----------------------------------------------------------------------------
+    chart_set_min_axis (chart_min_axis + M) // We sum maximum values
+
+
+chart_min_axis Style:text, M:real ->
+// ----------------------------------------------------------------------------
+//   Compute min for regular charts
+// ----------------------------------------------------------------------------
+    if(chart_min_axis > M) then
+        chart_set_min_axis M
 
 
 // ============================================================================
@@ -438,8 +459,10 @@ chart_reset -> chart_reset chart_name
 chart_push_data N:integer, R:real -> chart_push_data chart_name, N, R
 chart_load_csv T:text -> chart_load_csv chart_name, T
 chart_load_tsv T:text -> chart_load_tsv chart_name, T
+chart_min N:integer -> chart_min chart_name, N
 chart_max N:integer -> chart_max chart_name, N
-chart_sum N:integer -> chart_sum chart_name, N
+chart_sum N:integer -> chart_sum chart_name, N, true
+chart_sum N:integer, B:boolean -> chart_sum chart_name, N, B
 chart_max_count -> chart_max_count chart_name
 chart_datasets_count -> chart_datasets_count chart_name
 chart_set_datasets_count C:integer -> chart_set_datasets_count chart_name, C
@@ -461,6 +484,9 @@ chart_set_legend N:integer, T:text -> chart_set_legend chart_name, N, T
 chart_set_max_axis R:real -> chart_set_max_axis chart_name, R, true
 chart_set_max_axis R:real, B:boolean -> chart_set_max_axis chart_name, R, B
 chart_max_axis -> chart_max_axis chart_name
+chart_set_min_axis R:real -> chart_set_min_axis chart_name, R, true
+chart_set_min_axis R:real, B:boolean -> chart_set_min_axis chart_name, R, B
+chart_min_axis -> chart_min_axis chart_name
 
 // Axis labels
 chart_xlabel -> chart_xlabel chart_name

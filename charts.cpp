@@ -173,20 +173,21 @@ Tree_p ChartFactory::chart_data_ratio(text name, uint set, uint index)
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    if(chart->maxAxis > 0)
-        return new Real(chart->getData(set, index) / chart->maxAxis);
+    double range = chart->maxAxis - chart->minAxis;
+    if(range > 0)
+        return new Real(chart->getData(set, index) / range);
     else
         return new Real(0.0);
 }
 
 
-Tree_p ChartFactory::chart_sum(text name, uint set)
+Tree_p ChartFactory::chart_sum(text name, uint set, bool abs)
 // ----------------------------------------------------------------------------
 //  Sum data in a dataset
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    return new Real(chart->computeSum(set));
+    return new Real(chart->computeSum(set, abs));
 }
 
 
@@ -199,6 +200,14 @@ Tree_p ChartFactory::chart_max(text name, uint set)
     return new Real(chart->computeMax(set));
 }
 
+Tree_p ChartFactory::chart_min(text name, uint set)
+// ----------------------------------------------------------------------------
+//  Min data of a dataset
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    return new Real(chart->computeMin(set));
+}
 
 Tree_p ChartFactory::chart_max_count(text name)
 // ----------------------------------------------------------------------------
@@ -563,6 +572,27 @@ Tree_p ChartFactory::chart_max_axis(text name, double max, bool adjust)
 {
     foreach(Chart* chart, instance()->chartsList(name))
         chart->setMaxAxis(max, adjust);
+    return xl_true;
+}
+
+
+Tree_p ChartFactory::chart_min_axis(text name)
+// ----------------------------------------------------------------------------
+//  Return minimum value on the axis
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    return new Integer(chart->minAxis);
+}
+
+
+Tree_p ChartFactory::chart_min_axis(text name, double min, bool adjust)
+// ----------------------------------------------------------------------------
+//  Set minimum value on the axis
+// ----------------------------------------------------------------------------
+{
+    foreach(Chart* chart, instance()->chartsList(name))
+        chart->setMinAxis(min, adjust);
     return xl_true;
 }
 

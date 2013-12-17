@@ -208,7 +208,7 @@ bool Chart::setDataProperty(int s, uint i, text property, double value)
 }
 
 
-double Chart::computeSum(uint s)
+double Chart::computeSum(uint s, bool absolute)
 // ----------------------------------------------------------------------------
 //   Compute sum of all data in a set
 // ----------------------------------------------------------------------------
@@ -218,7 +218,10 @@ double Chart::computeSum(uint s)
     {
         uint size = datasets[s].size();
         for(uint i = 0; i < size; i++)
-            sum += datasets[s][i]->data;
+            if(absolute)
+                sum += abs(datasets[s][i]->data);
+            else
+                sum += datasets[s][i]->data;
     }
 
     return sum;
@@ -243,6 +246,27 @@ double Chart::computeMax(uint s)
     }
 
     return max;
+}
+
+
+double Chart::computeMin(uint s)
+// ----------------------------------------------------------------------------
+//   Get minimum value in a set
+// ----------------------------------------------------------------------------
+{
+    double min = 0;
+    if(datasets.size() > 0)
+    {
+        uint size = datasets[s].size();
+        for(uint i = 0; i < size; i++)
+        {
+            double value = datasets[s][i]->data;
+            if(min > value)
+                min = value;
+        }
+    }
+
+    return min;
 }
 
 
@@ -294,6 +318,16 @@ void Chart::setMaxAxis(double max, bool adjust)
 }
 
 
+void Chart::setMinAxis(double min, bool adjust)
+// ----------------------------------------------------------------------------
+//   Change maximum value of y-axis
+// ----------------------------------------------------------------------------
+{
+    minAxis = min;         // Change minimum of axis
+    auto_minAxis = adjust; // Auto-adjust minimum if needed
+}
+
+
 // ============================================================================
 //
 //   Ticks
@@ -338,12 +372,16 @@ void Chart::autocomputeTicks()
     step = computeFraction(range/MAX_TICKS, true);
 
     // Auto adjust maximum of y-axis if needed
-    if(auto_maxAxis)
+    if(auto_maxAxis && maxAxis)
         maxAxis = ceil(maxAxis / step) * step;
+
+    // Auto adjust maximum of y-axis if needed
+    if(auto_minAxis && minAxis)
+        minAxis = (ceil(minAxis / step) - 1) * step;
 
     // Autocompute ticks number of y-axis if needed
     if(auto_yticks)
-        yticks = maxAxis / step;
+        yticks = (maxAxis - minAxis) / step;
 
     // Autocompute ticks number of x-axis if needed
     if(auto_xticks)
@@ -430,12 +468,11 @@ void Chart::autocomputeTicksLabels()
     if(auto_yticks_labels && yticks)
     {
         yticks_labels.clear();
-        // Compute ticks labels of y-axis
-        for(uint i = 0; i <= yticks; i++)
-        {
-            // Compute label for current tick
-            double label = ((double) maxAxis / yticks) * i;
+        double step = (maxAxis - minAxis) / yticks;
 
+        // Compute ticks labels of y-axis
+        for(double label = minAxis; label <= maxAxis; label+=step)
+        {
             // Push it
             stringstream out;
             out << label;

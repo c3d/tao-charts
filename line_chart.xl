@@ -88,7 +88,7 @@ theme_chart Theme:text, "line", "point", Format:text, W:real, H:real, N:integer,
         else
             X := 0
 
-        Y := Ratio * H
+        Y := Ratio * H + (chart_offset H)
         S := theme_size(Theme, "line", "point")
         point X, Y, 0, S
 
@@ -119,7 +119,7 @@ theme_chart Theme:text, "line", "line", Format:text, W:real, H:real, N:integer, 
         else
             X := 0
 
-        Y := Ratio * H
+        Y := Ratio * H + (chart_offset H)
 
         // Do not show line for first index
         if (Index <> 0) then

@@ -63,8 +63,9 @@ struct Chart : public QObject
     double getDataProperty(int s, uint i, text property);
     bool   setDataProperty(int s, uint i, text property, double value);
 
-    double computeSum(uint s);
+    double computeSum(uint s, bool abs = false);
     double computeMax(uint s);
+    double computeMin(uint s);
 
     // Legend
     void setLegend(uint N, text entry);
@@ -72,6 +73,7 @@ struct Chart : public QObject
 
     // Axis
     void setMaxAxis(double max, bool adjust = true);
+    void setMinAxis(double min, bool adjust = true);
 
     // Ticks
     void setXTicks(uint ticks);
@@ -106,7 +108,7 @@ public:
 
     // Axis
     double step;
-    uint maxAxis, minAxis;
+    double maxAxis, minAxis;
     uint xticks, yticks;
     text xlabel, ylabel;
     vector<text> xticks_labels, yticks_labels;
@@ -119,7 +121,7 @@ public:
 private:
     #define MAX_TICKS 10
 
-    bool auto_maxAxis;
+    bool auto_maxAxis, auto_minAxis;
     bool auto_xticks, auto_yticks;
     bool auto_xticks_labels, auto_yticks_labels;
 

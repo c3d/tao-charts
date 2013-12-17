@@ -54,8 +54,9 @@ public:
     static Tree_p chart_push_data(text name, uint unit, float value);
     static Tree_p chart_data(text name, uint set, uint index);
     static Tree_p chart_data_ratio(text name, uint set, uint index);
-    static Tree_p chart_sum(text name, uint set);
+    static Tree_p chart_sum(text name, uint set, bool abs);
     static Tree_p chart_max(text name, uint set);
+    static Tree_p chart_min(text name, uint set);
     static Tree_p chart_max_count(text);
     static Tree_p chart_count(text, uint set);
     static Tree_p chart_datasets_count(text);
@@ -96,6 +97,8 @@ public:
     // Axis
     static Tree_p chart_max_axis(text name);
     static Tree_p chart_max_axis(text name, double max, bool adjust);
+    static Tree_p chart_min_axis(text name);
+    static Tree_p chart_min_axis(text name, double max, bool adjust);
     static Tree_p chart_xticks(text name);
     static Tree_p chart_xticks(text name, uint ticks);
     static Tree_p chart_yticks(text name);
