@@ -56,8 +56,9 @@ PREFIX(ChartDataRatio,  tree, "chart_data_ratio",
 
 PREFIX(ChartSum,  tree,  "chart_sum",
        PARM(name, text, "The name of the chart")
-       PARM(set, integer, ),
-       return ChartFactory::chart_sum(name, set),
+       PARM(set, integer, )
+       PARM(abs, boolean, ),
+       return ChartFactory::chart_sum(name, set, abs),
        GROUP(module.Charts)
        SYNOPSIS("Sum data in a dataset")
        DESCRIPTION("Sum data in a dataset"))
@@ -69,6 +70,14 @@ PREFIX(ChartMax,  tree,  "chart_max",
        GROUP(module.Charts)
        SYNOPSIS("Return maximum data of a dataset")
        DESCRIPTION("Return maximum data of a dataset"))
+
+PREFIX(ChartMin,  tree,  "chart_min",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, ),
+       return ChartFactory::chart_min(name, set),
+       GROUP(module.Charts)
+       SYNOPSIS("Return minimum data of a dataset")
+       DESCRIPTION("Return minimum data of a dataset"))
 
 PREFIX(ChartMaxCount,  tree, "chart_max_count",
        PARM(name, text, "The name of the chart"),
@@ -83,6 +92,29 @@ PREFIX(ChartDatasetsCount,  tree, "chart_datasets_count",
        GROUP(module.Charts)
        SYNOPSIS("Return count of datasets to draw")
        DESCRIPTION("Return count of datasets to draw"))
+
+PREFIX(ChartResetDatasets,  tree, "chart_reset_datasets",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_reset_datasets(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Reset count of datasets to draw")
+       DESCRIPTION("Reset count of datasets to draw"))
+
+PREFIX(ChartPushDataset,  tree, "chart_push_dataset",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, "dataset to pushed"),
+       return ChartFactory::chart_push_dataset(name, set),
+       GROUP(module.Charts)
+       SYNOPSIS("Push a datasets to the list to draw")
+       DESCRIPTION("Push a datasets to the list to draw"))
+
+PREFIX(ChartGetDataset,  tree, "chart_dataset",
+       PARM(name, text, "The name of the chart")
+       PARM(index, integer, "index of dataset"),
+       return ChartFactory::chart_dataset(name, index),
+       GROUP(module.Charts)
+       SYNOPSIS("Return a datasets according to its index")
+       DESCRIPTION("Return a datasets according to its index"))
 
 PREFIX(ChartCount,  tree, "chart_count",
        PARM(name, text, "The name of the chart")
@@ -148,11 +180,8 @@ PREFIX(ChartCurrent,  tree, "chart_current",
 
 PREFIX(ChartCreate,  tree, "chart_create",
        PARM(name, text, "The name of the chart")
-       PARM(start, integer, )
-       PARM(end, integer, )
-       PARM(master, text, )
        PARM(p, code, "The program to init chart"),
-       return ChartFactory::chart_create(context, name, start, end, master, p),
+       return ChartFactory::chart_create(context, name, p),
        GROUP(module.Charts)
        SYNOPSIS("Create a chart")
        DESCRIPTION("Create a chart"))
@@ -163,11 +192,18 @@ PREFIX(ChartName,  tree, "chart_name",
        SYNOPSIS("Return current chart name")
        DESCRIPTION("Return current chart name"))
 
-PREFIX(ChartMaster,  tree, "chart_master",
+PREFIX(ChartType,  tree, "chart_type",
        PARM(name, text, "The name of the chart"),
-       return ChartFactory::chart_master(name),
-       SYNOPSIS("Return master of a chart")
-       DESCRIPTION("Return master of a chart"))
+       return ChartFactory::chart_type(name),
+       SYNOPSIS("Return type of a chart")
+       DESCRIPTION("Return type of a chart"))
+
+PREFIX(ChartSetType,  tree, "chart_set_type",
+       PARM(name, text, "The name of the chart")
+       PARM(type, text, "The type of the chart"),
+       return ChartFactory::chart_type(name, type),
+       SYNOPSIS("Set type of a chart")
+       DESCRIPTION("Set type of a chart"))
 
 PREFIX(ChartStyle,  tree, "chart_style",
        PARM(name, text, "The name of the chart"),
@@ -317,6 +353,22 @@ PREFIX(ChartSetMaxAxis,  tree, "chart_set_max_axis",
        GROUP(module.Charts)
        SYNOPSIS("Set maximum value on the axis")
        DESCRIPTION("Set maximum value on the axis"))
+
+PREFIX(ChartMinAxis,  tree, "chart_min_axis",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_min_axis(name),
+       GROUP(module.Charts)
+       SYNOPSIS("Return minimum value on the axis")
+       DESCRIPTION("Return minimum value on the axis"))
+
+PREFIX(ChartSetMinAxis,  tree, "chart_set_min_axis",
+       PARM(name, text, "The name of the chart")
+       PARM(min, real, )
+       PARM(adjust, boolean, ),
+       return ChartFactory::chart_min_axis(name, min, adjust),
+       GROUP(module.Charts)
+       SYNOPSIS("Set minimum value on the axis")
+       DESCRIPTION("Set minimum value on the axis"))
 
 PREFIX(ChartXTicks,  tree, "chart_xticks",
        PARM(name, text, "The name of the chart"),
