@@ -150,7 +150,7 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
 
     // Draw chart
     box Master, -175, -30, 1400, 600
-    chart -800, -275, 1200, 500, Style, Format
+    chart_series -800, -275, 1200, 500, Master, Style, Format
 
 
 // ============================================================================
