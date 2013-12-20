@@ -74,7 +74,7 @@ theme_format Theme:text, "line", "point", "3D" -> false
 // ============================================================================
 
 
-theme_chart Theme:text, "line", "point", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "line", "point", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default point chart
 // ----------------------------------------------------------------------------
@@ -88,7 +88,7 @@ theme_chart Theme:text, "line", "point", Format:text, W:real, H:real, N:integer,
         else
             X := 0
 
-        Y := Ratio * H + (chart_offset H)
+        Y := Ratio * H
         S := theme_size(Theme, "line", "point")
         point X, Y, 0, S
 
@@ -103,7 +103,7 @@ theme_chart Theme:text, "line", "point", Format:text, W:real, H:real, N:integer,
 LINE_PREVIOUS_X -> 0.0
 LINE_PREVIOUS_Y -> 0.0
 
-theme_chart Theme:text, "line", "line", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "line", "line", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default line chart
 // ----------------------------------------------------------------------------
@@ -119,7 +119,7 @@ theme_chart Theme:text, "line", "line", Format:text, W:real, H:real, N:integer, 
         else
             X := 0
 
-        Y := Ratio * H + (chart_offset H)
+        Y := Ratio * H
 
         // Do not show line for first index
         if (Index <> 0) then
@@ -142,9 +142,9 @@ theme_chart Theme:text, "line", "line", Format:text, W:real, H:real, N:integer, 
 // ============================================================================
 
 
-theme_chart Theme:text, "line", Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "line", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default point&line chart
 // ----------------------------------------------------------------------------
-    theme_chart Theme, "line", "point", Format, W, H, N, Set, Index, Ratio
-    theme_chart Theme, "line", "line", Format, W, H, N, Set, Index, Ratio
+    theme_chart Theme, "line", "point", Format, W, H, N, Index, Ratio
+    theme_chart Theme, "line", "line", Format, W, H, N, Index, Ratio

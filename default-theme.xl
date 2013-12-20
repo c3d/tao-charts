@@ -61,8 +61,7 @@
 //     - Format: Current chart format (2D or 3D)
 //     - W: Chart width in percent
 //     - H: Chart height in percent
-//     - N: Current index of dataset
-//     - Set: Current dataset
+//     - N: Current dataset (from 1 to 4)
 //     - Index: Current index of data in the dataset
 //     - Ratio: Ratio of current value ( Value / MaxValue )
 //     - chart_max_data: The maximum data (according to chart master)
@@ -74,10 +73,6 @@ import Slides
 
 // This file is designed to be overriden by themes, etc.
 override_priority -2
-
-// Compute offset needed to adjust position
-// of charts (case of negative values)
-chart_offset R:real -> -(chart_min_axis * R) / (chart_max_axis - chart_min_axis)
 
 import "area_chart.xl"
 import "bar_chart.xl"
@@ -150,7 +145,7 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
 
     // Draw chart
     box Master, -175, -30, 1400, 600
-    chart_series -800, -275, 1200, 500, Master, Style, Format
+    chart -800, -275, 1200, 500, Style, Format
 
 
 // ============================================================================
@@ -159,17 +154,16 @@ theme_chart_layout Theme:text, Master:text, Style:text, Format:text ->
 //
 // ============================================================================
 
-theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer ->
+theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Index:integer ->
 // ----------------------------------------------------------------------------
 //    Display a unique data in a chart
 // ----------------------------------------------------------------------------
     // Compute ratio for current data
-    Ratio := chart_data_ratio Set, Index
-    theme_chart Theme, Master, Style, Format, W, H, N, Set, Index, Ratio
-
+    Ratio := chart_data_ratio N, Index
+    theme_chart Theme, Master, Style, Format, W, H, N, Index, Ratio
 
 // Default chart style
-theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real -> false
+theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real -> false
 
 // ============================================================================
 //
