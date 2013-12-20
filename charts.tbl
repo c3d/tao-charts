@@ -93,13 +93,28 @@ PREFIX(ChartDatasetsCount,  tree, "chart_datasets_count",
        SYNOPSIS("Return count of datasets to draw")
        DESCRIPTION("Return count of datasets to draw"))
 
-PREFIX(ChartSetDatasetsCount,  tree, "chart_set_datasets_count",
-       PARM(name, text, "The name of the chart")
-       PARM(count, integer, "Total of datasets to draw"),
-       return ChartFactory::chart_set_datasets_count(name, count),
+PREFIX(ChartResetDatasets,  tree, "chart_reset_datasets",
+       PARM(name, text, "The name of the chart"),
+       return ChartFactory::chart_reset_datasets(name),
        GROUP(module.Charts)
-       SYNOPSIS("Set count of datasets to draw")
-       DESCRIPTION("Set count of datasets to draw"))
+       SYNOPSIS("Reset count of datasets to draw")
+       DESCRIPTION("Reset count of datasets to draw"))
+
+PREFIX(ChartPushDataset,  tree, "chart_push_dataset",
+       PARM(name, text, "The name of the chart")
+       PARM(set, integer, "dataset to pushed"),
+       return ChartFactory::chart_push_dataset(name, set),
+       GROUP(module.Charts)
+       SYNOPSIS("Push a datasets to the list to draw")
+       DESCRIPTION("Push a datasets to the list to draw"))
+
+PREFIX(ChartGetDataset,  tree, "chart_dataset",
+       PARM(name, text, "The name of the chart")
+       PARM(index, integer, "index of dataset"),
+       return ChartFactory::chart_dataset(name, index),
+       GROUP(module.Charts)
+       SYNOPSIS("Return a datasets according to its index")
+       DESCRIPTION("Return a datasets according to its index"))
 
 PREFIX(ChartCount,  tree, "chart_count",
        PARM(name, text, "The name of the chart")
@@ -165,11 +180,8 @@ PREFIX(ChartCurrent,  tree, "chart_current",
 
 PREFIX(ChartCreate,  tree, "chart_create",
        PARM(name, text, "The name of the chart")
-       PARM(start, integer, )
-       PARM(end, integer, )
-       PARM(master, text, )
        PARM(p, code, "The program to init chart"),
-       return ChartFactory::chart_create(context, name, start, end, master, p),
+       return ChartFactory::chart_create(context, name, p),
        GROUP(module.Charts)
        SYNOPSIS("Create a chart")
        DESCRIPTION("Create a chart"))
@@ -180,11 +192,18 @@ PREFIX(ChartName,  tree, "chart_name",
        SYNOPSIS("Return current chart name")
        DESCRIPTION("Return current chart name"))
 
-PREFIX(ChartMaster,  tree, "chart_master",
+PREFIX(ChartType,  tree, "chart_type",
        PARM(name, text, "The name of the chart"),
-       return ChartFactory::chart_master(name),
-       SYNOPSIS("Return master of a chart")
-       DESCRIPTION("Return master of a chart"))
+       return ChartFactory::chart_type(name),
+       SYNOPSIS("Return type of a chart")
+       DESCRIPTION("Return type of a chart"))
+
+PREFIX(ChartSetType,  tree, "chart_set_type",
+       PARM(name, text, "The name of the chart")
+       PARM(type, text, "The type of the chart"),
+       return ChartFactory::chart_type(name, type),
+       SYNOPSIS("Set type of a chart")
+       DESCRIPTION("Set type of a chart"))
 
 PREFIX(ChartStyle,  tree, "chart_style",
        PARM(name, text, "The name of the chart"),

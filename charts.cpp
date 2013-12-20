@@ -235,18 +235,39 @@ Tree_p ChartFactory::chart_datasets_count(text name)
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    return new Integer(chart->datasets_count);
+    return new Integer(chart->datasetsToDraw.size());
 }
 
 
-Tree_p ChartFactory::chart_set_datasets_count(text name, uint count)
+Tree_p ChartFactory::chart_reset_datasets(text name)
 // ----------------------------------------------------------------------------
-//  Set count of datasets to draw
+//  Reset count of datasets to draw
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    chart->setDatasetsCount(count);
+    chart->resetDataSets();
     return xl_true;
+}
+
+
+Tree_p ChartFactory::chart_push_dataset(text name, uint s)
+// ----------------------------------------------------------------------------
+//  Push a dataset to the list to draw
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    chart->pushDataSet(s);
+    return xl_true;
+}
+
+
+Tree_p ChartFactory::chart_dataset(text name, uint index)
+// ----------------------------------------------------------------------------
+//  Get number of a dataset
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    return new Integer(chart->getDataSet(index));
 }
 
 
@@ -342,16 +363,12 @@ Tree_p ChartFactory::chart_current(text name)
 }
 
 
-Tree_p ChartFactory::chart_create(Context *context, text name, uint first, uint last, text master, Tree_p prog)
+Tree_p ChartFactory::chart_create(Context *context, text name, Tree_p prog)
 // ----------------------------------------------------------------------------
 //  Create a chart
 // ----------------------------------------------------------------------------
 {
     current = instance()->chart(name);
-    current->setFirst(first);
-    current->setLast(last);
-    current->setMaster(master);
-
     if(current->needInit)
     {
         context->Evaluate(prog);
@@ -374,13 +391,24 @@ Tree_p ChartFactory::chart_name(text)
 }
 
 
-Tree_p ChartFactory::chart_master(text name)
+Tree_p ChartFactory::chart_type(text name)
 // ----------------------------------------------------------------------------
-//  Return master of a chart
+//  Return type of a chart
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    return new Text(chart->master);
+    return new Text(chart->type);
+}
+
+
+Tree_p ChartFactory::chart_type(text name, text type)
+// ----------------------------------------------------------------------------
+//  Set tyoe of a chart
+// ----------------------------------------------------------------------------
+{
+    foreach(Chart* chart, instance()->chartsList(name))
+        chart->setType(type);
+    return xl_true;
 }
 
 
