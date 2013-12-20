@@ -102,7 +102,7 @@ theme_chart Theme:text, "area", "stacked", Format:text, W:real, H:real, N:intege
 
         // If first set, then use no offset
         // Otherwise get offset
-        if(N <> 0) then
+        if(N <> 1) then
             offset := (get_area_offset(area_chart_offset[I]))
             area_chart_offset[I] := Y + offset
         else

@@ -55,10 +55,8 @@ void Chart::reset()
 // ----------------------------------------------------------------------------
 {
     // Chart settings
-    type  = style = format = "";
-    first = last = 0;
-    datasetsMask = 0;
-    previousDatasetsMask = 0;
+    master = style = format = "";
+    first  = last = 0;
 
     // Title
     title = "";
@@ -95,10 +93,6 @@ void Chart::init()
 //   Init chart
 // ----------------------------------------------------------------------------
 {
-    // Force init if necessary
-    if(previousDatasetsMask != datasetsMask)
-        needInit = true;
-
     // We need to init chart and there is
     // at least one data, so do it.
     if(needInit && data_count > 0)
@@ -106,7 +100,6 @@ void Chart::init()
         autocomputeTicks();
         autocomputeTicksLabels();
         needInit = false;
-        previousDatasetsMask = datasetsMask;
     }
 }
 
@@ -129,11 +122,12 @@ void Chart::Name(Type v)              \
     }                                 \
 }                                     \
 
-SETTER(setType, type, text);
+SETTER(setMaster, master, text);
 SETTER(setStyle, style, text);
 SETTER(setFormat, format, text);
 SETTER(setFirst, first, uint);
 SETTER(setLast, last, uint);
+SETTER(setDatasetsCount, datasets_count, uint);
 
 // ============================================================================
 //
@@ -148,16 +142,16 @@ void Chart::pushData(uint set, double data)
 {
     ChartData* d = new ChartData(data);
 
-    uint count = datasets[set].data.size();
+    uint count = datasets[set].size();
 
     // Update maximum data count if needed
     if(count >= data_count)
         data_count = count + 1;
 
     // Push data
-    datasets[set].data.push_back(d);
+    datasets[set].push_back(d);
 
-    // As we have changed data, need init
+    // As we have change data, need init
     needInit = true;
 }
 
@@ -168,7 +162,7 @@ double Chart::getDataCount(uint s)
 // ----------------------------------------------------------------------------
 {
     if(datasets.size() > 0)
-        return datasets[s].dataCount();
+        return datasets[s].size();
     else
         return 0;
 }
@@ -179,8 +173,8 @@ double Chart::getData(uint s, uint i)
 //   Return data of chart
 // ----------------------------------------------------------------------------
 {
-    if(datasets.size() > 0 && datasets[s].dataCount() > 0)
-        return datasets[s].dataValue(i);
+    if(datasets.size() > 0 && datasets[s].size() > 0)
+        return datasets[s][i]->data;
     else
         return 0;
 }
@@ -191,9 +185,9 @@ double Chart::getDataProperty(int s, uint i, text property)
 //   Return value of a data property
 // ----------------------------------------------------------------------------
 {
-    if(datasets.size() > 0 && datasets[s].dataCount() > 0)
-        if((i < datasets[s].data.size()) && (datasets[s].dataHasProperty(i, property)))
-            return datasets[s].dataProperty(i, property);
+    if(datasets.size() > 0 && datasets[s].size() > 0)
+        if(datasets[s][i]->properties.find(property) != datasets[s][i]->properties.end())
+            return datasets[s][i]->properties[property];
 
     return 0;
 }
@@ -204,57 +198,13 @@ bool Chart::setDataProperty(int s, uint i, text property, double value)
 //   Set value of a data property
 // ----------------------------------------------------------------------------
 {
-    if(datasets.size() > 0 && datasets[s].dataCount() > 0)
+    if(datasets.size() > 0 && datasets[s].size() > 0)
     {
-        if(i < datasets[s].data.size())
-        {
-            datasets[s].data[i]->properties[property] = value;
-            return true;
-        }
+        datasets[s][i]->properties[property] = value;
+        return true;
     }
 
     return false;
-}
-
-
-uint Chart::getDataSet(uint index)
-// ----------------------------------------------------------------------------
-//   Get dataset according to an index
-// ----------------------------------------------------------------------------
-{
-    if(index < datasetsToDraw.size())
-        return datasetsToDraw[index];
-
-    return 0;
-}
-
-
-void Chart::pushDataSet(uint s)
-// ----------------------------------------------------------------------------
-//   Push a dataset in the list to draw
-// ----------------------------------------------------------------------------
-{
-    // Dataset already pushed, so ignore it
-    if(datasetsMask & (1 << s))
-        return;
-
-    if(datasetsToDraw.size() == 0)
-        first = s;
-
-    last = s;
-
-    datasetsMask ^= (1 << s);
-    datasetsToDraw.push_back(s);
-}
-
-
-void Chart::resetDataSets()
-// ----------------------------------------------------------------------------
-//   Reset all datasets status
-// ----------------------------------------------------------------------------
-{
-    datasetsMask = 0;
-    datasetsToDraw.clear();
 }
 
 
@@ -266,12 +216,12 @@ double Chart::computeSum(uint s, bool absolute)
     double sum = 0;
     if(datasets.size() > 0)
     {
-        uint size = datasets[s].dataCount();
+        uint size = datasets[s].size();
         for(uint i = 0; i < size; i++)
             if(absolute)
-                sum += abs(datasets[s].dataValue(i));
+                sum += abs(datasets[s][i]->data);
             else
-                sum += datasets[s].dataValue(i);
+                sum += datasets[s][i]->data;
     }
 
     return sum;
@@ -286,10 +236,10 @@ double Chart::computeMax(uint s)
     double max = 0;
     if(datasets.size() > 0)
     {
-        uint size = datasets[s].dataCount();
+        uint size = datasets[s].size();
         for(uint i = 0; i < size; i++)
         {
-            double value = datasets[s].dataValue(i);
+            double value = datasets[s][i]->data;
             if(max < value)
                 max = value;
         }
@@ -307,10 +257,10 @@ double Chart::computeMin(uint s)
     double min = 0;
     if(datasets.size() > 0)
     {
-        uint size = datasets[s].dataCount();
+        uint size = datasets[s].size();
         for(uint i = 0; i < size; i++)
         {
-            double value = datasets[s].dataValue(i);
+            double value = datasets[s][i]->data;
             if(min > value)
                 min = value;
         }

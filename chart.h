@@ -30,23 +30,12 @@ using namespace Tao;
 
 
 struct ChartData {
-    ChartData(double d) : value(d) {}
+    ChartData(double d) : data(d) {}
 
-    double value;
+    double data;
     std::map<text, double> properties;
 };
 
-struct ChartDataSet {
-    ChartDataSet(uint i = 0) : index(i) {}
-
-    int dataCount() { return data.size(); }
-    double dataValue(uint i) { return data[i]->value; }
-    bool   dataHasProperty(uint i, text p) { return (data[i]->properties.find(p) != data[i]->properties.end()); }
-    double dataProperty(uint i, text p) { return data[i]->properties[p]; }
-
-    uint index;
-    vector<ChartData*> data;
-};
 
 struct Chart : public QObject
 {
@@ -59,7 +48,7 @@ struct Chart : public QObject
     void init();
 
     // Chart
-    void setType(text m);
+    void setMaster(text m);
     void setStyle(text s);
     void setFormat(text f);
     void setFirst(uint f);
@@ -73,11 +62,6 @@ struct Chart : public QObject
     double getData(uint s, uint i);
     double getDataProperty(int s, uint i, text property);
     bool   setDataProperty(int s, uint i, text property, double value);
-
-    // Datasets
-    uint   getDataSet(uint index);
-    void   pushDataSet(uint s);
-    void   resetDataSets();
 
     double computeSum(uint s, bool abs = false);
     double computeMax(uint s);
@@ -114,12 +98,9 @@ public:
 
     // Chart
     text name;
-    text type, style, format;
+    text master, style, format;
     uint first, last;
-
-    uint64 previousDatasetsMask; // Previous mask of datasets
-    uint64 datasetsMask;         // Mask of datasets to draw
-    vector<uint> datasetsToDraw; // List of datasets to draw
+    uint datasets_count; // Total of datasets to draw
 
     // Components
     text title;
@@ -144,7 +125,8 @@ private:
     bool auto_xticks, auto_yticks;
     bool auto_xticks_labels, auto_yticks_labels;
 
-    typedef std::map<uint, ChartDataSet> data_map;
+    typedef std::vector<ChartData*> data;
+    typedef std::map<uint, data> data_map;
     data_map  datasets;
 };
 

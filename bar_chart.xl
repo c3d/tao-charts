@@ -100,7 +100,7 @@ theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, 
     // consecutively stacked bars
     offset -> 0.0
     offset := 0.0
-    if(N = 0) then
+    if(N = 1) then
         bar_chart_positive_offsets[I] := 0.0
         bar_chart_negative_offsets[I] := 0.0
     else
@@ -159,7 +159,7 @@ theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real
     // Translate vertically data at the same index (not for first dataset)
     offset -> 0.0
     offset := 0.0
-    if(N = 0) then
+    if(N = 1) then
         bar_chart_positive_offsets[I] := 0.0
         bar_chart_negative_offsets[I] := 0.0
     else
@@ -245,7 +245,7 @@ theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:inte
         Y := L * Index
 
         // Translate data at the same index for different datasets
-        Y := Y + S * N
+        Y := Y + S * (N - 1)
 
         // Readjust chart position to the origin (in case of negative values)
         X := chart_offset W
@@ -345,7 +345,7 @@ theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:intege
         X := L * Index
 
         // Translate data at the same index for different datasets
-        X := X + S * N
+        X := X + S * (N - 1)
 
         // Readjust chart position to the origin (in case of negative values)
         Y := chart_offset H

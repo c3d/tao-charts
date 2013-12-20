@@ -93,7 +93,7 @@ theme_chart_layout Theme:text, "pie", Style:text, Format:text ->
 
     // Draw chart
     box "pie", 0, -30, 600, 600
-    chart_series 0, -25, 600, 600, "pie", Style, Format
+    chart 0, -25, 600, 600, Style, Format
 
 // ============================================================================
 //
