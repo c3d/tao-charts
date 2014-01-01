@@ -77,7 +77,7 @@ AREA_PREVIOUS_Y := 0.0
 data area_chart_offset
 
 
-theme_chart Theme:text, "area", "stacked", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "area", "stacked", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default area chart
 // ----------------------------------------------------------------------------
@@ -102,14 +102,12 @@ theme_chart Theme:text, "area", "stacked", Format:text, W:real, H:real, N:intege
 
         // If first set, then use no offset
         // Otherwise get offset
-        if(N <> 0) then
+        if(N <> chart_first) then
             offset := (get_area_offset(area_chart_offset[I]))
             area_chart_offset[I] := Y + offset
         else
             offset := 0.0
             area_chart_offset[I] := Y
-
-        offset := offset + (chart_offset H)
 
         // Do not display area for first index
         if(Index <> 0) then
@@ -136,7 +134,7 @@ theme_chart Theme:text, "area", "stacked", Format:text, W:real, H:real, N:intege
 //
 // ============================================================================
 
-theme_chart Theme:text, "area", Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "area", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default area chart
 // ----------------------------------------------------------------------------
@@ -149,19 +147,16 @@ theme_chart Theme:text, "area", Style:text, Format:text, W:real, H:real, N:integ
 
         Y := Ratio * H
 
-        // Readjust chart position to the origin (in case of negative values)
-        offset := chart_offset H
-
         // Do not display area for first index
         if (Index <> 0) then
             theme_format Theme, "area", "area", Format
             theme_color Theme, "area", "area", N
             path
-                move_to AREA_PREVIOUS_X, offset
+                move_to AREA_PREVIOUS_X, 0
                 endpoints_style NONE, NONE
-                line_to AREA_PREVIOUS_X, (AREA_PREVIOUS_Y + offset)
-                line_to X, Y + offset
-                line_to X, offset
+                line_to AREA_PREVIOUS_X, AREA_PREVIOUS_Y
+                line_to X, Y
+                line_to X, 0
 
         // Update previous coordinates
         AREA_PREVIOUS_X := X
