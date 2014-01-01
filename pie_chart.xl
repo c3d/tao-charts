@@ -93,7 +93,7 @@ theme_chart_layout Theme:text, "pie", Style:text, Format:text ->
 
     // Draw chart
     box "pie", 0, -30, 600, 600
-    chart 0, -25, 600, 600, Style, Format
+    chart_series 0, -25, 600, 600, "pie", Style, Format
 
 // ============================================================================
 //
@@ -107,7 +107,7 @@ theme_chart_layout Theme:text, "pie", Style:text, Format:text ->
 pie_chart_offset -> 0.0
 
 
-theme_chart Theme:text, "pie", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "pie", Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default pie chart
 // ----------------------------------------------------------------------------
@@ -115,13 +115,13 @@ theme_chart Theme:text, "pie", Style:text, Format:text, W:real, H:real, N:intege
         pie_chart_offset := 0.0
 
     // Compute angle of pie
-    Angle := Ratio * 360
+    Angle := abs(Ratio) * 360
 
     // Compute the semi-angle of current pie
     Angle2 := ((Angle / 2.0 + 90 + pie_chart_offset) * pi) / 180
 
     // Compute offset between each pie
-    Offset := (chart_data_property(N, Index, "exploded_slice"))
+    Offset := (chart_data_property(Set, Index, "exploded_slice"))
 
     locally
         // Show data value at the middle of the pie
@@ -136,7 +136,7 @@ theme_chart Theme:text, "pie", Style:text, Format:text, W:real, H:real, N:intege
         locally
             theme_format Theme, "pie", "chart_data", Format
 
-            V := text (chart_data(N, Index))
+            V := text abs(chart_data(Set, Index))
             X := W * 0.35 * cos Angle2
             Y := H * 0.35 * sin Angle2
             VW := text_width V

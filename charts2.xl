@@ -32,6 +32,8 @@ import "default-theme.xl"
 //
 // ============================================================================
 
+data chart_datasets
+
 // ----------------------------------------------------------------------------
 //   REALS ONLY
 // ----------------------------------------------------------------------------
@@ -83,21 +85,26 @@ chart_load_tsv Name:text, T:text ->
 //
 // ============================================================================
 
-chart_init "pie", Style:text ->
+chart_init "pie", Style:text, X:integer ->
 // ----------------------------------------------------------------------------
 //   Initialize pie chart
 // ----------------------------------------------------------------------------
     // Compute sum for pie chart
-    chart_set_max_axis (chart_sum chart_first), false
+    chart_set_max_axis (chart_sum(chart_first, true)), false
 
-chart Name:text, First:integer, Last:integer, "pie", X:real, Y:real, W:real, H:real ->
+
+chart_series X:real, Y:real, W:real, H:real, "pie", Style:text, Format:text ->
 // ----------------------------------------------------------------------------
-//   Create a pie chart (keep only the first dataset)
+//   Draw series of a pie chart
 // ----------------------------------------------------------------------------
-    if((chart_max_count Name) > 0 and Last < 5) then
-        chart_create Name, First, First, "pie",
-            chart_init "pie", chart_style
-        chart_master "pie", (chart_style Name), chart_format, X, Y, W, H
+    contents 0,
+        translate X, Y, 0.0
+        S := chart_dataset 0
+        C := chart_count S
+        if(C > 0) then
+            for I in 0..(C - 1) loop
+                theme_chart theme, "pie", Style, Format, W, H, 0, S, I
+
 
 // ============================================================================
 //
@@ -105,14 +112,21 @@ chart Name:text, First:integer, Last:integer, "pie", X:real, Y:real, W:real, H:r
 //
 // ============================================================================
 
-chart_init Master:text, Style:text ->
+chart_init X:integer -> chart_init chart_type, chart_style, X
+chart_init X:integer..Y:integer  -> chart_init with X..Y
+chart_init X:integer, Other  ->
+    chart_init X
+    chart_init Other
+
+
+chart_init Type:text, Style:text, X:integer ->
 // ----------------------------------------------------------------------------
-//   Initialize charts and variables
+//   Initialize default charts datasets
 // ----------------------------------------------------------------------------
-    chart_set_max_axis 0.0
-    for N in chart_first..chart_last loop
-        Max := chart_max N
-        chart_max_axis Style, Max
+    Max := chart_max X
+    Min := chart_min X
+    chart_max_axis Style, Max
+    chart_min_axis Style, Min
 
 
 // Compute max axis for stacked charts
@@ -133,6 +147,23 @@ chart_max_axis Style:text, M:real ->
         chart_set_max_axis M
 
 
+// Compute max axis for stacked charts
+chart_min_axis "vertical_stacked", M:real   -> chart_min_axis "stacked", M
+chart_min_axis "horizontal_stacked", M:real   -> chart_min_axis "stacked", M
+chart_min_axis "stacked", M:real   ->
+// ----------------------------------------------------------------------------
+//   Compute max for stacked charts
+// ----------------------------------------------------------------------------
+    chart_set_min_axis (chart_min_axis + M) // We sum maximum values
+
+
+chart_min_axis Style:text, M:real ->
+// ----------------------------------------------------------------------------
+//   Compute min for regular charts
+// ----------------------------------------------------------------------------
+    if(chart_min_axis > M) then
+        chart_set_min_axis M
+
 // ============================================================================
 //
 //                            Draw Chart
@@ -144,75 +175,65 @@ chart_id := 0
 ALL_CHARTS -> ""
 ALL_CHARTS := "re:"
 
-// Shortcuts
-chart Name:text, N:integer, Master:text -> chart Name, N, N, Master
-chart Name:text, Master:text -> chart Name, 1, 4, Master
-chart Name:text, First:integer, Last:integer, Master:text -> chart Name, First, Last, Master, 0, 0, 1, 1
 
-chart Master:text -> chart chart_name, 1, 4, Master
-chart N:integer, Master:text -> chart chart_name, N, N, Master
-chart First:integer, Last:integer, Master:text -> chart chart_name, First, Last, Master
-chart N:integer, Master:text, X:real, Y:real, W:real, H:real ->
-    chart chart_name, N, Master, X, Y, W, H
-chart Master:text, X:real, Y:real, W:real, H:real ->
-    chart chart_name, Master, X, Y, W, H
-chart First:integer, Last:integer, Master:text, X:real, Y:real, W:real, H:real ->
-    chart chart_name, First, Last, Master, X, Y, W, H
+// Shortcuts to push datasets
+chart_push_dataset X:integer..Y:integer -> chart_push_dataset with X..Y
+chart_push_dataset X:integer, Other ->
+    chart_push_dataset X
+    chart_push_dataset Other
+
+chart -> chart 1..4
+chart X:real, Y:real, W:real, H:real -> chart X, Y, W, H, 1..4
 
 
-chart Name:text, N:integer, Master:text, X:real, Y:real, W:real, H:real ->
+chart X:real, Y:real, W:real, H:real, Body ->
 // ----------------------------------------------------------------------------
-//   Create a chart with an unique set
+//   Create and draw a chart with a given size
 // ----------------------------------------------------------------------------
-    chart Name, N, N, Master, X, Y, W, H
+    locally
+        translate X, Y, 0.0
+        scale W, H, 1.0
+        chart Body
 
-
-chart Name:text, Master:text, X:real, Y:real, W:real, H:real ->
+chart Body ->
 // ----------------------------------------------------------------------------
-//   Create a chart with all sets
-// ----------------------------------------------------------------------------
-    chart Name, 1, 4, Master, X, Y, W, H
-
-
-chart Name:text, First:integer, Last:integer, Master:text, X:real, Y:real, W:real, H:real ->
-// ----------------------------------------------------------------------------
-//   Create a chart
-// ----------------------------------------------------------------------------
-    if((chart_max_count Name) > 0 and Last < 5) then
-        chart_create Name, First, Last, Master,
-            chart_init Master, chart_style
-        chart_master Master, (chart_style Name), chart_format, X, Y, W, H
-
-
-chart_master Master:text, Style:text, Format:text, X:real, Y:real, W:real, H:real ->
-// ----------------------------------------------------------------------------
-//   Compute a chart
+//   Create and draw a chart
 // ----------------------------------------------------------------------------
     locally
         chart_id := chart_id + 1
-        translate X, Y, 0.0
-        scale W, H, 1.0
+
+        // Reset and add datasets to draw
+        // (Needed for init)
+        chart_reset_datasets
+        chart_push_dataset Body
+
+        // Create chart and init it
+        // if needed
+        chart_create chart_name,
+            chart_set_max_axis 0.0
+            chart_set_min_axis 0.0
+            chart_init Body
 
         chart_draw_title
         chart_draw_xlabel
         chart_draw_ylabel
         chart_draw_legend
 
-        theme_chart_layout theme, Master, Style, Format
+        theme_chart_layout theme, chart_type, chart_style, chart_format
 
 
-chart X:real, Y:real, W:real, H:real, Style:text, Format:text ->
+chart_series X:real, Y:real, W:real, H:real, Type:text, Style:text, Format:text ->
 // ----------------------------------------------------------------------------
-//   Draw current chart
+//   Draw series of a regular chart
 // ----------------------------------------------------------------------------
-    Master := chart_master
     contents 0,
         translate X, Y, 0.0
-        for N in chart_first..chart_last loop
-            S := chart_count N
-            if(S > 0) then
-                for I in 0..(S - 1) loop
-                    theme_chart theme, Master, Style, Format, W, H, N, I
+        for N in 0..(chart_datasets_count - 1) loop
+            S := chart_dataset N
+            C := chart_count S
+            if(C > 0) then
+                for I in 0..(C - 1) loop
+                    theme_chart theme, Type, Style, Format, W, H, N, S, I
 
 
 // ============================================================================
@@ -227,7 +248,7 @@ chart_draw_title ->
 // ----------------------------------------------------------------------------
     if(chart_title <> "") then
         slide_flow[(chart_id & "chart_title")] := true
-        theme_chart_title theme, chart_master, chart_style,
+        theme_chart_title theme, chart_type, chart_style,
             text chart_title
 
 
@@ -242,8 +263,8 @@ chart_draw_legend ->
 //   Draw legend of a regular chart
 // ----------------------------------------------------------------------------
     slide_flow[(chart_id & "chart_legend")] := true
-    theme_chart_legend theme, chart_master, chart_style,
-        chart_draw_entries chart_master
+    theme_chart_legend theme, chart_type, chart_style,
+        chart_draw_entries chart_type
 
 
 chart_draw_entries "pie"->
@@ -263,14 +284,15 @@ chart_draw_entries Master:text ->
 // ----------------------------------------------------------------------------
 //   Draw entries of a chart legend
 // ----------------------------------------------------------------------------
-    for N in chart_first..chart_last loop
-        if(chart_count N > 0) then
+    for N in 0..(chart_datasets_count - 1) loop
+        S := chart_dataset N
+        if(chart_count S > 0) then
             theme_chart_entry theme, Master, chart_style, N,
-                T := (chart_legend N)
+                T := (chart_legend S)
                 if(T <> "") then
                     text T
                 else
-                    text text N
+                    text text S
 
 
 // ============================================================================
@@ -285,7 +307,7 @@ chart_draw_xlabel ->
 // ----------------------------------------------------------------------------
     if(chart_xlabel <> "") then
         slide_flow[(chart_id & "chart_xlabel")] := true
-        theme_chart_xlabel theme, chart_master, chart_style,
+        theme_chart_xlabel theme, chart_type, chart_style,
             text chart_xlabel
 
 
@@ -295,7 +317,7 @@ chart_draw_ylabel ->
 // ----------------------------------------------------------------------------
     if(chart_ylabel <> "") then
         slide_flow[(chart_id & "chart_ylabel")] := true
-        theme_chart_ylabel theme, chart_master, chart_style,
+        theme_chart_ylabel theme, chart_type, chart_style,
             text chart_ylabel
 
 
@@ -309,14 +331,14 @@ chart_xaxis X:real, Y:real, W:real, H:real, Style:text, Format:text ->
 // ----------------------------------------------------------------------------
 //   Draw a x axis of a regular chart
 // ----------------------------------------------------------------------------
-    theme_chart_xaxis theme, chart_master, Style, Format, X, Y, W, H
+    theme_chart_xaxis theme, chart_type, Style, Format, X, Y, W, H
 
 
 chart_yaxis X:real, Y:real, W:real, H:real, Style:text, Format:text ->
 // ----------------------------------------------------------------------------
 //   Draw a y axis of a regular chart
 // ----------------------------------------------------------------------------
-    theme_chart_yaxis theme, chart_master, Style, Format, X, Y, W, H
+    theme_chart_yaxis theme, chart_type, Style, Format, X, Y, W, H
 
 
 // ============================================================================
@@ -332,7 +354,7 @@ chart_flow X:real, Y:real, W:real, H:real, Flow:text ->
     flow_name -> ""
     flow_name := (chart_id & Flow)
     if slide_flow[flow_name] then
-        theme_text theme, chart_master, Flow, X, Y, W, H,
+        theme_text theme, chart_type, Flow, X, Y, W, H,
             text_flow flow_name
         slide_flow[flow_name] := false
 
@@ -346,13 +368,13 @@ chart_flows X:real, Y:real, W:real, H:real, Flow1:text, Flow2:text ->
     flow_name1 := (chart_id & Flow1)
     flow_name2 := (chart_id & Flow2)
     if slide_flow[flow_name1] then
-        theme_text theme, chart_master, Flow1, X, Y, W, H,
+        theme_text theme, chart_type, Flow1, X, Y, W, H,
             text_flow flow_name1
             if slide_flow[flow_name2] then
                 paragraph_break
                 text_flow flow_name2
     else if slide_flow[flow_name2] then
-        theme_text theme, chart_master, Flow1, X, Y, W, H,
+        theme_text theme, chart_type, Flow1, X, Y, W, H,
             text_flow flow_name2
 
     slide_flow[flow_name1] := false
@@ -378,7 +400,8 @@ chart_text_flow Flow:text, Body ->
 chart_name -> chart_name ""
 chart_first -> chart_first chart_name
 chart_last -> chart_last chart_name
-chart_master -> chart_master chart_name
+chart_type -> chart_type chart_name
+chart_set_type T:text -> chart_set_type chart_name, T
 chart_style -> chart_style chart_name
 chart_set_style T:text -> chart_set_style chart_name, T
 chart_format -> chart_format chart_name
@@ -389,15 +412,22 @@ chart_reset -> chart_reset chart_name
 chart_push_data N:integer, R:real -> chart_push_data chart_name, N, R
 chart_load_csv T:text -> chart_load_csv chart_name, T
 chart_load_tsv T:text -> chart_load_tsv chart_name, T
+chart_min N:integer -> chart_min chart_name, N
 chart_max N:integer -> chart_max chart_name, N
-chart_sum N:integer -> chart_sum chart_name, N
+chart_sum N:integer -> chart_sum chart_name, N, true
+chart_sum N:integer, B:boolean -> chart_sum chart_name, N, B
 chart_max_count -> chart_max_count chart_name
-chart_datasets_count -> chart_datasets_count chart_name
 chart_count N:integer -> chart_count chart_name, N
 chart_data_ratio N:integer, I:integer -> chart_data_ratio chart_name, N, I
 chart_data N:integer, I:integer -> chart_data chart_name, N, I
 chart_data_property N:integer, I:integer, P:text -> chart_data_property chart_name, N, I, P
 chart_data_set_property N:integer, I:integer, P:text, R:real -> chart_data_set_property chart_name, N, I, P, R
+
+// Datasets : USE ONLY IN THIS FILE
+chart_datasets_count -> chart_datasets_count chart_name
+chart_reset_datasets -> chart_reset_datasets chart_name
+chart_push_dataset S:integer -> chart_push_dataset chart_name, S
+chart_dataset I:integer -> chart_dataset chart_name, I
 
 // Title
 chart_title -> chart_title chart_name
@@ -411,6 +441,9 @@ chart_set_legend N:integer, T:text -> chart_set_legend chart_name, N, T
 chart_set_max_axis R:real -> chart_set_max_axis chart_name, R, true
 chart_set_max_axis R:real, B:boolean -> chart_set_max_axis chart_name, R, B
 chart_max_axis -> chart_max_axis chart_name
+chart_set_min_axis R:real -> chart_set_min_axis chart_name, R, true
+chart_set_min_axis R:real, B:boolean -> chart_set_min_axis chart_name, R, B
+chart_min_axis -> chart_min_axis chart_name
 
 // Axis labels
 chart_xlabel -> chart_xlabel chart_name
