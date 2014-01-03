@@ -1,31 +1,29 @@
 import Charts
 
 chart_current "My chart"
+chart_reset
 
-once
-    chart_reset
+// Add data to first dataset  of all charts
+chart_push_data 1, 200
+chart_push_data 1, 250
+chart_push_data 1, 300
 
-    // Add data to first dataset  of all charts
-    chart_push_data 1, 200
-    chart_push_data 1, 250
-    chart_push_data 1, 300
+// Add data to second dataset of all charts
+chart_push_data 2, 150
+chart_push_data 2, 150
+chart_push_data 2, 110
 
-    // Add data to second dataset of all charts
-    chart_push_data 2, 150
-    chart_push_data 2, 150
-    chart_push_data 2, 110
+// Add data to third dataset of all charts
+chart_push_data 3, 165
+chart_push_data 3, 85
+chart_push_data 3, 188
 
-    // Add data to third dataset of all charts
-    chart_push_data 3, 165
-    chart_push_data 3, 85
-    chart_push_data 3, 188
+chart_set_xticks_labels {"First", "Second", "Third"}
 
-    chart_set_xticks_labels {"First", "Second", "Third"}
-
-    // Change all legends
-    chart_set_legend 1, "First set"
-    chart_set_legend 2, "Second set"
-    chart_set_legend 3, "Third set"
+// Change all legends
+chart_set_legend 1, "First set"
+chart_set_legend 2, "Second set"
+chart_set_legend 3, "Third set"
 
 chart_set_title "Sample chart"
 chart_set_format "2D"
@@ -38,100 +36,90 @@ chart_data_set_property 1, 2, "exploded_slice", 0
 //
 // ============================================================================
 
-picture_slide "2D pie chart" fr "Diagramme 2D circulaire",
+picture_slide "2D pie chart",
 // ----------------------------------------------------------------------------
 //   Display a classic 2D pie chart
 // ----------------------------------------------------------------------------
-    chart_set_type "pie"
-    chart 1
+    chart "My chart", 1, "pie"
 
 
-picture_slide "2D exploded pie chart" fr "Diagramme 2D circulaire éclaté",
+picture_slide "2D exploded pie chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D exploded pie chart
 // ----------------------------------------------------------------------------
     // Explode the thrid slice
-    chart_data_set_property 1, 2, "exploded_slice", 50
-    chart_set_type "pie"
-    chart 1
+    chart_data_set_property 1, 2, "exploded_slice", 100
+    chart "My chart", 1, "pie"
 
 
-picture_slide "2D vertical bar chart" fr "Diagramme 2D à barres verticales",
+picture_slide "2D vertical bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D vertical bar chart
 // ----------------------------------------------------------------------------
-    chart_set_type "bar"
-    chart 1..3
+    chart "My chart", "bar"
 
 
-picture_slide "2D vertical stacked bar chart" fr "Diagramme 2D à barres verticales empilées",
+picture_slide "2D vertical stacked bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D vertical-stacked bar chart
 // ----------------------------------------------------------------------------
     chart_set_style "vertical_stacked"
-    chart_set_type "bar"
-    chart 1..3
+    chart "My chart", "bar"
 
 
-picture_slide "2D horizontal bar chart" fr "Diagramme 2D à barres horizontales",
+picture_slide "2D horizontal bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D horizontal-stacked bar chart
 // ----------------------------------------------------------------------------
     chart_set_style "horizontal"
-    chart_set_type "bar"
-    chart 1..3
+    chart "My chart", "bar"
 
 
-picture_slide "2D horizontal stacked bar chart" fr "Diagramme 2D à barres horizontales empilées",
+picture_slide "2D horizontal stacked bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D horizontal-stacked bar chart
 // ----------------------------------------------------------------------------
     chart_set_style "horizontal_stacked"
-    chart_set_type "bar"
-    chart 1..3
+    chart "My chart", "bar"
 
 
-picture_slide "2D point chart" fr "Diagramme 2D linéaire (points)",
+picture_slide "2D point chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D point chart
 // ----------------------------------------------------------------------------
     chart_set_style "point"
-    chart_set_type "line"
-    chart 1..3
+    chart "My chart", "line"
 
 
-picture_slide "2D line chart" fr "Diagramme 2D linéaire (lignes)",
+picture_slide "2D line chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D line chart
 // ----------------------------------------------------------------------------
     chart_set_style "line"
-    chart_set_type "line"
-    chart 1..3
+    chart "My chart", "line"
 
 
-picture_slide "2D line&point chart" fr "Diagramme 2D linéaire (lignes & points)",
+picture_slide "2D line&point chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D line & point chart
 // ----------------------------------------------------------------------------
-    chart_set_type "line"
-    chart 1..3
+    chart "My chart", "line"
 
 
-picture_slide "2D area chart" fr "Diagramme 2D à zones",
+picture_slide "2D area chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D area chart
 // ----------------------------------------------------------------------------
-    chart_set_type "area"
-    chart 1..3
+    chart "My chart", "area"
 
 
-picture_slide "2D stacked area chart" fr "Diagramme 2D à zones empilées",
+picture_slide "2D stacked area chart",
 // ----------------------------------------------------------------------------
 //   Display a 2D area stacked bar chart
 // ----------------------------------------------------------------------------
     chart_set_style "stacked"
-    chart_set_type "area"
-    chart 1..3
+    chart "My chart", "area"
+
 
 
 // ============================================================================
@@ -139,113 +127,102 @@ picture_slide "2D stacked area chart" fr "Diagramme 2D à zones empilées",
 //                              3D Chart
 //
 // ============================================================================
-
 light 0
 material_ambient 1.0, 1.0, 1.0, 1.0
 material_diffuse 1.0, 1.0, 1.0, 1.0
 
-picture_slide "3D pie chart" fr "Diagramme 3D circulaire",
+
+picture_slide "3D pie chart",
 // ----------------------------------------------------------------------------
 //   Display a classic 3D pie chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
-    chart_set_type "pie"
-    chart 1
+    chart "My chart", 1, "pie"
 
 
-picture_slide "3D exploded pie chart" fr "Diagramme 3D circulaire éclaté",
+picture_slide "3D exploded pie chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D exploded pie chart
 // ----------------------------------------------------------------------------
     // Explode the thrid slice
-    chart_data_set_property 1, 2, "exploded_slice", 50
+    chart_data_set_property 1, 2, "exploded_slice", 100
     chart_set_format "3D"
-    chart_set_type "pie"
-    chart 1
+    chart "My chart", 1, "pie"
 
 
-picture_slide "3D vertical bar chart" fr "Diagramme 3D à barres verticales",
+picture_slide "3D vertical bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D vertical bar chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
-    chart_set_type "bar"
-    chart 1..3
+    chart "My chart", "bar"
 
 
-picture_slide "3D vertical stacked bar chart" fr "Diagramme 3D à barres verticales empilées",
+picture_slide "3D vertical stacked bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D vertical-stacked bar chart
 // ----------------------------------------------------------------------------
+    chart_set_format "3D"
     chart_set_style "vertical_stacked"
-    chart_set_type "bar"
-    chart 1..3
+    chart "My chart", "bar"
 
 
-picture_slide "3D horizontal bar chart" fr "Diagramme 3D à barres horizontales",
+picture_slide "3D horizontal bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D horizontal-stacked bar chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
     chart_set_style "horizontal"
-    chart_set_type "bar"
-    chart 1..3
+    chart "My chart", "bar"
 
 
-
-picture_slide "3D horizontal stacked bar chart" fr "Diagramme 3D à barres horizontales empilées",
+picture_slide "3D horizontal stacked bar chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D horizontal-stacked bar chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
     chart_set_style "horizontal_stacked"
-    chart_set_type "bar"
-    chart 1..3
+    chart "My chart", "bar"
 
 
-picture_slide "3D point chart" fr "Diagramme 3D linéaire (points)",
+picture_slide "3D point chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D point chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
     chart_set_style "point"
-    chart_set_type "line"
-    chart 1..3
+    chart "My chart", "line"
 
 
-picture_slide "3D line chart" fr "Diagramme 3D linéaire (lignes)",
+picture_slide "3D line chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D line chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
     chart_set_style "line"
-    chart_set_type "line"
-    chart 1..3
+    chart "My chart", "line"
 
 
-picture_slide "3D line&point chart" fr "Diagramme 3D linéaire (lignes & points)",
+picture_slide "3D line&point chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D line & point chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
-    chart_set_type "line"
-    chart 1..3
+    chart "My chart", "line"
 
 
-picture_slide "3D area chart" fr "Diagramme 3D à zones",
+picture_slide "3D area chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D area chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
-    chart_set_type "area"
-    chart 1..3
+    chart "My chart", "area"
 
 
-picture_slide "3D stacked area chart" fr "Diagramme 3D à zones empilées",
+picture_slide "3D stacked area chart",
 // ----------------------------------------------------------------------------
 //   Display a 3D area stacked bar chart
 // ----------------------------------------------------------------------------
     chart_set_format "3D"
     chart_set_style "stacked"
-    chart_set_type "area"
-    chart 1..3
+    chart "My chart", "area"
