@@ -5,7 +5,7 @@ module_description
     import_name "Charts"
     author "Taodyne SAS"
     website "http://www.taodyne.com"
-    version 1.01
+    version 1.0
 
 module_description "fr",
     name "Diagrammes"
