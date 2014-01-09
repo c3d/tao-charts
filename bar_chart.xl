@@ -83,23 +83,31 @@ theme_bar Theme:text, Format:text, X:real, Y:real, W:real, H:real, N:integer ->
 //
 // ============================================================================
 
-data bar_chart_offset
+data bar_chart_positive_offsets
+data bar_chart_negative_offsets
 
 chart_get_bar_offset V:real -> V
 chart_get_bar_offset Other -> 0
 
-theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default stacked vertical bar chart
 // ----------------------------------------------------------------------------
     I := Index // XL bug
 
     // Translate vertically data at the same index (not for first dataset)
+    // NOTE: We seperate negative and positive offsets in order to draw
+    // consecutively stacked bars
     offset -> 0.0
-    if(N <> chart_first) then
-        offset := (chart_get_bar_offset(bar_chart_offset[I]))
+    offset := 0.0
+    if(N = 0) then
+        bar_chart_positive_offsets[I] := 0.0
+        bar_chart_negative_offsets[I] := 0.0
     else
-        offset := 0.0
+        if(Ratio > 0) then
+            offset := (chart_get_bar_offset(bar_chart_positive_offsets[I]))
+        else
+            offset := (chart_get_bar_offset(bar_chart_negative_offsets[I]))
 
     // Get size of interval
     L := W / chart_max_count
@@ -108,19 +116,25 @@ theme_chart Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real, 
     S := L / 1.3
 
     locally
-        translatey offset
+        Y := offset
 
         // Translate data for the same dataset
-        translatex L * I
+        X := L * I
 
         // Add a translation to start intervals at X=0
         // (Avoid to display first bar at X=0)
-        translatex (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
+        X := X + (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
 
-        theme_bar Theme, Format, 0, Ratio * (H / 2), S, Ratio * H, N
+        // Readjust chart position to the origin (in case of negative values)
+        Y := Y + (chart_offset H)
+
+        theme_bar Theme, Format, X, Y + Ratio * (H / 2), S, Ratio * H, N
 
     // Update offset
-    bar_chart_offset[I] := Ratio * H + offset
+    if(Ratio > 0) then
+        bar_chart_positive_offsets[I] := Ratio * H + offset
+    else
+        bar_chart_negative_offsets[I] := Ratio * H + offset
 
 
 theme_chart_xaxis Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:real ->
@@ -136,7 +150,7 @@ theme_chart_xaxis Theme:text, "bar", "vertical_stacked", Format:text, W:real, H:
 //
 // ============================================================================
 
-theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default stacked vertical bar chart
 // ----------------------------------------------------------------------------
@@ -144,10 +158,15 @@ theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real
 
     // Translate vertically data at the same index (not for first dataset)
     offset -> 0.0
-    if(N <> chart_first) then
-        offset := (chart_get_bar_offset(bar_chart_offset[I]))
+    offset := 0.0
+    if(N = 0) then
+        bar_chart_positive_offsets[I] := 0.0
+        bar_chart_negative_offsets[I] := 0.0
     else
-        offset := 0.0
+        if(Ratio > 0) then
+            offset := (chart_get_bar_offset(bar_chart_positive_offsets[I]))
+        else
+            offset := (chart_get_bar_offset(bar_chart_negative_offsets[I]))
 
     // Get size of interval
     L := H / chart_max_count
@@ -156,19 +175,25 @@ theme_chart Theme:text, "bar", "horizontal_stacked", Format:text, W:real, H:real
     S := L / 1.3
 
     locally
-        translatex offset
+        X := offset
 
         // Translate data for the same dataset
-        translatey L * I
+        Y := L * I
 
         // Add a translation to start intervals at X=0
         // (Avoid to display first bar at X=0)
-        translatey (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
+        Y := Y + (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
 
-        theme_bar Theme, Format, Ratio * (W / 2), 0, Ratio * W, S, N
+        // Readjust chart position to the origin (in case of negative values)
+        X := X + (chart_offset W)
+
+        theme_bar Theme, Format, X + Ratio * (W / 2), Y, Ratio * W, S, N
 
     // Update offset
-    bar_chart_offset[I] := Ratio * W + offset
+    if(Ratio > 0) then
+        bar_chart_positive_offsets[I] := Ratio * W + offset
+    else
+        bar_chart_negative_offsets[I] := Ratio * W + offset
 
 
 theme_chart_xaxis Theme:text, "bar", "horizontal_stacked", Format:text, X:real, Y:real, W:real, H:real ->
@@ -205,7 +230,7 @@ theme_chart_ylabel Theme:text, "bar", "horizontal_stacked", Body ->
 //
 // ============================================================================
 
-theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default horizontal bar chart
 // ----------------------------------------------------------------------------
@@ -217,16 +242,19 @@ theme_chart Theme:text, "bar", "horizontal", Format:text, W:real, H:real, N:inte
 
     locally
         // Translate data for the same dataset
-        translatey L * Index
+        Y := L * Index
 
         // Translate data at the same index for different datasets
-        translatey S * (N - chart_first)
+        Y := Y + S * N
+
+        // Readjust chart position to the origin (in case of negative values)
+        X := chart_offset W
 
         // Add a translation to start intervals at X=0
         // (Avoid to display first bar at X=0)
-        translatey (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
+        Y := Y + (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
 
-        theme_bar Theme, Format, Ratio * (W / 2), 0, Ratio * W, S, N
+        theme_bar Theme, Format, X + Ratio * (W / 2), Y, Ratio * W, S, N
 
 
 theme_chart_xaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, W:real, H:real ->
@@ -270,10 +298,10 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
         if(chart_xticks > 0) then
 
             // Compute x-interval length
-            L := H / (chart_xticks + 1)
+            L := H / chart_xticks
 
             // Show x-label below chart
-            for I in 0..chart_xticks loop
+            for I in 0..(chart_xticks - 1) loop
                 locally
                     translatey L * I
 
@@ -281,7 +309,6 @@ theme_chart_yaxis Theme:text, "bar", "horizontal", Format:text, X:real, Y:real, 
                     text_box -40, (L/2.0), 60, L,
                         theme_style Theme, "bar", "chart_tick"
                         text (chart_xticks_label I)
-
 
 
 theme_chart_xlabel Theme:text, "bar", "horizontal", Body ->
@@ -303,7 +330,7 @@ theme_chart_ylabel Theme:text, "bar", "horizontal", Body ->
 //
 // ============================================================================
 
-theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:integer, Index:integer, Ratio:real ->
+theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:integer, Set:integer, Index:integer, Ratio:real ->
 // ----------------------------------------------------------------------------
 //    Default vertical bar chart
 // ----------------------------------------------------------------------------
@@ -315,16 +342,19 @@ theme_chart Theme:text, "bar", Style:text, Format:text, W:real, H:real, N:intege
 
     locally
         // Translate data for the same dataset
-        translatex L * Index
+        X := L * Index
 
         // Translate data at the same index for different datasets
-        translatex S * (N - chart_first)
+        X := X + S * N
+
+        // Readjust chart position to the origin (in case of negative values)
+        Y := chart_offset H
 
         // Add a translation to start intervals at X=0
         // (Avoid to display first bar at X=0)
-        translatex (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
+        X := X + (S/2.0) + (L/2.0 - ((L/1.3)/2.0))
 
-        theme_bar Theme, Format, 0, Ratio * (H / 2), S, Ratio * H, N
+        theme_bar Theme, Format, X, Y + Ratio * (H / 2), S, Ratio * H, N
 
 
 theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:real, H:real ->
@@ -340,10 +370,10 @@ theme_chart_xaxis Theme:text, "bar", Style:text, Format:text, X:real, Y:real, W:
         if(chart_xticks > 0) then
 
             // Compute x-interval length
-            L := W / (chart_xticks + 1)
+            L := W / chart_xticks
 
             // Show x-label below chart
-            for I in 0..chart_xticks loop
+            for I in 0..(chart_xticks - 1) loop
                 locally
                     translatex L * I
 

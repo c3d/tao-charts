@@ -30,12 +30,23 @@ using namespace Tao;
 
 
 struct ChartData {
-    ChartData(double d) : data(d) {}
+    ChartData(double d) : value(d) {}
 
-    double data;
+    double value;
     std::map<text, double> properties;
 };
 
+struct ChartDataSet {
+    ChartDataSet(uint i = 0) : index(i) {}
+
+    int dataCount() { return data.size(); }
+    double dataValue(uint i) { return data[i]->value; }
+    bool   dataHasProperty(uint i, text p) { return (data[i]->properties.find(p) != data[i]->properties.end()); }
+    double dataProperty(uint i, text p) { return data[i]->properties[p]; }
+
+    uint index;
+    vector<ChartData*> data;
+};
 
 struct Chart : public QObject
 {
@@ -48,11 +59,12 @@ struct Chart : public QObject
     void init();
 
     // Chart
-    void setMaster(text m);
+    void setType(text m);
     void setStyle(text s);
     void setFormat(text f);
     void setFirst(uint f);
     void setLast(uint l);
+    void setDatasetsCount(uint count);
 
     // Data
     void reset();
@@ -62,8 +74,14 @@ struct Chart : public QObject
     double getDataProperty(int s, uint i, text property);
     bool   setDataProperty(int s, uint i, text property, double value);
 
-    double computeSum(uint s);
+    // Datasets
+    uint   getDataSet(uint index);
+    void   pushDataSet(uint s);
+    void   resetDataSets();
+
+    double computeSum(uint s, bool abs = false);
     double computeMax(uint s);
+    double computeMin(uint s);
 
     // Legend
     void setLegend(uint N, text entry);
@@ -71,6 +89,7 @@ struct Chart : public QObject
 
     // Axis
     void setMaxAxis(double max, bool adjust = true);
+    void setMinAxis(double min, bool adjust = true);
 
     // Ticks
     void setXTicks(uint ticks);
@@ -95,8 +114,12 @@ public:
 
     // Chart
     text name;
-    text master, style, format;
+    text type, style, format;
     uint first, last;
+
+    uint64 previousDatasetsMask; // Previous mask of datasets
+    uint64 datasetsMask;         // Mask of datasets to draw
+    vector<uint> datasetsToDraw; // List of datasets to draw
 
     // Components
     text title;
@@ -104,7 +127,7 @@ public:
 
     // Axis
     double step;
-    uint maxAxis, minAxis;
+    double maxAxis, minAxis;
     uint xticks, yticks;
     text xlabel, ylabel;
     vector<text> xticks_labels, yticks_labels;
@@ -117,12 +140,11 @@ public:
 private:
     #define MAX_TICKS 10
 
-    bool auto_maxAxis;
+    bool auto_maxAxis, auto_minAxis;
     bool auto_xticks, auto_yticks;
     bool auto_xticks_labels, auto_yticks_labels;
 
-    typedef std::vector<ChartData*> data;
-    typedef std::map<uint, data> data_map;
+    typedef std::map<uint, ChartDataSet> data_map;
     data_map  datasets;
 };
 

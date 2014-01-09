@@ -173,20 +173,21 @@ Tree_p ChartFactory::chart_data_ratio(text name, uint set, uint index)
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    if(chart->maxAxis > 0)
-        return new Real(chart->getData(set, index) / chart->maxAxis);
+    double range = chart->maxAxis - chart->minAxis;
+    if(range > 0)
+        return new Real(chart->getData(set, index) / range);
     else
         return new Real(0.0);
 }
 
 
-Tree_p ChartFactory::chart_sum(text name, uint set)
+Tree_p ChartFactory::chart_sum(text name, uint set, bool abs)
 // ----------------------------------------------------------------------------
 //  Sum data in a dataset
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    return new Real(chart->computeSum(set));
+    return new Real(chart->computeSum(set, abs));
 }
 
 
@@ -199,6 +200,14 @@ Tree_p ChartFactory::chart_max(text name, uint set)
     return new Real(chart->computeMax(set));
 }
 
+Tree_p ChartFactory::chart_min(text name, uint set)
+// ----------------------------------------------------------------------------
+//  Min data of a dataset
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    return new Real(chart->computeMin(set));
+}
 
 Tree_p ChartFactory::chart_max_count(text name)
 // ----------------------------------------------------------------------------
@@ -226,8 +235,39 @@ Tree_p ChartFactory::chart_datasets_count(text name)
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    double count = chart->last - chart->first + 1;
-    return new Integer(count);
+    return new Integer(chart->datasetsToDraw.size());
+}
+
+
+Tree_p ChartFactory::chart_reset_datasets(text name)
+// ----------------------------------------------------------------------------
+//  Reset count of datasets to draw
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    chart->resetDataSets();
+    return xl_true;
+}
+
+
+Tree_p ChartFactory::chart_push_dataset(text name, uint s)
+// ----------------------------------------------------------------------------
+//  Push a dataset to the list to draw
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    chart->pushDataSet(s);
+    return xl_true;
+}
+
+
+Tree_p ChartFactory::chart_dataset(text name, uint index)
+// ----------------------------------------------------------------------------
+//  Get number of a dataset
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    return new Integer(chart->getDataSet(index));
 }
 
 
@@ -302,11 +342,13 @@ XL::Name_p ChartFactory::chart_drop(text name)
 // ----------------------------------------------------------------------------
 {
     ChartFactory * f = ChartFactory::instance();
-    foreach(Chart* chart, instance()->chartsList(name))
+    foreach(Chart* chart, f->chartsList(name))
     {
         chart_map::iterator found = f->charts.find(chart->name);
         f->charts.erase(found);
         delete chart;
+        if (chart == current)
+            current = NULL;
         return XL::xl_true;
     }
     return XL::xl_false;
@@ -323,16 +365,12 @@ Tree_p ChartFactory::chart_current(text name)
 }
 
 
-Tree_p ChartFactory::chart_create(Context *context, text name, uint first, uint last, text master, Tree_p prog)
+Tree_p ChartFactory::chart_create(Context *context, text name, Tree_p prog)
 // ----------------------------------------------------------------------------
 //  Create a chart
 // ----------------------------------------------------------------------------
 {
     current = instance()->chart(name);
-    current->setFirst(first);
-    current->setLast(last);
-    current->setMaster(master);
-
     if(current->needInit)
     {
         context->Evaluate(prog);
@@ -355,13 +393,24 @@ Tree_p ChartFactory::chart_name(text)
 }
 
 
-Tree_p ChartFactory::chart_master(text name)
+Tree_p ChartFactory::chart_type(text name)
 // ----------------------------------------------------------------------------
-//  Return master of a chart
+//  Return type of a chart
 // ----------------------------------------------------------------------------
 {
     Chart* chart = instance()->chart(name);
-    return new Text(chart->master);
+    return new Text(chart->type);
+}
+
+
+Tree_p ChartFactory::chart_type(text name, text type)
+// ----------------------------------------------------------------------------
+//  Set tyoe of a chart
+// ----------------------------------------------------------------------------
+{
+    foreach(Chart* chart, instance()->chartsList(name))
+        chart->setType(type);
+    return xl_true;
 }
 
 
@@ -553,6 +602,27 @@ Tree_p ChartFactory::chart_max_axis(text name, double max, bool adjust)
 {
     foreach(Chart* chart, instance()->chartsList(name))
         chart->setMaxAxis(max, adjust);
+    return xl_true;
+}
+
+
+Tree_p ChartFactory::chart_min_axis(text name)
+// ----------------------------------------------------------------------------
+//  Return minimum value on the axis
+// ----------------------------------------------------------------------------
+{
+    Chart* chart = instance()->chart(name);
+    return new Integer(chart->minAxis);
+}
+
+
+Tree_p ChartFactory::chart_min_axis(text name, double min, bool adjust)
+// ----------------------------------------------------------------------------
+//  Set minimum value on the axis
+// ----------------------------------------------------------------------------
+{
+    foreach(Chart* chart, instance()->chartsList(name))
+        chart->setMinAxis(min, adjust);
     return xl_true;
 }
 
