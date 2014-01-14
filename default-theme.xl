@@ -177,11 +177,12 @@ theme_chart Theme:text, Master:text, Style:text, Format:text, W:real, H:real, N:
 //
 // ============================================================================
 
-theme_text Theme:text,Master:text,"chart_data",X:real,Y:real,W:real,H:real,Body ->
+theme_flow Theme:text,Master:text,"chart_data",X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
 //    Override text implementation (don't show any box)
 // ----------------------------------------------------------------------------
-    theme_text_without_box Theme, Master, "chart_data", X, Y, W, H, Body
+    theme_text Theme, Master, "chart_data", X, Y, W, H, Body
+
 
 
 // ============================================================================
@@ -244,11 +245,11 @@ theme_chart_xlabel Theme:text, Master:text, Style:text, Body ->
         Body
 
 
-theme_text Theme:text,Master:text,"chart_xlabel",X:real,Y:real,W:real,H:real,Body ->
+theme_flow Theme:text,Master:text,"chart_xlabel",X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
 //    Override text implementation (don't show any box)
 // ----------------------------------------------------------------------------
-    theme_text_without_box Theme, Master, "chart_xlabel", X, Y, W, H, Body
+    theme_text Theme, Master, "chart_xlabel", X, Y, W, H, Body
 
 
 theme_chart_ylabel Theme:text, Master:text, Style:text, Body ->
@@ -260,11 +261,11 @@ theme_chart_ylabel Theme:text, Master:text, Style:text, Body ->
         Body
 
 
-theme_text Theme:text,Master:text,"chart_ylabel",X:real,Y:real,W:real,H:real,Body ->
+theme_flow Theme:text,Master:text,"chart_ylabel",X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
 //    Override text implementation (don't show any box)
 // ----------------------------------------------------------------------------
-    theme_text_without_box Theme, Master, "chart_ylabel", X, Y, W, H, Body
+    theme_text Theme, Master, "chart_ylabel", X, Y, W, H, Body
 
 
 // ============================================================================
@@ -348,7 +349,7 @@ theme_chart_yaxis Theme:text, Master:text, Style:text, Format:text, X:real, Y:re
 //
 // ============================================================================
 
-theme_text_without_box Theme:text,Master:text,Style:text,X:real,Y:real,W:real,H:real,Body ->
+theme_text Theme:text,Master:text,Style:text,X:real,Y:real,W:real,H:real,Body ->
 // ----------------------------------------------------------------------------
 //   Draw a default text box
 // ----------------------------------------------------------------------------
