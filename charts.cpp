@@ -342,13 +342,11 @@ XL::Name_p ChartFactory::chart_drop(text name)
 // ----------------------------------------------------------------------------
 {
     ChartFactory * f = ChartFactory::instance();
-    foreach(Chart* chart, f->chartsList(name))
+    foreach(Chart* chart, instance()->chartsList(name))
     {
         chart_map::iterator found = f->charts.find(chart->name);
         f->charts.erase(found);
         delete chart;
-        if (chart == current)
-            current = NULL;
         return XL::xl_true;
     }
     return XL::xl_false;
