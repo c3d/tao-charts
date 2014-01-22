@@ -355,7 +355,7 @@ chart_flow X:real, Y:real, W:real, H:real, Flow:text ->
     flow_name -> ""
     flow_name := (chart_id & Flow)
     if slide_flow[flow_name] then
-        theme_flow theme, chart_type, Flow, X, Y, W, H,
+        theme_text theme, chart_type, Flow, X, Y, W, H,
             text_flow flow_name
         slide_flow[flow_name] := false
 
@@ -369,13 +369,13 @@ chart_flows X:real, Y:real, W:real, H:real, Flow1:text, Flow2:text ->
     flow_name1 := (chart_id & Flow1)
     flow_name2 := (chart_id & Flow2)
     if slide_flow[flow_name1] then
-        theme_flow theme, chart_type, Flow1, X, Y, W, H,
+        theme_text theme, chart_type, Flow1, X, Y, W, H,
             text_flow flow_name1
             if slide_flow[flow_name2] then
                 paragraph_break
                 text_flow flow_name2
     else if slide_flow[flow_name2] then
-        theme_flow theme, chart_type, Flow1, X, Y, W, H,
+        theme_text theme, chart_type, Flow1, X, Y, W, H,
             text_flow flow_name2
 
     slide_flow[flow_name1] := false
