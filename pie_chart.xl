@@ -58,7 +58,8 @@ override_priority -1
 
 // Set pie colors
 theme_color Theme:text, "pie", Style:text, N:integer ->
-    color_hsv (N - 1) * 360.0 / (chart_count chart_first), 1.0, 1.0
+    if chart_count chart_first > 0 then
+        color_hsv (N - 1) * 360.0 / (chart_count chart_first), 1.0, 1.0
 
 theme_boxstyle Theme:text, Master:text, "pie" -> color "white",0.0
 
@@ -71,8 +72,11 @@ theme_format Theme:text, "pie", Style:text, "3D" ->
 theme_align Theme:text, "pie", "chart_legend" ->
     align 0.0
     vertical_align 0.5
-    paragraph_space 0, (30.0 / (chart_count chart_first))
-    margins 90, 0
+    if chart_count chart_first > 0 then
+        paragraph_space 0, (30.0 / (chart_count chart_first))
+    margins 120, 0
+
+
 
 // ============================================================================
 //
@@ -143,7 +147,7 @@ theme_chart Theme:text, "pie", Style:text, Format:text, W:real, H:real, N:intege
             VH := text_height V
 
             // Show value
-            theme_text Theme, "pie", "chart_data", X, Y, VW, VH,
+            theme_flow Theme, "pie", "chart_data", X, Y, VW, VH,
                 text V
 
 
