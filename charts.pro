@@ -33,7 +33,6 @@ TBL_SOURCES  = charts.tbl
 
 
 OTHER_FILES = charts.xl \
-              charts2.xl \
               default-theme.xl \
               pie_chart.xl \
               line_chart.xl \
@@ -49,11 +48,11 @@ QT          += core \
                opengl
 
 default.path = $$MODINSTPATH
-default.files = charts2.xl default-theme.xl pie_chart.xl bar_chart.xl line_chart.xl area_chart.xl
+default.files = charts.xl default-theme.xl pie_chart.xl bar_chart.xl line_chart.xl area_chart.xl
 
 INSTALLS    += thismod_icon default
 
-SIGN_XL_SOURCES = charts2.xl default-theme.xl pie_chart.xl bar_chart.xl line_chart.xl area_chart.xl
+SIGN_XL_SOURCES = charts.xl default-theme.xl pie_chart.xl bar_chart.xl line_chart.xl area_chart.xl
 include(../sign_xl.pri)
 
 QMAKE_SUBSTITUTES = doc/Doxyfile.in
