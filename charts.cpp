@@ -21,6 +21,7 @@
 #include "charts.h"
 #include <iostream>
 #include "coords3d.h"
+#include <QRegExp>
 
 XL_DEFINE_TRACES
 
@@ -722,11 +723,8 @@ int module_init(const Tao::ModuleApi *api, const Tao::ModuleInfo *)
 //   Initialize the Tao module
 // ----------------------------------------------------------------------------
 {
-    glewInit();
     XL_INIT_TRACES();
-
     Chart::tao = api;
-
     return 0;
 }
 
