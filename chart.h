@@ -24,6 +24,7 @@
 #include "tao/tao_gl.h"
 #include "tao/graphic_state.h"
 #include <QObject>
+#include <vector>
 
 using namespace std;
 using namespace Tao;
