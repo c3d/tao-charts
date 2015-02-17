@@ -24,11 +24,6 @@ HEADERS = \
 SOURCES = charts.cpp \
           chart.cpp
 
-win32 {
-    DEFINES     += GLEW_STATIC
-    SOURCES     += $${TAOTOPSRC}/tao/include/tao/GL/glew.c
-}
-
 TBL_SOURCES  = charts.tbl
 
 
