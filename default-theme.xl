@@ -1,8 +1,8 @@
-// ****************************************************************************
-//  default-theme.xl                                              Tao project
-// ****************************************************************************
+// *****************************************************************************
+// default-theme.xl                                                Tao3D project
+// *****************************************************************************
 //
-//   File Description:
+// File description:
 //
 //     Define a default theme for charts.
 //
@@ -13,38 +13,29 @@
 //
 //
 //
-// ****************************************************************************
-// Copyright Taodyne SAS, 2012
-// Contributors:
-//   Baptiste Soulisse <baptiste.soulisse@taodyne.com>
-//   Christophe de Dinechin <christophe@taodyne.com>
-//   Jérôme Forissier <jerome@taodyne.com>
-//   Catherine Burvelle <cathy@taodyne.com>
-//
-// <contact@taodyne.com>
-//
-// This software is a computer program whose purpose is to serve as a
-// document template for the Tao3D application.
-//
+// *****************************************************************************
 // This software is licensed under the GNU General Public License v3
-// See file COPYING for details.
-// ****************************************************************************
+// (C) 2013-2014, Baptiste Soulisse <baptiste.soulisse@taodyne.com>
+// (C) 2013, Catherine Burvelle <catherine@taodyne.com>
+// (C) 2013-2014,2019, Christophe de Dinechin <christophe@dinechin.org>
+// (C) 2013-2014, Jérôme Forissier <jerome@taodyne.com>
+// *****************************************************************************
+// This file is part of Tao3D
 //
-//  These files define styles of legend, title, axis, labels and charts
-//  In all of these ones, we define:
-//     - Theme: Current theme
-//     - Master: Current chart master (area, bar, line, pie)
-//     - Style: Current chart style (according to master)
-//     - Format: Current chart format (2D or 3D)
-//     - W: Chart width in percent
-//     - H: Chart height in percent
-//     - N: Current index of dataset
-//     - Set: Current dataset
-//     - Index: Current index of data in the dataset
-//     - Ratio: Ratio of current value ( Value / MaxValue )
-//     - chart_max_data: The maximum data (according to chart master)
+// Tao3D is free software: you can r redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// ****************************************************************************
+// Tao3D is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Tao3D, in a file named COPYING.
+// If not, see <https://www.gnu.org/licenses/>.
+// *****************************************************************************
 
 
 import Slides
